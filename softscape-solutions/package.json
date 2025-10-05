@@ -1,0 +1,17 @@
+{
+  "name": "softscape-solutions",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "lint": "lerna run lint"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

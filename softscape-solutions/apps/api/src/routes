@@ -1,0 +1,30 @@
+filetree
+softscape-solutions
+├── apps
+│   ├── web
+│   │   ├── src
+│   │   │   ├── app.ts
+│   │   │   └── components
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── api
+│       ├── src
+│       │   ├── app.ts
+│       │   ├── controllers
+│       │   └── routes
+│       ├── package.json
+│       └── tsconfig.json
+├── libs
+│   ├── shared-ui
+│   │   ├── src
+│   │   │   └── index.ts
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── common
+│       ├── src
+│       │   └── index.ts
+│       ├── package.json
+│       └── tsconfig.json
+├── package.json
+├── tsconfig.base.json
+└── README.md
