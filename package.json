@@ -1,83 +1,38 @@
-
 {
   "name": "softscape-solutions",
-  "version": "1.0.0",
-  "description": "Enterprise-grade modular full-stack application",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/api",
-    "apps/web",
-    "apps/admin",
-    "libs/*"
-  ],
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "concurrently -n \"api,web,admin\" -c \"bgBlue,bgMagenta,bgGreen\" \"npm run dev:api\" \"npm run dev:web\" \"npm run dev:admin\"",
-    "dev:api": "npm run dev --workspace=apps/api",
-    "dev:web": "npm run dev --workspace=apps/web",
-    "dev:admin": "npm run dev --workspace=apps/admin",
-    
-    "build": "npm run build --workspaces --if-present",
-    "build:api": "npm run build --workspace=apps/api",
-    "build:web": "npm run build --workspace=apps/web",
-    "build:admin": "npm run build --workspace=apps/admin",
-    
-    "start": "npm run start --workspaces --if-present",
-    "start:api": "npm run start --workspace=apps/api",
-    "start:web": "npm run start --workspace=apps/web",
-    "start:admin": "npm run start --workspace=apps/admin",
-    
-    "test": "npm run test --workspaces --if-present",
-    "test:watch": "npm run test:watch --workspaces --if-present",
-    "test:coverage": "npm run test:coverage --workspaces --if-present",
-    
-    "lint": "npm run lint --workspaces --if-present",
-    "lint:fix": "npm run lint:fix --workspaces --if-present",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    
-    "type-check": "npm run type-check --workspaces --if-present",
-    
-    "docker:dev": "docker-compose up",
-    "docker:dev:build": "docker-compose up --build",
-    "docker:dev:down": "docker-compose down",
-    "docker:prod": "docker-compose -f docker-compose.prod.yml up -d",
-    "docker:prod:build": "docker-compose -f docker-compose.prod.yml up --build -d",
-    "docker:prod:down": "docker-compose -f docker-compose.prod.yml down",
-    
-    "clean": "rm -rf node_modules apps/*/node_modules apps/*/dist apps/*/.next libs/*/node_modules libs/*/dist",
-    "clean:all": "npm run clean && rm -rf apps/api/uploads apps/api/logs",
-    
-    "prepare": "husky install",
-    "precommit": "lint-staged"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "@types/node": "^20.10.0",
-    "concurrently": "^8.2.2",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
     ]
   },
-  "keywords": [
-    "monorepo",
-    "full-stack",
-    "enterprise",
-    "modular"
-  ],
-  "author": "Softscape Solutions",
-  "license": "MIT"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
-
