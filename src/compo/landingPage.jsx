@@ -186,20 +186,22 @@ const LandingPage = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="card-enhanced hover-lift animate-slide-in will-change-transform">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 icon-bounce animate-pulse-glow">
-                    <Bot className="h-8 w-8 text-white" />
-                  </div>
-                  <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                    AI Chatbots & Agents
-                  </CardTitle>
-                  <CardDescription className="text-sm sm:text-base md:text-lg">
-                    Intelligent conversational agents that automate customer
-                    service and business processes
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              <Link to="/ai-chatbots" className="block">
+                <Card className="card-enhanced hover-lift animate-slide-in will-change-transform cursor-pointer">
+                  <CardHeader className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 icon-bounce animate-pulse-glow">
+                      <Bot className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-lg sm:text-xl md:text-2xl">
+                      AI Chatbots & Agents
+                    </CardTitle>
+                    <CardDescription className="text-sm sm:text-base md:text-lg">
+                      Intelligent conversational agents that automate customer
+                      service and business processes
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
 
               <Card className="card-enhanced hover-lift animate-slide-in animate-delay-100 will-change-transform">
                 <CardHeader className="text-center">

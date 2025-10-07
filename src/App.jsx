@@ -1,6 +1,7 @@
 import React from 'react'
 import LandingPage from './compo/landingPage'
 import About from './compo/about'
+import AIChatbots from './compo/aiChatbots'  // ADD THIS
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/ai-chatbots" element={<AIChatbots />} />  {/* ADD THIS */}
         </Routes>
       </div>
     </Router>
