@@ -1,33 +1,18 @@
 /* Landing Page Animations and Styles */
 
-/* Global Smooth Scrolling with Snap */
+/* Global Smooth Scrolling */
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
 }
 
-body {
-  scroll-snap-type: y mandatory;
-}
-
-/* Section Scroll Snap */
-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-/* Ensure hero section takes full viewport and snaps */
+/* Hero section styling */
 .hero-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  height: 100vh;
   min-height: 100vh;
-}
-
-/* Content sections wrapper with proper snapping */
-.content-sections {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  max-height: 100vh;
 }
 
 /* Apple-style smooth transitions with enhanced scroll snap */
