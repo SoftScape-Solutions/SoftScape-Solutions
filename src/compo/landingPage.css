@@ -1,5 +1,139 @@
 /* Landing Page Animations and Styles */
 
+/* Global Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+/* Section Scroll Snap */
+section {
+  scroll-snap-align: start;
+}
+
+/* Apple-style smooth transitions */
+.hero-section {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+}
+
+.content-sections {
+  position: relative;
+  z-index: 2;
+  background: white;
+  border-radius: 24px 24px 0 0;
+  margin-top: 0;
+  padding-top: 2rem;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced smooth scrolling with momentum */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Scroll indicator styles and animation */
+.scroll-indicator-container {
+  animation: float-gentle 3s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-indicator-dot {
+  animation: scroll-indicator 2s ease-in-out infinite;
+  margin: 0 auto;
+}
+
+@keyframes scroll-indicator {
+  0%,
+  20% {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(4px) scaleY(1.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Ensure full viewport coverage */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Fix viewport units for mobile */
+.h-screen {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for better mobile support */
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .hero-section {
+    padding-top: 4rem; /* Account for fixed nav on mobile */
+  }
+
+  /* Better mobile card spacing */
+  .card-enhanced {
+    margin-bottom: 1rem;
+  }
+
+  /* Improved mobile button sizing */
+  .btn-primary-enhanced {
+    min-height: 44px; /* Touch-friendly minimum size */
+  }
+
+  /* Mobile-friendly grid layout */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  /* Extra small devices like iPhone SE */
+  .hero-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Smaller font sizes for very small screens */
+  .text-3xl {
+    font-size: 1.75rem;
+    line-height: 2rem;
+  }
+}
+
 /* Keyframe Animations */
 @keyframes fade-in {
   from {
@@ -74,7 +208,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -83,7 +218,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
   50% {
@@ -92,7 +228,8 @@
 }
 
 @keyframes gradient-shift {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -204,13 +341,18 @@
 }
 
 .btn-primary-enhanced::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -288,7 +430,7 @@
   .animate-fade-in {
     animation-duration: 0.6s;
   }
-  
+
   .hover-lift:hover {
     transform: translateY(-4px);
   }
@@ -322,4 +464,16 @@
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Logo Color Adjustments */
+.filter-blue-theme {
+  /* Adjust the logo colors to match the blue theme */
+  filter: hue-rotate(200deg) saturate(0.8) brightness(0.9);
+  transition: filter 0.3s ease;
+}
+
+.filter-blue-theme:hover {
+  filter: hue-rotate(200deg) saturate(1) brightness(1);
+  transform: scale(1.05);
 }
