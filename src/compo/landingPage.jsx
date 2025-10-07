@@ -35,7 +35,7 @@ const LandingPage = () => {
               <span className="text-blue-600 block">Excellence</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              We craft innovative software solutions that transform businesses and drive growth. 
+              We craft innovative AI-Powered software solutions that transform businesses and drive growth. 
               From web applications to mobile experiences, we bring your vision to life.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
