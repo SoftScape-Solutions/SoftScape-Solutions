@@ -32,7 +32,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative scroll-snap-container">
       {/* Navigation */}
       <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,7 +118,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section - Full Screen */}
-      <section className="h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50 relative hero-section overflow-hidden">
+      <section className="scroll-snap-section h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50 relative hero-section overflow-hidden">
         <div className="max-w-7xl mx-auto w-full">
           <div className="text-center">
             <div className="animate-bounce-in mb-8">
@@ -169,8 +169,11 @@ const LandingPage = () => {
       </section>
 
       {/* Content Sections Wrapper */}
-      <div className="content-sections">
-        <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="content-sections scroll-snap-section">
+        <section
+          id="services"
+          className="py-20 px-4 sm:px-6 lg:px-8 bg-white min-h-screen flex flex-col justify-center"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fade-in">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-bounce-in">
