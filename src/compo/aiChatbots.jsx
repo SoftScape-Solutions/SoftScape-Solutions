@@ -17,18 +17,18 @@ import {
   Clock,
   Users,
   TrendingUp,
-  Menu,
-  X,
   Send,
   Sparkles,
   CheckCircle2,
   Star,
 } from "lucide-react";
+import Navigation from "../components/common/Navigation";
+import { useMobileMenu } from "../hooks";
 import "./landingPage.css";
 import "./aiChatbots.css";
 
 const AIChatbots = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isMobileMenuOpen, toggleMobileMenu } = useMobileMenu();
   const [chatMessages, setChatMessages] = useState([
     {
       type: "bot",
@@ -37,10 +37,6 @@ const AIChatbots = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
@@ -70,101 +66,10 @@ const AIChatbots = () => {
 
   return (
     <div className="relative">
-      {/* Navigation */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
-              </div>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link
-                to="/"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Home
-              </Link>
-              <a
-                href="/#services"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                AI Tools
-              </a>
-              <Link
-                to="/about"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                About
-              </Link>
-              <a
-                href="/#contact"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Contact
-              </a>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="text-gray-600 hover:text-blue-600 transition-colors p-2"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
-              <div className="px-4 py-4 space-y-4">
-                <Link
-                  to="/"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Home
-                </Link>
-                <a
-                  href="/#services"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  AI Tools
-                </a>
-                <Link
-                  to="/about"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  About
-                </Link>
-                <a
-                  href="/#contact"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navigation
+        isMobileMenuOpen={isMobileMenuOpen}
+        toggleMobileMenu={toggleMobileMenu}
+      />
 
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
