@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import "./Navigation.css";
 
 const Navigation = ({
   isMobileMenuOpen,
@@ -28,6 +29,9 @@ const Navigation = ({
             </a>
             <Link to="/about" className="nav-link">
               About
+            </Link>
+            <Link to="/book-consultation" className="nav-link">
+              Book Consultation
             </Link>
             <a href="#contact" className="nav-link">
               Contact
@@ -67,6 +71,13 @@ const Navigation = ({
                 onClick={toggleMobileMenu}
               >
                 About
+              </Link>
+              <Link
+                to="/book-consultation"
+                className="mobile-nav-link"
+                onClick={toggleMobileMenu}
+              >
+                Book Consultation
               </Link>
               <a
                 href="#contact"

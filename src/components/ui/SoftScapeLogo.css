@@ -1,0 +1,353 @@
+/* SoftScape Logo Component Styles */
+
+.softscape-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.softscape-logo:hover {
+  transform: scale(1.05);
+}
+
+.softscape-logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.softscape-logo:hover .softscape-logo-icon {
+  background: linear-gradient(45deg, #2563eb, #7c3aed);
+  transform: rotate(5deg);
+}
+
+.softscape-logo-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.softscape-logo:hover .softscape-logo-icon::before {
+  opacity: 1;
+  animation: softscapeLogoShine 0.6s ease-out;
+}
+
+@keyframes softscapeLogoShine {
+  from {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  to {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
+
+.softscape-logo-icon-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: white;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.softscape-logo:hover .softscape-logo-icon-svg {
+  transform: scale(1.1);
+}
+
+.softscape-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.softscape-logo-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.softscape-logo:hover .softscape-logo-title {
+  color: #3b82f6;
+}
+
+.softscape-logo-subtitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+}
+
+.softscape-logo:hover .softscape-logo-subtitle {
+  color: #8b5cf6;
+}
+
+/* Size variants */
+.softscape-logo-small .softscape-logo-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+}
+
+.softscape-logo-small .softscape-logo-icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.softscape-logo-small .softscape-logo-title {
+  font-size: 1.1rem;
+}
+
+.softscape-logo-small .softscape-logo-subtitle {
+  font-size: 0.7rem;
+}
+
+.softscape-logo-large .softscape-logo-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+}
+
+.softscape-logo-large .softscape-logo-icon-svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.softscape-logo-large .softscape-logo-title {
+  font-size: 1.5rem;
+}
+
+.softscape-logo-large .softscape-logo-subtitle {
+  font-size: 0.875rem;
+}
+
+/* Color variants */
+.softscape-logo-white .softscape-logo-title {
+  color: white;
+}
+
+.softscape-logo-white .softscape-logo-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.softscape-logo-white:hover .softscape-logo-title {
+  color: #93c5fd;
+}
+
+.softscape-logo-white:hover .softscape-logo-subtitle {
+  color: #c4b5fd;
+}
+
+.softscape-logo-dark .softscape-logo-icon {
+  background: linear-gradient(45deg, #1f2937, #374151);
+}
+
+.softscape-logo-dark:hover .softscape-logo-icon {
+  background: linear-gradient(45deg, #111827, #1f2937);
+}
+
+.softscape-logo-gradient .softscape-logo-title {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.softscape-logo-gradient .softscape-logo-subtitle {
+  background: linear-gradient(45deg, #6b7280, #9333ea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animation variants */
+.softscape-logo-pulse {
+  animation: softscapeLogoPulse 2s ease-in-out infinite;
+}
+
+@keyframes softscapeLogoPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.softscape-logo-bounce {
+  animation: softscapeLogoBounce 1s ease-in-out infinite;
+}
+
+@keyframes softscapeLogoBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+.softscape-logo-rotate .softscape-logo-icon {
+  animation: softscapeLogoRotate 3s linear infinite;
+}
+
+@keyframes softscapeLogoRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .softscape-logo {
+    gap: 0.5rem;
+  }
+  
+  .softscape-logo-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+  }
+  
+  .softscape-logo-icon-svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .softscape-logo-title {
+    font-size: 1.1rem;
+  }
+  
+  .softscape-logo-subtitle {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .softscape-logo-text {
+    display: none;
+  }
+  
+  .softscape-logo-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+/* Accessibility improvements */
+.softscape-logo:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+.softscape-logo[aria-label]:focus::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* Loading state */
+.softscape-logo-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.softscape-logo-loading .softscape-logo-icon {
+  animation: softscapeLogoLoadingSpin 1s linear infinite;
+}
+
+@keyframes softscapeLogoLoadingSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Print styles */
+@media print {
+  .softscape-logo {
+    color: black !important;
+  }
+  
+  .softscape-logo-icon {
+    background: #333 !important;
+  }
+  
+  .softscape-logo-title {
+    color: black !important;
+  }
+  
+  .softscape-logo-subtitle {
+    color: #666 !important;
+  }
+  
+  .softscape-logo-gradient .softscape-logo-title,
+  .softscape-logo-gradient .softscape-logo-subtitle {
+    -webkit-text-fill-color: unset !important;
+    background: none !important;
+    color: black !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .softscape-logo-pulse,
+  .softscape-logo-bounce,
+  .softscape-logo-rotate .softscape-logo-icon,
+  .softscape-logo-loading .softscape-logo-icon,
+  .softscape-logo-icon::before {
+    animation: none !important;
+  }
+  
+  .softscape-logo:hover {
+    transform: none;
+  }
+  
+  .softscape-logo:hover .softscape-logo-icon {
+    transform: none;
+  }
+}

@@ -1,0 +1,360 @@
+/* Service Card Component Styles */
+
+.service-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover::before {
+  transform: scaleX(1);
+}
+
+.service-card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.service-card-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem auto;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-card-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.service-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.service-card-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.service-card-content {
+  margin-bottom: 1.5rem;
+}
+
+.service-card-description {
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.service-card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.service-card-features li {
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.service-card-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.service-card-footer {
+  margin-top: auto;
+}
+
+.service-card-button {
+  width: 100%;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  color: white;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.service-card-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+}
+
+.service-card-button:active {
+  transform: translateY(0);
+}
+
+.service-card-price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.service-card-price-period {
+  font-size: 1rem;
+  color: #6b7280;
+  font-weight: normal;
+}
+
+.service-card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(45deg, #ef4444, #dc2626);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Service Card Variants */
+.service-card-featured {
+  border: 2px solid #3b82f6;
+  transform: scale(1.05);
+}
+
+.service-card-featured .service-card-icon {
+  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+}
+
+.service-card-featured::before {
+  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  transform: scaleX(1);
+}
+
+.service-card-premium {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  color: white;
+}
+
+.service-card-premium .service-card-title {
+  color: white;
+}
+
+.service-card-premium .service-card-subtitle {
+  color: #d1d5db;
+}
+
+.service-card-premium .service-card-description {
+  color: #e5e7eb;
+}
+
+.service-card-premium .service-card-features li {
+  color: #d1d5db;
+}
+
+.service-card-premium .service-card-price {
+  color: white;
+}
+
+/* Size variants */
+.service-card-compact {
+  padding: 1.5rem;
+}
+
+.service-card-large {
+  padding: 3rem;
+}
+
+.service-card-large .service-card-icon {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2rem;
+}
+
+.service-card-large .service-card-title {
+  font-size: 2rem;
+}
+
+/* Animation classes */
+.service-card-fade-in {
+  animation: serviceCardFadeIn 0.6s ease-out;
+}
+
+@keyframes serviceCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-card-slide-in {
+  animation: serviceCardSlideIn 0.8s ease-out;
+}
+
+@keyframes serviceCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.service-card-bounce-in {
+  animation: serviceCardBounceIn 0.8s ease-out;
+}
+
+@keyframes serviceCardBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .service-card {
+    padding: 1.5rem;
+  }
+  
+  .service-card-large {
+    padding: 2rem;
+  }
+  
+  .service-card-icon {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+  }
+  
+  .service-card-large .service-card-icon {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+  }
+  
+  .service-card-title {
+    font-size: 1.25rem;
+  }
+  
+  .service-card-large .service-card-title {
+    font-size: 1.5rem;
+  }
+  
+  .service-card-featured {
+    transform: none;
+  }
+}
+
+/* Accessibility improvements */
+.service-card:focus-within {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.service-card-button:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .service-card {
+    background: #1f2937;
+    border-color: #374151;
+    color: white;
+  }
+  
+  .service-card-title {
+    color: white;
+  }
+  
+  .service-card-subtitle {
+    color: #d1d5db;
+  }
+  
+  .service-card-description {
+    color: #e5e7eb;
+  }
+  
+  .service-card-features li {
+    color: #d1d5db;
+  }
+  
+  .service-card-price {
+    color: white;
+  }
+}
+
+/* Print styles */
+@media print {
+  .service-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .service-card::before {
+    display: none;
+  }
+  
+  .service-card-button {
+    background: #333 !important;
+    color: white !important;
+  }
+}

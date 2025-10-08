@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./card.css";
 
 const cn = (...classes) => {
   return classes.filter(Boolean).join(" ");
