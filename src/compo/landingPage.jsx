@@ -7,20 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import {
-  ArrowRight,
-  Code,
-  Bot,
-  Brain,
-  Zap,
-  Shield,
-  Users,
-  Cpu,
-  Sparkles,
-  Workflow,
-  Menu,
-  X,
-} from "lucide-react";
+import { Brain, Sparkles, Menu, X, Bot, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./landingPage.css";
 
@@ -43,38 +30,21 @@ const LandingPage = () => {
                 alt="SoftScape Solutions Logo"
                 className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
               />
-              <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
-              </div>
+              <div className="logo-text">SoftScape Solutions</div>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <a
-                href="#services"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                AI Tools
-              </a>
-              <Link
-                to="/about"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                About
-              </Link>
-              <a
-                href="#contact"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Contact
-              </a>
+              <a href="#services" className="nav-link">AI Tools</a>
+              <Link to="/about" className="nav-link">About</Link>
+              <a href="#contact" className="nav-link">Contact</a>
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden">
               <button
                 onClick={toggleMobileMenu}
-                className="text-gray-600 hover:text-blue-600 transition-colors p-2"
+                className="mobile-menu-button"
                 aria-label="Toggle mobile menu"
               >
                 {isMobileMenuOpen ? (
@@ -88,29 +58,11 @@ const LandingPage = () => {
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
+            <div className="mobile-menu-container">
               <div className="px-4 py-4 space-y-4">
-                <a
-                  href="#services"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  AI Tools
-                </a>
-                <Link
-                  to="/about"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  About
-                </Link>
-                <a
-                  href="#contact"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Contact
-                </a>
+                <a href="#services" className="mobile-nav-link" onClick={toggleMobileMenu}>AI Tools</a>
+                <Link to="/about" className="mobile-nav-link" onClick={toggleMobileMenu}>About</Link>
+                <a href="#contact" className="mobile-nav-link" onClick={toggleMobileMenu}>Contact</a>
               </div>
             </div>
           )}
@@ -118,30 +70,27 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section - Full Screen */}
-      <section className="h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50 relative hero-section overflow-hidden">
+      <section className="hero-container hero-section">
         <div className="max-w-7xl mx-auto w-full">
           <div className="text-center">
             <div className="animate-bounce-in mb-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-float">
+              <div className="hero-icon-container">
                 <Brain className="h-10 w-10 text-white" />
               </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 animate-fade-in tracking-tight leading-tight">
+            <h1 className="hero-title">
               AI-Powered Software
               <span className="gradient-text-ai block font-extrabold">
                 Solutions
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in animate-delay-200 font-light tracking-wide px-2">
+                        <p className="hero-description">
               We create intelligent AI-powered tools, automation agents, and
               smart solutions that revolutionize how businesses operate.
               Transform your workflow with cutting-edge artificial intelligence.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in animate-delay-400 px-4">
-              <Button
-                size="lg"
-                className="text-sm sm:text-base md:text-lg lg:text-xl px-4 sm:px-6 md:px-8 py-2 sm:py-3 btn-primary-enhanced will-change-transform font-semibold tracking-wide"
-              >
+              <Button size="lg" className="hero-button btn-primary-enhanced">
                 <span className="hidden sm:inline">
                   Explore Our AI-Powered Tools
                 </span>
@@ -189,7 +138,7 @@ const LandingPage = () => {
               <Link to="/ai-chatbots" className="block">
                 <Card className="card-enhanced hover-lift animate-slide-in will-change-transform cursor-pointer">
                   <CardHeader className="text-center">
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 icon-bounce animate-pulse-glow">
+                    <div className="service-icon-blue icon-bounce">
                       <Bot className="h-8 w-8 text-white" />
                     </div>
                     <CardTitle className="text-lg sm:text-xl md:text-2xl">
@@ -205,7 +154,7 @@ const LandingPage = () => {
 
               <Card className="card-enhanced hover-lift animate-slide-in animate-delay-100 will-change-transform">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 icon-bounce animate-pulse-glow">
+                  <div className="service-icon-purple icon-bounce">
                     <Brain className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg sm:text-xl md:text-2xl">
@@ -220,7 +169,7 @@ const LandingPage = () => {
 
               <Card className="card-enhanced hover-lift animate-slide-in animate-delay-300 will-change-transform">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 icon-bounce animate-pulse-glow">
+                  <div className="service-icon-orange icon-bounce">
                     <Sparkles className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg sm:text-xl md:text-2xl">
@@ -235,7 +184,7 @@ const LandingPage = () => {
 
               <Card className="card-enhanced hover-lift animate-slide-in animate-delay-400 will-change-transform">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 icon-bounce animate-pulse-glow">
+                  <div className="service-icon-indigo icon-bounce">
                     <Cpu className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg sm:text-xl md:text-2xl">

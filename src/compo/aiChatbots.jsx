@@ -25,6 +25,7 @@ import {
   Star,
 } from "lucide-react";
 import "./landingPage.css";
+import "./aiChatbots.css";
 
 const AIChatbots = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,10 +46,7 @@ const AIChatbots = () => {
     if (!inputMessage.trim()) return;
 
     // Add user message
-    const newMessages = [
-      ...chatMessages,
-      { type: "user", text: inputMessage },
-    ];
+    const newMessages = [...chatMessages, { type: "user", text: inputMessage }];
     setChatMessages(newMessages);
     setInputMessage("");
     setIsTyping(true);
@@ -325,7 +323,9 @@ const AIChatbots = () => {
                     <div
                       key={index}
                       className={`flex ${
-                        message.type === "user" ? "justify-end" : "justify-start"
+                        message.type === "user"
+                          ? "justify-end"
+                          : "justify-start"
                       } animate-fade-in`}
                     >
                       <div
@@ -352,14 +352,8 @@ const AIChatbots = () => {
                       <div className="bg-white shadow-md rounded-2xl px-4 py-3">
                         <div className="flex gap-1">
                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                            style={{ animationDelay: "0.1s" }}
-                          ></div>
-                          <div
-                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                            style={{ animationDelay: "0.2s" }}
-                          ></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce typing-dot-2"></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce typing-dot-3"></div>
                         </div>
                       </div>
                     </div>
@@ -373,7 +367,9 @@ const AIChatbots = () => {
                       type="text"
                       value={inputMessage}
                       onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && handleSendMessage()
+                      }
                       placeholder="Type your message..."
                       className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -464,9 +460,7 @@ const AIChatbots = () => {
 
             <div className="animate-slide-in lg:pl-12">
               <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-2xl">
-                <h3 className="text-2xl font-bold mb-6">
-                  Proven Results
-                </h3>
+                <h3 className="text-2xl font-bold mb-6">Proven Results</h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <Star className="h-8 w-8 text-yellow-300 flex-shrink-0" />
