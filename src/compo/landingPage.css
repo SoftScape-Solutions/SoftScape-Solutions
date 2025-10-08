@@ -3,15 +3,9 @@
 /* Global Smooth Scrolling */
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
 }
 
-/* Section Scroll Snap */
-section {
-  scroll-snap-align: start;
-}
-
-/* Apple-style smooth transitions */
+/* Hero section styling */
 .hero-section {
   position: relative;
   z-index: 1;
@@ -19,6 +13,18 @@ section {
   height: 100vh;
   min-height: 100vh;
   max-height: 100vh;
+}
+
+/* Apple-style smooth transitions with enhanced scroll snap */
+.hero-section {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .content-sections {
@@ -29,17 +35,67 @@ section {
   margin-top: 0;
   padding-top: 2rem;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
 }
 
-/* Enhanced smooth scrolling with momentum */
+/* Enhanced scroll snap behavior */
+.scroll-snap-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-snap-section {
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Override for content sections to allow natural height */
+.content-sections.scroll-snap-section {
+  height: auto;
+  min-height: 100vh;
+}
+
+/* Smooth transition effects */
+@media (hover: hover) and (pointer: fine) {
+  .scroll-snap-section {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+/* Ensure scroll indicator doesn't interfere */
+.scroll-indicator-container {
+  pointer-events: none;
+}
+
+/* Enhanced smooth scrolling with momentum and snap */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  scroll-padding-top: 0;
+}
+
+body {
   overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Smooth scroll snap transitions */
+  .scroll-snap-container {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

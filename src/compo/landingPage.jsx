@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -13,10 +13,74 @@ import "./landingPage.css";
 
 const LandingPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  useEffect(() => {
+    let scrollTimeout;
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const heroHeight = window.innerHeight;
+
+      // Skip if currently auto-scrolling
+      if (isScrollingFromHero) {
+        return;
+      }
+
+      // Clear any existing timeout
+      clearTimeout(scrollTimeout);
+
+      // Hero section snap behavior - simple and reliable
+      if (scrollPosition > 10 && scrollPosition < heroHeight * 0.8) {
+        scrollTimeout = setTimeout(() => {
+          if (!isScrollingFromHero) {
+            setIsScrollingFromHero(true);
+
+            // If scrolled down from hero (even a little), snap to services
+            if (
+              scrollPosition > lastScrollY &&
+              scrollPosition < heroHeight * 0.5
+            ) {
+              window.scrollTo({
+                top: heroHeight,
+                behavior: "smooth",
+              });
+            }
+            // If scrolled up from below and close to hero, snap to top
+            else if (
+              scrollPosition < lastScrollY &&
+              scrollPosition < heroHeight * 0.3
+            ) {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            } else {
+              // Don't snap, just update state
+              setIsScrollingFromHero(false);
+              return;
+            }
+
+            setTimeout(() => setIsScrollingFromHero(false), 1000);
+          }
+        }, 150);
+      }
+
+      setLastScrollY(scrollPosition);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [isScrollingFromHero, lastScrollY]);
 
   return (
     <div className="relative">
@@ -119,7 +183,10 @@ const LandingPage = () => {
 
       {/* Content Sections Wrapper */}
       <div className="content-sections">
-        <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <section
+          id="services"
+          className="py-20 px-4 sm:px-6 lg:px-8 bg-white first-content-section"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 animate-fade-in">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-bounce-in">
