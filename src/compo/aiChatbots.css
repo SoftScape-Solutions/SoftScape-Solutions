@@ -1,0 +1,114 @@
+/* AI Chatbots Page Styles */
+
+/* Animation delay classes for typing indicators */
+.typing-dot-1 {
+  animation-delay: 0s;
+}
+
+.typing-dot-2 {
+  animation-delay: 0.1s;
+}
+
+.typing-dot-3 {
+  animation-delay: 0.2s;
+}
+
+/* Chat interface styles */
+.chat-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  transition: all 0.3s ease;
+}
+
+.chat-message:hover {
+  transform: translateY(-1px);
+}
+
+/* Typing animation for chat dots */
+.typing-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #9ca3af;
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite ease-in-out;
+}
+
+@keyframes typing-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Enhanced chat UI */
+.chat-input-container {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.chat-send-button {
+  transition: all 0.2s ease;
+}
+
+.chat-send-button:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive chat design */
+@media (max-width: 768px) {
+  .chat-container {
+    max-height: 300px;
+  }
+
+  .chat-message {
+    font-size: 0.9rem;
+  }
+}
+
+/* AI chatbot specific animations */
+.chatbot-demo-card {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.chatbot-demo-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+}
+
+/* Feature cards hover effects */
+.feature-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card-hover:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Pulse glow effect for AI elements */
+.ai-pulse-glow {
+  animation: ai-pulse-glow 2s infinite;
+}
+
+@keyframes ai-pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+}

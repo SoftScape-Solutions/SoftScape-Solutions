@@ -45,9 +45,7 @@ const About = () => {
                 alt="SoftScape Solutions Logo"
                 className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
               />
-              <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
-              </div>
+              <div className="about-logo-text">SoftScape Solutions</div>
             </div>
 
             {/* Desktop Navigation */}
@@ -90,7 +88,7 @@ const About = () => {
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
+            <div className="mobile-menu-container">
               <div className="px-4 py-4 space-y-4">
                 <Link
                   to="/"
@@ -123,7 +121,7 @@ const About = () => {
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center animate-fade-in">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-8 animate-bounce-in">
+            <div className="about-hero-icon">
               <Brain className="h-10 w-10 text-white" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
@@ -166,10 +164,7 @@ const About = () => {
                 </Button>
               </div>
             </div>
-            <div
-              className="animate-slide-in"
-              style={{ animationDelay: "0.2s" }}
-            >
+            <div className="animate-slide-in about-hero-card">
               <div className="animate-gradient rounded-2xl p-8 text-white">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-4">
@@ -216,12 +211,9 @@ const About = () => {
               </CardHeader>
             </Card>
 
-            <Card
-              className="group hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm animate-slide-in"
-              style={{ animationDelay: "0.1s" }}
-            >
+            <Card className="about-values-card animate-slide-in about-values-card-1">
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
+                <div className="about-values-icon-green">
                   <Bot className="h-8 w-8 text-white" />
                 </div>
                 <CardTitle className="text-xl">Smart Excellence</CardTitle>
@@ -232,12 +224,9 @@ const About = () => {
               </CardHeader>
             </Card>
 
-            <Card
-              className="group hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm animate-slide-in"
-              style={{ animationDelay: "0.2s" }}
-            >
+            <Card className="about-values-card animate-slide-in about-values-card-2">
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
+                <div className="about-values-icon-purple">
                   <Shield className="h-8 w-8 text-white" />
                 </div>
                 <CardTitle className="text-xl">AI Ethics</CardTitle>
@@ -248,12 +237,9 @@ const About = () => {
               </CardHeader>
             </Card>
 
-            <Card
-              className="group hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm animate-slide-in"
-              style={{ animationDelay: "0.3s" }}
-            >
+            <Card className="about-values-card animate-slide-in about-values-card-3">
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
+                <div className="about-values-icon-orange">
                   <Workflow className="h-8 w-8 text-white" />
                 </div>
                 <CardTitle className="text-xl">
@@ -284,9 +270,7 @@ const About = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <div className="text-center group animate-slide-in">
-              <div className="w-24 h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold group-hover:scale-110 transition-transform duration-300">
-                OA
-              </div>
+              <div className="about-team-avatar about-team-avatar-1">OA</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Omer Aqeel
               </h3>
@@ -300,13 +284,8 @@ const About = () => {
               </p>
             </div>
 
-            <div
-              className="text-center group animate-slide-in"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <div className="w-24 h-24 bg-gradient-to-r from-green-600 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold group-hover:scale-110 transition-transform duration-300">
-                SH
-              </div>
+            <div className="text-center about-team-card animate-slide-in about-team-card-1">
+              <div className="about-team-avatar about-team-avatar-2">SH</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Mohammad Saad Husnain
               </h3>
@@ -317,13 +296,8 @@ const About = () => {
               </p>
             </div>
 
-            <div
-              className="text-center group animate-slide-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <div className="w-24 h-24 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold group-hover:scale-110 transition-transform duration-300">
-                SR
-              </div>
+            <div className="text-center about-team-card animate-slide-in about-team-card-2">
+              <div className="about-team-avatar about-team-avatar-3">SR</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Saad ur Rehman
               </h3>
@@ -345,11 +319,7 @@ const About = () => {
               technologies and industries, we bring diverse perspectives to
               every project.
             </p>
-            <Button
-              size="lg"
-              className="animate-slide-in"
-              style={{ animationDelay: "0.3s" }}
-            >
+            <Button size="lg" className="animate-slide-in about-team-card-3">
               Join Our Team
             </Button>
           </div>
