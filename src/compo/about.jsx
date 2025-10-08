@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
@@ -20,102 +20,22 @@ import {
   Brain,
   Bot,
   Workflow,
-  Menu,
-  X,
 } from "lucide-react";
+import Navigation from "../components/common/Navigation";
+import { useMobileMenu } from "../hooks";
 import "./about.css";
 import "./landingPage.css";
 
 const About = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const { isMobileMenuOpen, toggleMobileMenu } = useMobileMenu();
 
   return (
     <div className="relative">
-      {/* Navigation - matching landing page style */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="about-logo-text">SoftScape Solutions</div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link
-                to="/"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Home
-              </Link>
-              <a
-                href="/#services"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                AI Tools
-              </a>
-              <a
-                href="/#contact"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Contact
-              </a>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="text-gray-600 hover:text-blue-600 transition-colors p-2"
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="mobile-menu-container">
-              <div className="px-4 py-4 space-y-4">
-                <Link
-                  to="/"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Home
-                </Link>
-                <a
-                  href="/#services"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  AI Tools
-                </a>
-                <a
-                  href="/#contact"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navigation
+        isMobileMenuOpen={isMobileMenuOpen}
+        toggleMobileMenu={toggleMobileMenu}
+        logoClassName="about-logo-text"
+      />
 
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const Navigation = ({
@@ -7,6 +7,10 @@ const Navigation = ({
   toggleMobileMenu,
   logoClassName = "logo-text",
 }) => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const isAboutPage = location.pathname === "/about";
+  const isAiChatbotsPage = location.pathname === "/ai-chatbots";
   return (
     <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,13 +27,29 @@ const Navigation = ({
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-            <a href="#services" className="nav-link">
-              AI Tools
-            </a>
-            <Link to="/about" className="nav-link">
-              About
-            </Link>
-            <a href="#contact" className="nav-link">
+            {!isHomePage && (
+              <Link to="/" className="nav-link">
+                Home
+              </Link>
+            )}
+            {isHomePage ? (
+              <a href="#services" className="nav-link">
+                AI Tools
+              </a>
+            ) : (
+              <a href="/#services" className="nav-link">
+                AI Tools
+              </a>
+            )}
+            {!isAboutPage && (
+              <Link to="/about" className="nav-link">
+                About
+              </Link>
+            )}
+            <a
+              href={isHomePage ? "#contact" : "/#contact"}
+              className="nav-link"
+            >
               Contact
             </a>
           </div>
@@ -54,22 +74,43 @@ const Navigation = ({
         {isMobileMenuOpen && (
           <div className="mobile-menu-container">
             <div className="px-4 py-4 space-y-4">
+              {!isHomePage && (
+                <Link
+                  to="/"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  Home
+                </Link>
+              )}
+              {isHomePage ? (
+                <a
+                  href="#services"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  AI Tools
+                </a>
+              ) : (
+                <a
+                  href="/#services"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  AI Tools
+                </a>
+              )}
+              {!isAboutPage && (
+                <Link
+                  to="/about"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  About
+                </Link>
+              )}
               <a
-                href="#services"
-                className="mobile-nav-link"
-                onClick={toggleMobileMenu}
-              >
-                AI Tools
-              </a>
-              <Link
-                to="/about"
-                className="mobile-nav-link"
-                onClick={toggleMobileMenu}
-              >
-                About
-              </Link>
-              <a
-                href="#contact"
+                href={isHomePage ? "#contact" : "/#contact"}
                 className="mobile-nav-link"
                 onClick={toggleMobileMenu}
               >

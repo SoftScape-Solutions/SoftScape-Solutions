@@ -35,9 +35,15 @@ const LandingPage = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <a href="#services" className="nav-link">AI Tools</a>
-              <Link to="/about" className="nav-link">About</Link>
-              <a href="#contact" className="nav-link">Contact</a>
+              <a href="#services" className="nav-link">
+                AI Tools
+              </a>
+              <Link to="/about" className="nav-link">
+                About
+              </Link>
+              <a href="#contact" className="nav-link">
+                Contact
+              </a>
             </div>
 
             {/* Mobile menu button */}
@@ -60,9 +66,27 @@ const LandingPage = () => {
           {isMobileMenuOpen && (
             <div className="mobile-menu-container">
               <div className="px-4 py-4 space-y-4">
-                <a href="#services" className="mobile-nav-link" onClick={toggleMobileMenu}>AI Tools</a>
-                <Link to="/about" className="mobile-nav-link" onClick={toggleMobileMenu}>About</Link>
-                <a href="#contact" className="mobile-nav-link" onClick={toggleMobileMenu}>Contact</a>
+                <a
+                  href="#services"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  AI Tools
+                </a>
+                <Link
+                  to="/about"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  About
+                </Link>
+                <a
+                  href="#contact"
+                  className="mobile-nav-link"
+                  onClick={toggleMobileMenu}
+                >
+                  Contact
+                </a>
               </div>
             </div>
           )}
@@ -84,7 +108,7 @@ const LandingPage = () => {
                 Solutions
               </span>
             </h1>
-                        <p className="hero-description">
+            <p className="hero-description">
               We create intelligent AI-powered tools, automation agents, and
               smart solutions that revolutionize how businesses operate.
               Transform your workflow with cutting-edge artificial intelligence.
