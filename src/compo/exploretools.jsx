@@ -75,16 +75,6 @@ const ExploreTools = () => {
       gradient: "from-orange-500 to-red-500",
     },
     {
-      id: 5,
-      title: "AI-Enhanced Mobile App",
-      category: "applications",
-      description: "Native mobile applications with built-in AI capabilities for personalization and smart features.",
-      icon: Smartphone,
-      features: ["iOS & Android", "Offline AI", "Push Notifications"],
-      link: "/ai-applications",
-      gradient: "from-indigo-500 to-blue-500",
-    },
-    {
       id: 6,
       title: "Predictive Analytics Platform",
       category: "applications",
@@ -93,16 +83,6 @@ const ExploreTools = () => {
       features: ["Real-time Insights", "Predictive Models", "Custom Dashboards"],
       link: "/ai-applications",
       gradient: "from-pink-500 to-purple-500",
-    },
-    {
-      id: 7,
-      title: "Custom AI Model Training",
-      category: "custom",
-      description: "Train custom AI models on your proprietary data for unique business requirements.",
-      icon: Cpu,
-      features: ["Your Data", "Custom Models", "Full Ownership"],
-      link: "/custom-ai",
-      gradient: "from-cyan-500 to-blue-500",
     },
     {
       id: 8,
