@@ -1,0 +1,284 @@
+/* Section Component Styles */
+
+.section-container {
+  padding: 4rem 0;
+  transition: all 0.3s ease;
+}
+
+.section-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.section-content {
+  margin-bottom: 2rem;
+}
+
+.section-footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+/* Section Variants */
+.section-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.section-primary .section-title {
+  color: white;
+}
+
+.section-primary .section-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.section-secondary {
+  background: #f9fafb;
+}
+
+.section-accent {
+  background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.section-accent .section-title {
+  color: white;
+}
+
+.section-accent .section-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.section-dark {
+  background: #1f2937;
+  color: white;
+}
+
+.section-dark .section-title {
+  color: white;
+}
+
+.section-dark .section-subtitle {
+  color: #d1d5db;
+}
+
+/* Section with background image */
+.section-image {
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.section-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.section-image .section-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.section-image .section-title,
+.section-image .section-subtitle {
+  color: white;
+}
+
+/* Section padding variants */
+.section-small {
+  padding: 2rem 0;
+}
+
+.section-large {
+  padding: 6rem 0;
+}
+
+.section-xl {
+  padding: 8rem 0;
+}
+
+/* Section animations */
+.section-fade-in {
+  animation: sectionFadeIn 0.8s ease-out;
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-slide-in-left {
+  animation: sectionSlideInLeft 0.8s ease-out;
+}
+
+@keyframes sectionSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.section-slide-in-right {
+  animation: sectionSlideInRight 0.8s ease-out;
+}
+
+@keyframes sectionSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.section-scale-in {
+  animation: sectionScaleIn 0.8s ease-out;
+}
+
+@keyframes sectionScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .section-container {
+    padding: 2rem 0;
+  }
+  
+  .section-wrapper {
+    padding: 0 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-header {
+    margin-bottom: 2rem;
+  }
+  
+  .section-footer {
+    margin-top: 2rem;
+  }
+  
+  .section-large {
+    padding: 3rem 0;
+  }
+  
+  .section-xl {
+    padding: 4rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-container {
+    padding: 1.5rem 0;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-image {
+    background-attachment: scroll;
+  }
+}
+
+/* Accessibility improvements */
+.section-container:focus-within {
+  outline: 2px solid #3b82f6;
+  outline-offset: 4px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .section-fade-in,
+  .section-slide-in-left,
+  .section-slide-in-right,
+  .section-scale-in {
+    animation: none;
+  }
+  
+  .section-image {
+    background-attachment: scroll;
+  }
+}
+
+/* Print styles */
+@media print {
+  .section-primary,
+  .section-accent,
+  .section-dark {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .section-title {
+    color: black !important;
+  }
+  
+  .section-subtitle {
+    color: #666 !important;
+  }
+  
+  .section-container {
+    page-break-inside: avoid;
+  }
+}

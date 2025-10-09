@@ -7,17 +7,26 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Brain, Sparkles, Menu, X, Bot, Cpu } from "lucide-react";
+import { Brain, Sparkles, Bot, Cpu, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
+import Layout from "../components/common/Layout";
 import "./landingPage.css";
+import "./animations.css";
 
 const LandingPage = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [hoveredService, setHoveredService] = useState(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleServiceHover = (service, event) => {
+    setHoveredService(service);
+    setTooltipPosition({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleServiceLeave = () => {
+    setHoveredService(null);
   };
 
   useEffect(() => {
@@ -27,21 +36,22 @@ const LandingPage = () => {
       const scrollPosition = window.scrollY;
       const heroHeight = window.innerHeight;
 
-      // Skip if currently auto-scrolling
+      // Hide scroll indicator when user starts scrolling
+      if (scrollPosition > 10 && showScrollIndicator) {
+        setShowScrollIndicator(false);
+      }
+
       if (isScrollingFromHero) {
         return;
       }
 
-      // Clear any existing timeout
       clearTimeout(scrollTimeout);
 
-      // Hero section snap behavior - simple and reliable
       if (scrollPosition > 10 && scrollPosition < heroHeight * 0.8) {
         scrollTimeout = setTimeout(() => {
           if (!isScrollingFromHero) {
             setIsScrollingFromHero(true);
 
-            // If scrolled down from hero (even a little), snap to services
             if (
               scrollPosition > lastScrollY &&
               scrollPosition < heroHeight * 0.5
@@ -50,9 +60,7 @@ const LandingPage = () => {
                 top: heroHeight,
                 behavior: "smooth",
               });
-            }
-            // If scrolled up from below and close to hero, snap to top
-            else if (
+            } else if (
               scrollPosition < lastScrollY &&
               scrollPosition < heroHeight * 0.3
             ) {
@@ -61,7 +69,6 @@ const LandingPage = () => {
                 behavior: "smooth",
               });
             } else {
-              // Don't snap, just update state
               setIsScrollingFromHero(false);
               return;
             }
@@ -80,83 +87,81 @@ const LandingPage = () => {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [isScrollingFromHero, lastScrollY]);
+  }, [isScrollingFromHero, lastScrollY, showScrollIndicator]);
+
+  const services = [
+    {
+      title: "AI Chatbots & Agents",
+      description:
+        "Intelligent conversational agents that automate customer service and business processes",
+      icon: Bot,
+      color: "blue",
+      link: "/ai-chatbots",
+      preview: {
+        products: [
+          "Customer Support Bot",
+          "Sales Assistant AI",
+          "Virtual Receptionist",
+        ],
+        overview:
+          "24/7 intelligent chat solutions that handle customer inquiries, qualify leads, and provide instant support across multiple platforms.",
+      },
+    },
+    {
+      title: "Smart Automation Tools",
+      description:
+        "AI-powered workflow automation that eliminates repetitive tasks and boosts productivity",
+      icon: Workflow,
+      color: "purple",
+      link: "/smart-automation",
+      preview: {
+        products: [
+          "Document Processing AI",
+          "Email Automation",
+          "Data Entry Assistant",
+        ],
+        overview:
+          "Streamline operations with intelligent automation that handles repetitive tasks, processes documents, and manages workflows.",
+      },
+    },
+    {
+      title: "AI-Enhanced Applications",
+      description:
+        "Web and mobile applications powered by artificial intelligence for superior user experiences",
+      icon: Sparkles,
+      color: "orange",
+      link: "/ai-applications",
+      preview: {
+        products: [
+          "Smart Analytics Dashboard",
+          "Predictive Mobile Apps",
+          "AI-Powered CRM",
+        ],
+        overview:
+          "Transform your digital presence with applications that learn from user behavior and provide intelligent insights.",
+      },
+    },
+    {
+      title: "Custom AI Solutions",
+      description:
+        "Tailored artificial intelligence systems designed specifically for your unique business needs",
+      icon: Cpu,
+      color: "indigo",
+      link: "/custom-ai",
+      preview: {
+        products: [
+          "Bespoke ML Models",
+          "Industry-Specific AI",
+          "AI Integration Services",
+        ],
+        overview:
+          "Get AI solutions built specifically for your business challenges, from custom machine learning models to complete AI integrations.",
+      },
+    },
+  ];
 
   return (
-    <div className="relative">
-      {/* Navigation */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="logo-text">SoftScape Solutions</div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <a href="#services" className="nav-link">
-                AI Tools
-              </a>
-              <Link to="/about" className="nav-link">
-                About
-              </Link>
-              <a href="#contact" className="nav-link">
-                Contact
-              </a>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="mobile-menu-button"
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="mobile-menu-container">
-              <div className="px-4 py-4 space-y-4">
-                <a
-                  href="#services"
-                  className="mobile-nav-link"
-                  onClick={toggleMobileMenu}
-                >
-                  AI Tools
-                </a>
-                <Link
-                  to="/about"
-                  className="mobile-nav-link"
-                  onClick={toggleMobileMenu}
-                >
-                  About
-                </Link>
-                <a
-                  href="#contact"
-                  className="mobile-nav-link"
-                  onClick={toggleMobileMenu}
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
-
+    <Layout logoClassName="logo-text">
       {/* Hero Section - Full Screen */}
       <section className="hero-container hero-section">
         <div className="max-w-7xl mx-auto w-full">
@@ -178,16 +183,15 @@ const LandingPage = () => {
               Transform your workflow with cutting-edge artificial intelligence.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in animate-delay-400 px-4">
-              <Button size="lg" className="hero-button btn-primary-enhanced">
-                <span className="hidden sm:inline">
-                  Explore Our AI-Powered Tools
-                </span>
-                <span className="sm:hidden">Explore AI Tools</span>
-                <Sparkles className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
-              {/* <Button variant="outline" size="lg" className="text-lg px-8 py-3 hover-glow will-change-transform">
-          See AI Agents in Action
-              </Button> */}
+              <Link to="/explore-tools">
+                <Button size="lg" className="hero-button btn-primary-enhanced">
+                  <span className="hidden sm:inline">
+                    Explore Our AI-Powered Tools
+                  </span>
+                  <span className="sm:hidden">Explore AI Tools</span>
+                  <Sparkles className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -225,68 +229,73 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Link to="/ai-chatbots" className="block">
-                <Card className="card-enhanced hover-lift animate-slide-in will-change-transform cursor-pointer">
-                  <CardHeader className="text-center">
-                    <div className="service-icon-blue icon-bounce">
-                      <Bot className="h-8 w-8 text-white" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+              {services.map((service, index) => (
+                <Link key={index} to={service.link} className="block">
+                  <Card
+                    className={`service-card-container card-enhanced hover-lift animate-slide-in ${
+                      index === 1
+                        ? "animate-delay-100"
+                        : index === 2
+                        ? "animate-delay-200"
+                        : index === 3
+                        ? "animate-delay-300"
+                        : ""
+                    } will-change-transform cursor-pointer relative overflow-hidden`}
+                    onMouseEnter={(e) => handleServiceHover(service, e)}
+                    onMouseLeave={handleServiceLeave}
+                  >
+                    {/* Main Card Content */}
+                    <div className="main-card-content">
+                      <CardHeader className="text-center">
+                        <div
+                          className={`service-icon-${service.color} icon-bounce`}
+                        >
+                          <service.icon className="h-8 w-8 text-white" />
+                        </div>
+                        <CardTitle className="text-lg sm:text-xl md:text-2xl">
+                          {service.title}
+                        </CardTitle>
+                        <CardDescription className="text-sm sm:text-base md:text-lg">
+                          {service.description}
+                        </CardDescription>
+                      </CardHeader>
                     </div>
-                    <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                      AI Chatbots & Agents
-                    </CardTitle>
-                    <CardDescription className="text-sm sm:text-base md:text-lg">
-                      Intelligent conversational agents that automate customer
-                      service and business processes
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </Link>
 
-              <Card className="card-enhanced hover-lift animate-slide-in animate-delay-100 will-change-transform">
-                <CardHeader className="text-center">
-                  <div className="service-icon-purple icon-bounce">
-                    <Brain className="h-8 w-8 text-white" />
-                  </div>
-                  <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                    Smart Automation Tools
-                  </CardTitle>
-                  <CardDescription className="text-sm sm:text-base md:text-lg">
-                    AI-powered workflow automation that eliminates repetitive
-                    tasks and boosts productivity
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="card-enhanced hover-lift animate-slide-in animate-delay-300 will-change-transform">
-                <CardHeader className="text-center">
-                  <div className="service-icon-orange icon-bounce">
-                    <Sparkles className="h-8 w-8 text-white" />
-                  </div>
-                  <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                    AI-Enhanced Applications
-                  </CardTitle>
-                  <CardDescription className="text-sm sm:text-base md:text-lg">
-                    Web and mobile applications powered by artificial
-                    intelligence for superior user experiences
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="card-enhanced hover-lift animate-slide-in animate-delay-400 will-change-transform">
-                <CardHeader className="text-center">
-                  <div className="service-icon-indigo icon-bounce">
-                    <Cpu className="h-8 w-8 text-white" />
-                  </div>
-                  <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                    Custom AI Solutions
-                  </CardTitle>
-                  <CardDescription className="text-sm sm:text-base md:text-lg">
-                    Tailored artificial intelligence systems designed
-                    specifically for your unique business needs
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                    {/* Sliding Preview Panel */}
+                    <div className="preview-panel">
+                      <div className="preview-content">
+                        <div className="preview-header">
+                          <div className="preview-header-content">
+                            <div
+                              className={`service-icon-${service.color} icon-small`}
+                            >
+                              <service.icon className="h-6 w-6 text-white" />
+                            </div>
+                            <h4 className="preview-title">{service.title}</h4>
+                          </div>
+                        </div>
+                        <div className="preview-body">
+                          <p className="preview-overview">
+                            {service.preview?.overview}
+                          </p>
+                          <div className="preview-products">
+                            <h5 className="products-title">Our Products:</h5>
+                            <ul className="products-list">
+                              {service.preview?.products.map((product, idx) => (
+                                <li key={idx} className="product-item">
+                                  <span className="product-bullet"></span>
+                                  {product}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -307,85 +316,21 @@ const LandingPage = () => {
               smart automation agents, and cutting-edge tools.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in animate-delay-400 px-4">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="text-sm sm:text-base md:text-lg lg:text-xl px-4 sm:px-6 md:px-8 py-2 sm:py-3 btn-primary-enhanced will-change-transform"
-              >
-                Book A Consultation
-                <Brain className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
+              <Link to="/book-consultation">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="text-sm sm:text-base md:text-lg lg:text-xl px-4 sm:px-6 md:px-8 py-2 sm:py-3 btn-primary-enhanced will-change-transform"
+                >
+                  Book A Consultation
+                  <Brain className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
-
-        {/* AI Footer */}
-        <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="md:col-span-2 animate-slide-in-left">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center animate-pulse-glow">
-                    <Bot className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold gradient-text-ai">
-                    SoftScape AI Solutions
-                  </span>
-                </div>
-                <p className="text-gray-400 mb-4 max-w-md text-sm sm:text-base md:text-lg">
-                  Revolutionizing businesses through cutting-edge AI technology,
-                  intelligent automation, and smart digital solutions.
-                </p>
-              </div>
-              <div className="animate-slide-in animate-delay-200">
-                <h3 className="text-white font-semibold mb-4 text-base sm:text-lg md:text-xl">
-                  AI Solutions
-                </h3>
-                <ul className="space-y-2 text-gray-400 text-sm sm:text-base md:text-lg">
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    AI Chatbots
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    Smart Automation
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    AI Agents
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    Custom AI Tools
-                  </li>
-                </ul>
-              </div>
-              <div className="animate-slide-in animate-delay-400">
-                <h3 className="text-white font-semibold mb-4 text-base sm:text-lg md:text-xl">
-                  Connect
-                </h3>
-                <ul className="space-y-2 text-gray-400 text-sm sm:text-base md:text-lg">
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    ai@softscape.solutions
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    +1 (555) AI-TOOLS
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    LinkedIn
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    GitHub
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 animate-fade-in animate-delay-600">
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg px-4">
-                &copy; 2025 SoftScape AI Solutions. Powering the future with
-                artificial intelligence.
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
-    </div>
+    </Layout>
   );
 };
 

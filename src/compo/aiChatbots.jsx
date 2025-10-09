@@ -22,13 +22,11 @@ import {
   CheckCircle2,
   Star,
 } from "lucide-react";
-import Navigation from "../components/common/Navigation";
-import { useMobileMenu } from "../hooks";
+import Layout from "../components/common/Layout";
 import "./landingPage.css";
 import "./aiChatbots.css";
 
 const AIChatbots = () => {
-  const { isMobileMenuOpen, toggleMobileMenu } = useMobileMenu();
   const [chatMessages, setChatMessages] = useState([
     {
       type: "bot",
@@ -65,12 +63,7 @@ const AIChatbots = () => {
   };
 
   return (
-    <div className="relative">
-      <Navigation
-        isMobileMenuOpen={isMobileMenuOpen}
-        toggleMobileMenu={toggleMobileMenu}
-      />
-
+    <Layout>
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
@@ -417,14 +410,16 @@ const AIChatbots = () => {
             exceptional customer experiences
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="text-lg px-8 py-3 btn-primary-enhanced"
-            >
-              Book A Consultation
-              <Bot className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/book-consultation">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="text-lg px-8 py-3 btn-primary-enhanced"
+              >
+                Book A Consultation
+                <Bot className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
             <Button
               size="lg"
               variant="outline"
@@ -435,64 +430,7 @@ const AIChatbots = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Bot className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">
-                  SoftScape AI Solutions
-                </span>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Revolutionizing businesses through cutting-edge AI technology
-                and intelligent automation.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link to="/" className="hover:text-white transition-colors">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className="hover:text-white transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>AI Tools</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>ai@softscape.solutions</li>
-                <li>+1 (555) AI-TOOLS</li>
-                <li>LinkedIn</li>
-                <li>GitHub</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>
-              &copy; 2025 SoftScape AI Solutions. Powering the future with
-              artificial intelligence.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };
 

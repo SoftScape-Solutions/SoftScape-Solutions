@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -9,7 +8,6 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import {
-  ArrowLeft,
   Code,
   Users,
   Target,
@@ -21,21 +19,14 @@ import {
   Bot,
   Workflow,
 } from "lucide-react";
-import Navigation from "../components/common/Navigation";
-import { useMobileMenu } from "../hooks";
+
+import Layout from "../components/common/Layout";
 import "./about.css";
 import "./landingPage.css";
 
 const About = () => {
-  const { isMobileMenuOpen, toggleMobileMenu } = useMobileMenu();
-
   return (
-    <div className="relative">
-      <Navigation
-        isMobileMenuOpen={isMobileMenuOpen}
-        toggleMobileMenu={toggleMobileMenu}
-        logoClassName="about-logo-text"
-      />
+    <Layout logoClassName="about-logo-text">
 
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
@@ -245,64 +236,7 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Bot className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">
-                  SoftScape AI Solutions
-                </span>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Revolutionizing businesses through cutting-edge AI technology
-                and intelligent automation.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link to="/" className="hover:text-white transition-colors">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className="hover:text-white transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>Services</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>hello@softscape.solutions</li>
-                <li>+1 (555) 123-4567</li>
-                <li>LinkedIn</li>
-                <li>Twitter</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>
-              &copy; 2025 SoftScape AI Solutions. Powering the future with
-              artificial intelligence.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </Layout>
   );
 };
 
