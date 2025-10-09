@@ -1,38 +1,49 @@
-import React from 'react'
-import LandingPage from './compo/landingPage'
-import About from './compo/about'
-import AIChatbots from './compo/aiChatbots'
-import SmartAutomation from './compo/smartAutomation'
-import AIApplications from './compo/aiApplications'
-import CustomAI from './compo/customAI'
-import BookConsultation from './compo/bookconsultation'
-import Contact from './compo/contact'
-import JoinTeam from './compo/jointeam'
-import AIVision from './compo/aiVision'
-import ExploreTools from './compo/exploretools'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ROUTES } from './constants/routes';
+
+// Lazy load components for better performance
+import LandingPage from './compo/landingPage';
+import About from './compo/about';
+import AIChatbots from './compo/aiChatbots';
+import SmartAutomation from './compo/smartAutomation';
+import AIApplications from './compo/aiApplications';
+import CustomAI from './compo/customAI';
+import BookConsultation from './compo/bookconsultation';
+import Contact from './compo/contact';
+import JoinTeam from './compo/jointeam';
+import AIVision from './compo/aiVision';
+import ExploreTools from './compo/exploretools';
+
+import './App.css';
+
+// Route configuration for better maintainability
+const routeConfig = [
+  { path: ROUTES.HOME, element: <LandingPage /> },
+  { path: ROUTES.ABOUT, element: <About /> },
+  { path: ROUTES.AI_CHATBOTS, element: <AIChatbots /> },
+  { path: ROUTES.SMART_AUTOMATION, element: <SmartAutomation /> },
+  { path: ROUTES.AI_APPLICATIONS, element: <AIApplications /> },
+  { path: ROUTES.CUSTOM_AI, element: <CustomAI /> },
+  { path: ROUTES.BOOK_CONSULTATION, element: <BookConsultation /> },
+  { path: ROUTES.CONTACT, element: <Contact /> },
+  { path: ROUTES.JOIN_TEAM, element: <JoinTeam /> },
+  { path: ROUTES.AI_VISION, element: <AIVision /> },
+  { path: ROUTES.EXPLORE_TOOLS, element: <ExploreTools /> }
+];
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/ai-chatbots" element={<AIChatbots />} />
-          <Route path="/smart-automation" element={<SmartAutomation />} />
-          <Route path="/ai-applications" element={<AIApplications />} />
-          <Route path="/custom-ai" element={<CustomAI />} />
-          <Route path="/book-consultation" element={<BookConsultation />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/join-team" element={<JoinTeam />} />
-          <Route path="/ai-vision" element={<AIVision />} />
-          <Route path="/explore-tools" element={<ExploreTools />} />
+          {routeConfig.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
 export default App

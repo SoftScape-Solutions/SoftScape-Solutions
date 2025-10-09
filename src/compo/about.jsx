@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -9,7 +8,6 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import {
-  ArrowLeft,
   Code,
   Users,
   Target,
@@ -20,102 +18,14 @@ import {
   Brain,
   Bot,
   Workflow,
-  Menu,
-  X,
 } from "lucide-react";
+import Layout from "../components/common/Layout";
 import "./about.css";
 import "./landingPage.css";
 
 const About = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
   return (
-    <div className="relative">
-      {/* Navigation - matching landing page style */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="about-logo-text">SoftScape Solutions</div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link
-                to="/"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Home
-              </Link>
-              <a
-                href="/#services"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                AI Tools
-              </a>
-              <a
-                href="/#contact"
-                className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg"
-              >
-                Contact
-              </a>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="text-gray-600 hover:text-blue-600 transition-colors p-2"
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="mobile-menu-container">
-              <div className="px-4 py-4 space-y-4">
-                <Link
-                  to="/"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Home
-                </Link>
-                <a
-                  href="/#services"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  AI Tools
-                </a>
-                <a
-                  href="/#contact"
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2"
-                  onClick={toggleMobileMenu}
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+    <Layout logoClassName="about-logo-text">
 
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
@@ -325,64 +235,7 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Bot className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">
-                  SoftScape AI Solutions
-                </span>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Revolutionizing businesses through cutting-edge AI technology
-                and intelligent automation.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link to="/" className="hover:text-white transition-colors">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className="hover:text-white transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>Services</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>hello@softscape.solutions</li>
-                <li>+1 (555) 123-4567</li>
-                <li>LinkedIn</li>
-                <li>Twitter</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>
-              &copy; 2025 SoftScape AI Solutions. Powering the future with
-              artificial intelligence.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </Layout>
   );
 };
 

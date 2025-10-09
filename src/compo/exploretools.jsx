@@ -14,24 +14,18 @@ import {
   Workflow,
   Sparkles,
   Cpu,
-  Menu,
-  X,
   ArrowRight,
   CheckCircle2,
   Zap,
   MessageCircle,
   Smartphone,
 } from "lucide-react";
+import Layout from "../components/common/Layout";
 import "./landingPage.css";
 import "./exploretools.css";
 
 const ExploreTools = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("all");
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   const tools = [
     {
@@ -109,64 +103,7 @@ const ExploreTools = () => {
     : tools.filter(tool => tool.category === selectedCategory);
 
   return (
-    <div className="relative">
-      {/* Navigation */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
-              </div>
-            </Link>
-
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                Home
-              </Link>
-              <Link to="/explore-ai-tools" className="text-blue-600 font-medium tracking-wide text-lg">
-                AI Tools
-              </Link>
-              <Link to="/about" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                About
-              </Link>
-              <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                Contact
-              </Link>
-            </div>
-
-            <div className="md:hidden">
-              <button onClick={toggleMobileMenu} className="text-gray-600 hover:text-blue-600 transition-colors p-2">
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-
-          {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
-              <div className="px-4 py-4 space-y-4">
-                <Link to="/" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  Home
-                </Link>
-                <Link to="/explore-ai-tools" className="block text-blue-600 font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  AI Tools
-                </Link>
-                <Link to="/about" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  About
-                </Link>
-                <Link to="/contact" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  Contact
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+    <Layout>
 
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
@@ -267,49 +204,7 @@ const ExploreTools = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Brain className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">
-                  SoftScape AI Solutions
-                </span>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Revolutionizing businesses through cutting-edge AI technology and intelligent automation.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">AI Tools</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/ai-chatbots" className="hover:text-white transition-colors">AI Chatbots</Link></li>
-                <li><Link to="/smart-automation" className="hover:text-white transition-colors">Smart Automation</Link></li>
-                <li><Link to="/ai-applications" className="hover:text-white transition-colors">AI Applications</Link></li>
-                <li><Link to="/custom-ai" className="hover:text-white transition-colors">Custom AI</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link to="/ai-vision" className="hover:text-white transition-colors">AI Vision</Link></li>
-                <li><Link to="/join-team" className="hover:text-white transition-colors">Careers</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 SoftScape AI Solutions. Powering the future with artificial intelligence.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };
 

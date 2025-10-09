@@ -7,22 +7,18 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Brain, Sparkles, Menu, X, Bot, Cpu, Workflow } from "lucide-react";
+import { Brain, Sparkles, Bot, Cpu, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
+import Layout from "../components/common/Layout";
 import "./landingPage.css";
 import "./animations.css";
 
 const LandingPage = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [hoveredService, setHoveredService] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   const handleServiceHover = (service, event) => {
     setHoveredService(service);
@@ -141,57 +137,7 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="relative">
-      {/* Navigation */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="logo-text">SoftScape Solutions</div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link to="/explore-tools" className="nav-link">AI Tools</Link>
-              <Link to="/about" className="nav-link">About</Link>
-              <Link to="/book-consultation" className="nav-link">Book Consultation</Link>
-              <a href="#contact" className="nav-link">Contact</a>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="mobile-menu-button"
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="mobile-menu-container">
-              <div className="px-4 py-4 space-y-4">
-                <Link to="/explore-tools" className="mobile-nav-link" onClick={toggleMobileMenu}>AI Tools</Link>
-                <Link to="/about" className="mobile-nav-link" onClick={toggleMobileMenu}>About</Link>
-                <Link to="/book-consultation" className="mobile-nav-link" onClick={toggleMobileMenu}>Book Consultation</Link>
-                <a href="#contact" className="mobile-nav-link" onClick={toggleMobileMenu}>Contact</a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+    <Layout logoClassName="logo-text">
 
       {/* Hero Section - Full Screen */}
       <section className="hero-container hero-section">
@@ -350,74 +296,8 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-
-        {/* AI Footer */}
-        <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="md:col-span-2 animate-slide-in-left">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center animate-pulse-glow">
-                    <img src="/softscape-logo.png" alt="SoftScape Logo" className="w-6 h-6" />
-                  </div>
-                  <span className="text-lg sm:text-xl md:text-2xl font-bold gradient-text-ai">
-                    SoftScape-Solutions
-                  </span>
-                </div>
-                <p className="text-gray-400 mb-4 max-w-md text-sm sm:text-base md:text-lg">
-                  Revolutionizing businesses through cutting-edge AI technology,
-                  intelligent automation, and smart digital solutions.
-                </p>
-              </div>
-              <div className="animate-slide-in animate-delay-200">
-                <h3 className="text-white font-semibold mb-4 text-base sm:text-lg md:text-xl">
-                  AI Solutions
-                </h3>
-                <ul className="space-y-2 text-gray-400 text-sm sm:text-base md:text-lg">
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    <Link to="/ai-chatbots">AI Chatbots</Link>
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    <Link to="/smart-automation">Smart Automation</Link>
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    <Link to="/ai-applications">AI Applications</Link>
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    <Link to="/custom-ai">Custom AI Solutions</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="animate-slide-in animate-delay-400">
-                <h3 className="text-white font-semibold mb-4 text-base sm:text-lg md:text-xl">
-                  Connect
-                </h3>
-                <ul className="space-y-2 text-gray-400 text-sm sm:text-base md:text-lg">
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    ai@softscape.solutions
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    +1 (555) AI-TOOLS
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    LinkedIn
-                  </li>
-                  <li className="hover:text-white transition-colors cursor-pointer">
-                    GitHub
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 animate-fade-in animate-delay-600">
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg px-4">
-                &copy; 2025 SoftScape Solutions. Powering the future with
-                artificial intelligence.
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
-    </div>
+    </Layout>
   );
 };
 
