@@ -92,53 +92,76 @@ const LandingPage = () => {
   const services = [
     {
       title: "AI Chatbots & Agents",
-      description: "Intelligent conversational agents that automate customer service and business processes",
+      description:
+        "Intelligent conversational agents that automate customer service and business processes",
       icon: Bot,
       color: "blue",
       link: "/ai-chatbots",
       preview: {
-        products: ["Customer Support Bot", "Sales Assistant AI", "Virtual Receptionist"],
-        overview: "24/7 intelligent chat solutions that handle customer inquiries, qualify leads, and provide instant support across multiple platforms."
-      }
+        products: [
+          "Customer Support Bot",
+          "Sales Assistant AI",
+          "Virtual Receptionist",
+        ],
+        overview:
+          "24/7 intelligent chat solutions that handle customer inquiries, qualify leads, and provide instant support across multiple platforms.",
+      },
     },
     {
       title: "Smart Automation Tools",
-      description: "AI-powered workflow automation that eliminates repetitive tasks and boosts productivity",
+      description:
+        "AI-powered workflow automation that eliminates repetitive tasks and boosts productivity",
       icon: Workflow,
       color: "purple",
       link: "/smart-automation",
       preview: {
-        products: ["Document Processing AI", "Email Automation", "Data Entry Assistant"],
-        overview: "Streamline operations with intelligent automation that handles repetitive tasks, processes documents, and manages workflows."
-      }
+        products: [
+          "Document Processing AI",
+          "Email Automation",
+          "Data Entry Assistant",
+        ],
+        overview:
+          "Streamline operations with intelligent automation that handles repetitive tasks, processes documents, and manages workflows.",
+      },
     },
     {
       title: "AI-Enhanced Applications",
-      description: "Web and mobile applications powered by artificial intelligence for superior user experiences",
+      description:
+        "Web and mobile applications powered by artificial intelligence for superior user experiences",
       icon: Sparkles,
       color: "orange",
       link: "/ai-applications",
       preview: {
-        products: ["Smart Analytics Dashboard", "Predictive Mobile Apps", "AI-Powered CRM"],
-        overview: "Transform your digital presence with applications that learn from user behavior and provide intelligent insights."
-      }
+        products: [
+          "Smart Analytics Dashboard",
+          "Predictive Mobile Apps",
+          "AI-Powered CRM",
+        ],
+        overview:
+          "Transform your digital presence with applications that learn from user behavior and provide intelligent insights.",
+      },
     },
     {
       title: "Custom AI Solutions",
-      description: "Tailored artificial intelligence systems designed specifically for your unique business needs",
+      description:
+        "Tailored artificial intelligence systems designed specifically for your unique business needs",
       icon: Cpu,
       color: "indigo",
       link: "/custom-ai",
       preview: {
-        products: ["Bespoke ML Models", "Industry-Specific AI", "AI Integration Services"],
-        overview: "Get AI solutions built specifically for your business challenges, from custom machine learning models to complete AI integrations."
-      }
-    }
+        products: [
+          "Bespoke ML Models",
+          "Industry-Specific AI",
+          "AI Integration Services",
+        ],
+        overview:
+          "Get AI solutions built specifically for your business challenges, from custom machine learning models to complete AI integrations.",
+      },
+    },
   ];
 
   return (
     <Layout logoClassName="logo-text">
-
       {/* Hero Section - Full Screen */}
       <section className="hero-container hero-section">
         <div className="max-w-7xl mx-auto w-full">
@@ -209,11 +232,15 @@ const LandingPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
               {services.map((service, index) => (
                 <Link key={index} to={service.link} className="block">
-                  <Card 
+                  <Card
                     className={`service-card-container card-enhanced hover-lift animate-slide-in ${
-                      index === 1 ? 'animate-delay-100' : 
-                      index === 2 ? 'animate-delay-200' :
-                      index === 3 ? 'animate-delay-300' : ''
+                      index === 1
+                        ? "animate-delay-100"
+                        : index === 2
+                        ? "animate-delay-200"
+                        : index === 3
+                        ? "animate-delay-300"
+                        : ""
                     } will-change-transform cursor-pointer relative overflow-hidden`}
                     onMouseEnter={(e) => handleServiceHover(service, e)}
                     onMouseLeave={handleServiceLeave}
@@ -221,7 +248,9 @@ const LandingPage = () => {
                     {/* Main Card Content */}
                     <div className="main-card-content">
                       <CardHeader className="text-center">
-                        <div className={`service-icon-${service.color} icon-bounce`}>
+                        <div
+                          className={`service-icon-${service.color} icon-bounce`}
+                        >
                           <service.icon className="h-8 w-8 text-white" />
                         </div>
                         <CardTitle className="text-lg sm:text-xl md:text-2xl">
@@ -232,20 +261,24 @@ const LandingPage = () => {
                         </CardDescription>
                       </CardHeader>
                     </div>
-                    
+
                     {/* Sliding Preview Panel */}
                     <div className="preview-panel">
                       <div className="preview-content">
                         <div className="preview-header">
                           <div className="preview-header-content">
-                            <div className={`service-icon-${service.color} icon-small`}>
+                            <div
+                              className={`service-icon-${service.color} icon-small`}
+                            >
                               <service.icon className="h-6 w-6 text-white" />
                             </div>
                             <h4 className="preview-title">{service.title}</h4>
                           </div>
                         </div>
                         <div className="preview-body">
-                          <p className="preview-overview">{service.preview?.overview}</p>
+                          <p className="preview-overview">
+                            {service.preview?.overview}
+                          </p>
                           <div className="preview-products">
                             <h5 className="products-title">Our Products:</h5>
                             <ul className="products-list">
