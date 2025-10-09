@@ -6,6 +6,10 @@ import SmartAutomation from './compo/smartAutomation'
 import AIApplications from './compo/aiApplications'
 import CustomAI from './compo/customAI'
 import BookConsultation from './compo/bookconsultation'
+import Contact from './compo/contact'
+import JoinTeam from './compo/jointeam'
+import AIVision from './compo/aiVision'
+import ExploreTools from './compo/exploretools'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 
@@ -21,6 +25,10 @@ function App() {
           <Route path="/ai-applications" element={<AIApplications />} />
           <Route path="/custom-ai" element={<CustomAI />} />
           <Route path="/book-consultation" element={<BookConsultation />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/join-team" element={<JoinTeam />} />
+          <Route path="/ai-vision" element={<AIVision />} />
+          <Route path="/explore-tools" element={<ExploreTools />} />
         </Routes>
       </div>
     </Router>

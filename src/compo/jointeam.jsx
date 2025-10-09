@@ -24,6 +24,7 @@ import {
   Coffee,
 } from "lucide-react";
 import "./landingPage.css";
+import "./jointeam.css";
 
 const JoinTeam = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

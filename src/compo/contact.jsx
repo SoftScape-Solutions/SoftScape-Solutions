@@ -20,7 +20,7 @@ import {
   Github,
   Linkedin,
 } from "lucide-react";
-import "./landingPage.css";
+import "./contact.css";
 
 const Contact = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

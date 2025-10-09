@@ -25,6 +25,7 @@ import {
   Heart,
 } from "lucide-react";
 import "./landingPage.css";
+import "./aiVision.css";
 
 const AIVision = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

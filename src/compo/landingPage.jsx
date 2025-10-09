@@ -10,14 +10,27 @@ import {
 import { Brain, Sparkles, Menu, X, Bot, Cpu, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./landingPage.css";
+import "./animations.css";
 
 const LandingPage = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [hoveredService, setHoveredService] = useState(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleServiceHover = (service, event) => {
+    setHoveredService(service);
+    setTooltipPosition({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleServiceLeave = () => {
+    setHoveredService(null);
   };
 
   useEffect(() => {
@@ -26,6 +39,11 @@ const LandingPage = () => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const heroHeight = window.innerHeight;
+
+      // Hide scroll indicator when user starts scrolling
+      if (scrollPosition > 10 && showScrollIndicator) {
+        setShowScrollIndicator(false);
+      }
 
       if (isScrollingFromHero) {
         return;
@@ -73,7 +91,7 @@ const LandingPage = () => {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [isScrollingFromHero, lastScrollY]);
+  }, [isScrollingFromHero, lastScrollY, showScrollIndicator]);
 
   const services = [
     {
@@ -81,28 +99,44 @@ const LandingPage = () => {
       description: "Intelligent conversational agents that automate customer service and business processes",
       icon: Bot,
       color: "blue",
-      link: "/ai-chatbots"
+      link: "/ai-chatbots",
+      preview: {
+        products: ["Customer Support Bot", "Sales Assistant AI", "Virtual Receptionist"],
+        overview: "24/7 intelligent chat solutions that handle customer inquiries, qualify leads, and provide instant support across multiple platforms."
+      }
     },
     {
       title: "Smart Automation Tools",
       description: "AI-powered workflow automation that eliminates repetitive tasks and boosts productivity",
       icon: Workflow,
       color: "purple",
-      link: "/smart-automation"
+      link: "/smart-automation",
+      preview: {
+        products: ["Document Processing AI", "Email Automation", "Data Entry Assistant"],
+        overview: "Streamline operations with intelligent automation that handles repetitive tasks, processes documents, and manages workflows."
+      }
     },
     {
       title: "AI-Enhanced Applications",
       description: "Web and mobile applications powered by artificial intelligence for superior user experiences",
       icon: Sparkles,
       color: "orange",
-      link: "/ai-applications"
+      link: "/ai-applications",
+      preview: {
+        products: ["Smart Analytics Dashboard", "Predictive Mobile Apps", "AI-Powered CRM"],
+        overview: "Transform your digital presence with applications that learn from user behavior and provide intelligent insights."
+      }
     },
     {
       title: "Custom AI Solutions",
       description: "Tailored artificial intelligence systems designed specifically for your unique business needs",
       icon: Cpu,
       color: "indigo",
-      link: "/custom-ai"
+      link: "/custom-ai",
+      preview: {
+        products: ["Bespoke ML Models", "Industry-Specific AI", "AI Integration Services"],
+        overview: "Get AI solutions built specifically for your business challenges, from custom machine learning models to complete AI integrations."
+      }
     }
   ];
 
@@ -123,7 +157,7 @@ const LandingPage = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <a href="#services" className="nav-link">AI Tools</a>
+              <Link to="/explore-tools" className="nav-link">AI Tools</Link>
               <Link to="/about" className="nav-link">About</Link>
               <Link to="/book-consultation" className="nav-link">Book Consultation</Link>
               <a href="#contact" className="nav-link">Contact</a>
@@ -149,7 +183,7 @@ const LandingPage = () => {
           {isMobileMenuOpen && (
             <div className="mobile-menu-container">
               <div className="px-4 py-4 space-y-4">
-                <a href="#services" className="mobile-nav-link" onClick={toggleMobileMenu}>AI Tools</a>
+                <Link to="/explore-tools" className="mobile-nav-link" onClick={toggleMobileMenu}>AI Tools</Link>
                 <Link to="/about" className="mobile-nav-link" onClick={toggleMobileMenu}>About</Link>
                 <Link to="/book-consultation" className="mobile-nav-link" onClick={toggleMobileMenu}>Book Consultation</Link>
                 <a href="#contact" className="mobile-nav-link" onClick={toggleMobileMenu}>Contact</a>
@@ -180,13 +214,15 @@ const LandingPage = () => {
               Transform your workflow with cutting-edge artificial intelligence.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in animate-delay-400 px-4">
-              <Button size="lg" className="hero-button btn-primary-enhanced">
-                <span className="hidden sm:inline">
-                  Explore Our AI-Powered Tools
-                </span>
-                <span className="sm:hidden">Explore AI Tools</span>
-                <Sparkles className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
+              <Link to="/explore-tools">
+                <Button size="lg" className="hero-button btn-primary-enhanced">
+                  <span className="hidden sm:inline">
+                    Explore Our AI-Powered Tools
+                  </span>
+                  <span className="sm:hidden">Explore AI Tools</span>
+                  <Sparkles className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -227,22 +263,57 @@ const LandingPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
               {services.map((service, index) => (
                 <Link key={index} to={service.link} className="block">
-                  <Card className={`card-enhanced hover-lift animate-slide-in ${
-                    index === 1 ? 'animate-delay-100' : 
-                    index === 2 ? 'animate-delay-200' :
-                    index === 3 ? 'animate-delay-300' : ''
-                  } will-change-transform cursor-pointer`}>
-                    <CardHeader className="text-center">
-                      <div className={`service-icon-${service.color} icon-bounce`}>
-                        <service.icon className="h-8 w-8 text-white" />
+                  <Card 
+                    className={`service-card-container card-enhanced hover-lift animate-slide-in ${
+                      index === 1 ? 'animate-delay-100' : 
+                      index === 2 ? 'animate-delay-200' :
+                      index === 3 ? 'animate-delay-300' : ''
+                    } will-change-transform cursor-pointer relative overflow-hidden`}
+                    onMouseEnter={(e) => handleServiceHover(service, e)}
+                    onMouseLeave={handleServiceLeave}
+                  >
+                    {/* Main Card Content */}
+                    <div className="main-card-content">
+                      <CardHeader className="text-center">
+                        <div className={`service-icon-${service.color} icon-bounce`}>
+                          <service.icon className="h-8 w-8 text-white" />
+                        </div>
+                        <CardTitle className="text-lg sm:text-xl md:text-2xl">
+                          {service.title}
+                        </CardTitle>
+                        <CardDescription className="text-sm sm:text-base md:text-lg">
+                          {service.description}
+                        </CardDescription>
+                      </CardHeader>
+                    </div>
+                    
+                    {/* Sliding Preview Panel */}
+                    <div className="preview-panel">
+                      <div className="preview-content">
+                        <div className="preview-header">
+                          <div className="preview-header-content">
+                            <div className={`service-icon-${service.color} icon-small`}>
+                              <service.icon className="h-6 w-6 text-white" />
+                            </div>
+                            <h4 className="preview-title">{service.title}</h4>
+                          </div>
+                        </div>
+                        <div className="preview-body">
+                          <p className="preview-overview">{service.preview?.overview}</p>
+                          <div className="preview-products">
+                            <h5 className="products-title">Our Products:</h5>
+                            <ul className="products-list">
+                              {service.preview?.products.map((product, idx) => (
+                                <li key={idx} className="product-item">
+                                  <span className="product-bullet"></span>
+                                  {product}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
                       </div>
-                      <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                        {service.title}
-                      </CardTitle>
-                      <CardDescription className="text-sm sm:text-base md:text-lg">
-                        {service.description}
-                      </CardDescription>
-                    </CardHeader>
+                    </div>
                   </Card>
                 </Link>
               ))}

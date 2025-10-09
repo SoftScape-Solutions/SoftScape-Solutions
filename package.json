@@ -5,11 +5,15 @@
   "type": "module",
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "framer-motion": "^10.16.4",
+    "aos": "^2.3.4",
+    "framer-motion": "^10.18.0",
+    "gsap": "^3.13.0",
+    "locomotive-scroll": "^4.1.4",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.9.3"
+    "react-router-dom": "^7.9.3",
+    "typed.js": "^2.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

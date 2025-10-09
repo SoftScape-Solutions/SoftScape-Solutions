@@ -23,6 +23,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import "./landingPage.css";
+import "./exploretools.css";
 
 const ExploreTools = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
