@@ -1,82 +1,96 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // Custom hook for mobile menu state management
 export const useMobileMenu = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(prev => !prev);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  // Close mobile menu when screen size changes to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(false);
-      }
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(prev => !prev);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
 
-  return {
-    isMobileMenuOpen,
-    toggleMobileMenu,
-    closeMobileMenu
-  };
+    // Close mobile menu when screen size changes to desktop
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return {
+        isMobileMenuOpen,
+        toggleMobileMenu,
+        closeMobileMenu
+    };
 };
 
 // Custom hook for scroll-based functionality
 export const useScrollBehavior = () => {
-  const [scrollY, setScrollY] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
+    const [scrollY, setScrollY] = useState(0);
+    const [isScrolling, setIsScrolling] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-      setIsScrolling(true);
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY);
+            setIsScrolling(true);
 
-      // Debounce scrolling state
-      const timeoutId = setTimeout(() => {
-        setIsScrolling(false);
-      }, 150);
+            // Debounce scrolling state
+            const timeoutId = setTimeout(() => {
+                setIsScrolling(false);
+            }, 150);
 
-      return () => clearTimeout(timeoutId);
-    };
+            return () => clearTimeout(timeoutId);
+        };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-  return { scrollY, isScrolling };
+    return { scrollY, isScrolling };
 };
 
 // Custom hook for scroll animations
 export const useScrollAnimation = () => {
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, observerOptions);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
 
-    const elements = document.querySelectorAll('.scroll-fade-in');
-    elements.forEach(el => observer.observe(el));
+        const elements = document.querySelectorAll('.scroll-fade-in');
+        elements.forEach(el => observer.observe(el));
 
-    return () => {
-      elements.forEach(el => observer.unobserve(el));
-    };
-  }, []);
+        return () => {
+            elements.forEach(el => observer.unobserve(el));
+        };
+    }, []);
+};
+
+// Custom hook for scroll restoration
+export const useScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant'
+        });
+    }, [pathname]);
 };

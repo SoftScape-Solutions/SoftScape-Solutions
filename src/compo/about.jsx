@@ -27,7 +27,6 @@ import "./landingPage.css";
 const About = () => {
   return (
     <Layout logoClassName="about-logo-text">
-
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -65,15 +64,6 @@ const About = () => {
                 operate. Our commitment to AI excellence drives everything we
                 create.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="flex items-center btn-primary-enhanced">
-                  <Brain className="mr-2 h-5 w-5" />
-                  Our AI Vision
-                </Button>
-                <Button variant="outline" className="hover-glow">
-                  Join Our AI Team
-                </Button>
-              </div>
             </div>
             <div className="animate-slide-in about-hero-card">
               <div className="animate-gradient rounded-2xl p-8 text-white">
@@ -230,13 +220,15 @@ const About = () => {
               technologies and industries, we bring diverse perspectives to
               every project.
             </p>
-            <Button size="lg" className="animate-slide-in about-team-card-3">
+            
+            {/* Removing the button for now */}
+            {/* <Button size="lg" className="animate-slide-in about-team-card-3">
               Join Our Team
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
-        </Layout>
+    </Layout>
   );
 };
 
