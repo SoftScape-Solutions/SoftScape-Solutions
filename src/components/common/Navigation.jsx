@@ -1,6 +1,6 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { NAVIGATION_LINKS, PAGE_NAVIGATION } from "../../constants/routes";
 import { cn } from "../../utils/helpers";
 import "./Navigation.css";
@@ -11,7 +11,11 @@ const Navigation = ({
   logoClassName = "logo-text",
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const dropdownRef = useRef(null);
+  const hoverTimeoutRef = useRef(null);
 
   // Get navigation links based on current page
   const getNavigationLinks = () => {
@@ -22,9 +26,138 @@ const Navigation = ({
   const desktopLinks = navigationConfig?.desktop || [];
   const mobileLinks = navigationConfig?.mobile || [];
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close dropdown when route changes
+  useEffect(() => {
+    setOpenDropdown(null);
+  }, [currentPath]);
+
+  // Helper functions for hover handling with delay
+  const handleMouseEnter = (dropdownKey) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setOpenDropdown(dropdownKey);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 150); // 150ms delay before closing
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const renderNavLink = (link, isMobile = false) => {
-    const baseClassName = isMobile ? "mobile-nav-link" : "nav-link";
+    const baseClassName = isMobile ? "navigation-mobile-menu-link" : "navigation-menu-link";
     const onClick = isMobile ? toggleMobileMenu : undefined;
+
+    if (link.type === "dropdown") {
+      const dropdownKey = link.label;
+      const isOpen = openDropdown === dropdownKey;
+
+      if (isMobile) {
+        // Mobile dropdown - expand inline
+        return (
+          <div key={dropdownKey} className="mobile-dropdown">
+            <button
+              className="mobile-dropdown-trigger"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setOpenDropdown(isOpen ? null : dropdownKey);
+              }}
+              type="button"
+            >
+              {link.label}
+              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isOpen && (
+              <div className="mobile-dropdown-menu">
+                {link.items.map((item) => (
+                  <button
+                    key={item.to}
+                    className="mobile-dropdown-item"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log('Navigating to:', item.to); // Debug log
+                      // Close menus first
+                      setOpenDropdown(null);
+                      toggleMobileMenu();
+                      // Then navigate
+                      navigate(item.to);
+                    }}
+                    type="button"
+                  >
+                    <div>
+                      <div className="mobile-dropdown-item-title">{item.label}</div>
+                      <div className="mobile-dropdown-item-desc">{item.description}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      // Desktop dropdown
+      return (
+        <div 
+          key={dropdownKey} 
+          className="nav-dropdown" 
+          ref={dropdownRef}
+          onMouseEnter={() => handleMouseEnter(dropdownKey)}
+          onMouseLeave={handleMouseLeave}
+        >
+          <button
+            className={`${baseClassName} nav-dropdown-trigger`}
+            onClick={() => setOpenDropdown(isOpen ? null : dropdownKey)}
+          >
+            {link.label}
+            <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {isOpen && (
+            <div className="nav-dropdown-menu">
+              {link.items.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="nav-dropdown-item"
+                  onClick={() => setOpenDropdown(null)}
+                >
+                  <div>
+                    <div className="nav-dropdown-item-title">{item.label}</div>
+                    <div className="nav-dropdown-item-desc">{item.description}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
 
     if (link.type === "link") {
       return (

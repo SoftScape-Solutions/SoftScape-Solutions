@@ -10,7 +10,6 @@ const Footer = () => {
     quickLinks: [
       { to: ROUTES.HOME, label: "Home" },
       { to: ROUTES.ABOUT, label: "About" },
-      { to: ROUTES.AI_CHATBOTS, label: "AI Tools" },
       { to: ROUTES.CONTACT, label: "Contact" },
     ],
     contact: [
@@ -28,11 +27,9 @@ const Footer = () => {
           {/* Company Info */}
           <div className="md:col-span-2 animate-slide-in-left">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center animate-pulse-glow">
-                <Bot className="h-5 w-5 text-white" />
-              </div>
+              <img src="/softscape-logo.png" alt="SoftScape Logo" className="h-16 w-9" />
               <span className="text-lg sm:text-xl md:text-2xl font-bold gradient-text-ai">
-                SoftScape AI Solutions
+                SoftScape Solutions
               </span>
             </div>
             <p className="text-gray-400 mb-4 max-w-md text-sm sm:text-base md:text-lg">
