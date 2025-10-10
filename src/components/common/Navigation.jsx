@@ -29,6 +29,12 @@ const Navigation = ({
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Don't close if clicking on mobile dropdown items or triggers
+      if (event.target.closest('.mobile-dropdown-item') || 
+          event.target.closest('.mobile-dropdown-trigger')) {
+        return;
+      }
+      
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenDropdown(null);
       }
@@ -70,7 +76,8 @@ const Navigation = ({
 
   const renderNavLink = (link, isMobile = false) => {
     const baseClassName = isMobile ? "navigation-mobile-menu-link" : "navigation-menu-link";
-    const onClick = isMobile ? toggleMobileMenu : undefined;
+    // Only add toggleMobileMenu for regular links, not dropdown items
+    const onClick = (isMobile && link.type === "link") ? toggleMobileMenu : undefined;
 
     if (link.type === "dropdown") {
       const dropdownKey = link.label;
@@ -85,6 +92,11 @@ const Navigation = ({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Mobile dropdown trigger clicked');
+                console.log('Current dropdownKey:', dropdownKey);
+                console.log('Current isOpen:', isOpen);
+                console.log('Current openDropdown state:', openDropdown);
+                console.log('Will set to:', isOpen ? null : dropdownKey);
                 setOpenDropdown(isOpen ? null : dropdownKey);
               }}
               type="button"
@@ -95,26 +107,32 @@ const Navigation = ({
             {isOpen && (
               <div className="mobile-dropdown-menu">
                 {link.items.map((item) => (
-                  <button
+                  <div
                     key={item.to}
                     className="mobile-dropdown-item"
                     onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      console.log('Navigating to:', item.to); // Debug log
-                      // Close menus first
-                      setOpenDropdown(null);
-                      toggleMobileMenu();
-                      // Then navigate
+                      console.log('Mobile dropdown item clicked:', item.to);
+                      
+                      // Navigate using React Router
                       navigate(item.to);
+                      
+                      // Close the mobile menu and dropdown
+                      setOpenDropdown(null);
+                      if (isMobileMenuOpen) {
+                        toggleMobileMenu();
+                      }
                     }}
-                    type="button"
+                    style={{
+                      cursor: 'pointer',
+                      userSelect: 'none',
+                      WebkitTapHighlightColor: 'rgba(0,0,0,0.1)'
+                    }}
                   >
                     <div>
                       <div className="mobile-dropdown-item-title">{item.label}</div>
                       <div className="mobile-dropdown-item-desc">{item.description}</div>
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             )}

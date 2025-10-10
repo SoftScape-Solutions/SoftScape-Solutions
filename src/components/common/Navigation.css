@@ -314,7 +314,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 0;
+  padding: 0.75rem 1rem;
   border: none;
   background: transparent !important;
   font: inherit;
@@ -339,9 +339,10 @@
 }
 
 .mobile-dropdown-menu {
-  padding-left: 1rem;
+  padding-left: 2rem;
   margin-top: 0.5rem;
   border-left: 2px solid #e5e7eb;
+  margin-left: 1rem;
   animation: mobileDropdownSlideIn 0.3s ease-out;
 }
 
@@ -368,15 +369,42 @@
   margin-bottom: 0.25rem;
   border-radius: 0.5rem;
   transition: all 0.2s ease;
-  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
   touch-action: manipulation;
   min-height: 44px;
   cursor: pointer;
   user-select: none;
-  border: none;
-  background: transparent;
-  text-align: left;
-  font: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure mobile items are easily tappable */
+@media (max-width: 768px) {
+  .mobile-dropdown-item {
+    min-height: 48px;
+    padding: 1rem;
+    border: 1px solid transparent;
+    text-decoration: none;
+    pointer-events: auto;
+    z-index: 9999;
+    position: relative;
+  }
+  
+  .mobile-dropdown-item:active {
+    background: #e5e7eb;
+    border-color: #3b82f6;
+    transform: scale(0.98);
+  }
+  
+  .mobile-dropdown-item:visited {
+    color: #374151;
+  }
+  
+  .mobile-dropdown-menu {
+    pointer-events: auto;
+    z-index: 9998;
+    position: relative;
+  }
 }
 
 .mobile-dropdown-item:hover,
