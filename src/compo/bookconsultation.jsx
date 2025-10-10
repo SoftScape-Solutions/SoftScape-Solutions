@@ -417,7 +417,9 @@ const BookConsultation = () => {
         templateID.includes("123456") ||
         publicKey.includes("123456")
       ) {
-        throw new Error("EmailJS credentials need to be configured with real values");
+        throw new Error(
+          "EmailJS credentials need to be configured with real values"
+        );
       }
 
       console.log("Attempting to send email with EmailJS...", {
@@ -446,22 +448,28 @@ const BookConsultation = () => {
       setErrors({});
     } catch (error) {
       console.error("Form submission error:", error);
-      
-      let errorMessage = "There was an error submitting your form. Please try again or contact us directly.";
-      
+
+      let errorMessage =
+        "There was an error submitting your form. Please try again or contact us directly.";
+
       // Provide more specific error messages
       if (error.message.includes("credentials need to be configured")) {
-        errorMessage = "Email service is not properly configured. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
+        errorMessage =
+          "Email service is not properly configured. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
       } else if (error.message.includes("configuration is missing")) {
-        errorMessage = "Email service configuration is missing. Please contact support directly at softscapesolution@outlook.com.";
+        errorMessage =
+          "Email service configuration is missing. Please contact support directly at softscapesolution@outlook.com.";
       } else if (error.text && error.text.includes("Invalid")) {
-        errorMessage = "Invalid email configuration. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
+        errorMessage =
+          "Invalid email configuration. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
       } else if (error.status === 400) {
-        errorMessage = "Invalid form data. Please check your entries and try again.";
+        errorMessage =
+          "Invalid form data. Please check your entries and try again.";
       } else if (error.status === 404) {
-        errorMessage = "Email service not found. Please contact support at softscapesolution@outlook.com.";
+        errorMessage =
+          "Email service not found. Please contact support at softscapesolution@outlook.com.";
       }
-      
+
       setSubmitError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -601,8 +609,8 @@ const BookConsultation = () => {
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-blue-600" />
-                  <a 
-                    href="mailto:softscapesolution@outlook.com" 
+                  <a
+                    href="mailto:softscapesolution@outlook.com"
                     className="text-blue-600 hover:text-blue-800 font-medium"
                   >
                     softscapesolution@outlook.com
@@ -610,8 +618,8 @@ const BookConsultation = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="h-5 w-5 text-green-600" />
-                  <a 
-                    href="tel:+447789667804" 
+                  <a
+                    href="tel:+447789667804"
                     className="text-green-600 hover:text-green-800 font-medium"
                   >
                     +44 7789667804
