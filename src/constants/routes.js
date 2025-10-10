@@ -18,7 +18,7 @@ export const AI_TOOLS_DROPDOWN = [
     { to: ROUTES.AI_CHATBOTS, label: "AI Chatbots", description: "Intelligent conversational agents" },
     { to: ROUTES.SMART_AUTOMATION, label: "Smart Automation", description: "Automated business processes" },
     { to: ROUTES.AI_APPLICATIONS, label: "AI Applications", description: "Custom AI-powered solutions" },
-    // { to: ROUTES.AI_VISION, label: "AI Vision", description: "Computer vision and image analysis" },
+    { to: ROUTES.AI_VISION, label: "AI Vision", description: "Computer vision and image analysis" },
     { to: ROUTES.CUSTOM_AI, label: "Custom AI", description: "Tailored AI solutions" },
     { to: ROUTES.EXPLORE_TOOLS, label: "Explore All Tools", description: "Discover our full AI toolkit" }
 ];
