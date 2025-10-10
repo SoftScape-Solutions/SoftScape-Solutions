@@ -19,6 +19,7 @@ import {
   Bot,
   Workflow,
 } from "lucide-react";
+
 import Layout from "../components/common/Layout";
 import "./about.css";
 import "./landingPage.css";
