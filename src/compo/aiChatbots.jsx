@@ -81,10 +81,6 @@ const AIChatbots = () => {
               exceptional experiences
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="btn-primary-enhanced">
-                Start Free Trial
-                <Sparkles className="ml-2 h-5 w-5" />
-              </Button>
               <Button variant="outline" size="lg" className="hover-glow">
                 Watch Demo
               </Button>
@@ -420,13 +416,6 @@ const AIChatbots = () => {
                 <Bot className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-blue-600"
-            >
-              View Pricing
-            </Button>
           </div>
         </div>
       </section>
