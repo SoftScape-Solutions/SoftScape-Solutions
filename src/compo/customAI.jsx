@@ -457,7 +457,7 @@ const CustomAI = () => {
             <div>
               <h3 className="text-white font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
+                <li><Link to="/explore-tools" className="hover:text-white transition-colors">Home</Link></li>
                 <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
                 <li>AI Tools</li>
                 <li>Contact</li>

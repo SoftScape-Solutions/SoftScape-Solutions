@@ -654,3 +654,140 @@ html {
   height: 3rem;
   border-width: 4px;
 }
+
+/* Enhanced Validation Styles */
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  animation: shake 0.3s ease-in-out;
+}
+
+.form-input:focus.error,
+.form-select:focus.error,
+.form-textarea:focus.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* Success state for validated fields */
+.form-input.success,
+.form-select.success,
+.form-textarea.success {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+/* Shake animation for invalid fields */
+@keyframes shake {
+  0%,
+  20%,
+  40%,
+  60%,
+  80%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-2px);
+  }
+}
+
+/* Enhanced error message styling */
+.error-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(239, 68, 68, 0.05);
+  border-radius: 0.375rem;
+  border-left: 3px solid #ef4444;
+  animation: slide-down 0.3s ease-out;
+}
+
+.error-message svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+/* Slide down animation for error messages */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Field focus enhancement */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+/* Character counter enhancement */
+.character-count {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: right;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.character-count.warning {
+  color: #f59e0b;
+}
+
+.character-count.success {
+  color: #10b981;
+}
+
+/* Global error message styling */
+.global-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  animation: pulse-error 0.5s ease-in-out;
+}
+
+@keyframes pulse-error {
+  0%,
+  100% {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    border-color: rgba(239, 68, 68, 0.6);
+  }
+}
+
+/* Smooth scroll behavior for error navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Accessibility improvements */
+[aria-invalid="true"] {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+[aria-invalid="true"]:focus {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}

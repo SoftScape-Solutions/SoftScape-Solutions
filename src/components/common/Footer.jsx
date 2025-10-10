@@ -11,14 +11,14 @@ const Footer = () => {
       { to: ROUTES.HOME, label: "Home" },
       { to: ROUTES.ABOUT, label: "About" },
       { to: ROUTES.AI_CHATBOTS, label: "AI Tools" },
-      { to: ROUTES.CONTACT, label: "Contact" }
+      { to: ROUTES.CONTACT, label: "Contact" },
     ],
     contact: [
-      "ai@softscape.solutions",
-      "+1 (555) AI-TOOLS",
+      "softscapesolution@outlook.com",
+      "+44 7789667804",
       "LinkedIn",
-      "GitHub"
-    ]
+      "GitHub",
+    ],
   };
 
   return (
@@ -49,8 +49,8 @@ const Footer = () => {
             <ul className="space-y-2 text-gray-400 text-sm sm:text-base md:text-lg">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.to}>
-                  <Link 
-                    to={link.to} 
+                  <Link
+                    to={link.to}
                     className="hover:text-white transition-colors cursor-pointer"
                   >
                     {link.label}
@@ -67,7 +67,10 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2 text-gray-400 text-sm sm:text-base md:text-lg">
               {footerLinks.contact.map((contact, index) => (
-                <li key={index} className="hover:text-white transition-colors cursor-pointer">
+                <li
+                  key={index}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
                   {contact}
                 </li>
               ))}
@@ -78,8 +81,8 @@ const Footer = () => {
         {/* Copyright */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 animate-fade-in animate-delay-600">
           <p className="text-xs sm:text-sm md:text-base lg:text-lg px-4">
-            &copy; {currentYear} SoftScape AI Solutions. Powering the future with
-            artificial intelligence.
+            &copy; {currentYear} SoftScape AI Solutions. Powering the future
+            with artificial intelligence.
           </p>
         </div>
       </div>

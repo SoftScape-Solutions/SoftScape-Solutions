@@ -6,7 +6,7 @@
  * @returns {string} Combined class names
  */
 export const cn = (...classes) => {
-  return classes.filter(Boolean).join(' ');
+    return classes.filter(Boolean).join(' ');
 };
 
 /**
@@ -16,15 +16,15 @@ export const cn = (...classes) => {
  * @returns {Function} Debounced function
  */
 export const debounce = (func, wait) => {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
     };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
 };
 
 /**
@@ -34,14 +34,14 @@ export const debounce = (func, wait) => {
  * @returns {Function} Throttled function
  */
 export const throttle = (func, limit) => {
-  let inThrottle;
-  return function(...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
+    let inThrottle;
+    return function (...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
 };
 
 /**
@@ -50,13 +50,13 @@ export const throttle = (func, limit) => {
  * @returns {boolean} True if element is in viewport
  */
 export const isInViewport = (element) => {
-  const rect = element.getBoundingClientRect();
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-  );
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
 };
 
 /**
@@ -65,14 +65,38 @@ export const isInViewport = (element) => {
  * @param {number} offset - Offset from top (default: 0)
  */
 export const scrollToElement = (elementId, offset = 0) => {
-  const element = document.getElementById(elementId);
-  if (element) {
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - offset;
-    
+    const element = document.getElementById(elementId);
+    if (element) {
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+};
+
+/**
+ * Scrolls to the top of the page
+ * @param {boolean} smooth - Whether to use smooth scrolling (default: false for instant)
+ */
+export const scrollToTop = (smooth = false) => {
     window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
+        top: 0,
+        left: 0,
+        behavior: smooth ? 'smooth' : 'instant'
     });
-  }
+};
+
+/**
+ * Custom hook for scroll restoration on route change
+ * Can be used in individual components for more control
+ */
+export const useScrollRestoration = () => {
+    return {
+        scrollToTop,
+        restoreScroll: () => scrollToTop(false),
+        smoothScrollToTop: () => scrollToTop(true)
+    };
 };

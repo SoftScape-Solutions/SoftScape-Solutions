@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import {
@@ -12,20 +12,155 @@ import {
   Brain,
   Calendar,
   CheckCircle2,
-  Menu,
-  X,
   Upload,
   Clock,
   Users,
   Target,
   AlertCircle,
+  X,
+  Mail,
+  Phone,
 } from "lucide-react";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
+import Layout from "../components/common/Layout";
 import "./landingPage.css";
 import "./bookConsultation.css";
 
+// Validation utilities with best practices
+const ValidationUtils = {
+  // Phone number validation - supports international formats
+  validatePhone: (phone) => {
+    if (!phone || phone.trim().length === 0) {
+      return "Phone number is required";
+    }
+
+    // Remove all spaces, hyphens, and parentheses for validation
+    const cleanPhone = phone.replace(/[\s\-\(\)]/g, "");
+
+    // Check for minimum length and valid characters
+    if (cleanPhone.length < 10) {
+      return "Phone number must be at least 10 digits";
+    }
+
+    // International format validation
+    const internationalPattern = /^\+\d{10,15}$/;
+    const domesticPattern = /^\d{10,11}$/;
+
+    if (
+      !internationalPattern.test(cleanPhone) &&
+      !domesticPattern.test(cleanPhone)
+    ) {
+      return "Please enter a valid phone number";
+    }
+
+    // Check for obviously invalid patterns
+    const invalidPatterns = [
+      /^0+$/, // All zeros
+      /^1+$/, // All ones
+      /^-1/, // Negative numbers
+    ];
+
+    for (const pattern of invalidPatterns) {
+      if (pattern.test(cleanPhone)) {
+        return "Please enter a valid phone number";
+      }
+    }
+
+    return null;
+  },
+
+  // Text-only validation for names and similar fields
+  validateTextOnly: (text, fieldName = "Field") => {
+    if (!text || text.trim().length === 0) {
+      return `${fieldName} is required`;
+    }
+
+    // Allow letters, spaces, hyphens, apostrophes, and dots (for names like "Jr.", "Sr.")
+    const textOnlyPattern = /^[a-zA-Z\s\-\'.]+$/;
+
+    if (!textOnlyPattern.test(text.trim())) {
+      return `${fieldName} must contain only letters, spaces, hyphens, and apostrophes`;
+    }
+
+    if (text.trim().length < 2) {
+      return `${fieldName} must be at least 2 characters long`;
+    }
+
+    if (text.trim().length > 50) {
+      return `${fieldName} must be less than 50 characters`;
+    }
+
+    return null;
+  },
+
+  // Enhanced email validation
+  validateEmail: (email) => {
+    if (!email || email.trim().length === 0) {
+      return "Email address is required";
+    }
+
+    // Basic email pattern with comprehensive validation
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailPattern.test(email.trim())) {
+      return "Please enter a valid email address";
+    }
+
+    // Additional checks for common issues
+    if (email.includes("..")) {
+      return "Email address cannot contain consecutive dots";
+    }
+
+    if (email.startsWith(".") || email.endsWith(".")) {
+      return "Email address cannot start or end with a dot";
+    }
+
+    return null;
+  },
+
+  // Project details validation with meaningful content check
+  validateProjectDetails: (details) => {
+    if (!details || details.trim().length === 0) {
+      return "Project details are required";
+    }
+
+    if (details.trim().length < 50) {
+      return "Please provide at least 50 characters describing your project";
+    }
+
+    if (details.trim().length > 2000) {
+      return "Project details must be less than 2000 characters";
+    }
+
+    // Check for meaningful content (not just repeated characters)
+    const meaningfulPattern = /^(?!(.)\1{10,}).*$/;
+    if (!meaningfulPattern.test(details.trim())) {
+      return "Please provide meaningful project details";
+    }
+
+    return null;
+  },
+
+  // Company name validation
+  validateCompanyName: (company) => {
+    if (!company || company.trim().length === 0) {
+      return null; // Company is optional
+    }
+
+    if (company.trim().length < 2) {
+      return "Company name must be at least 2 characters";
+    }
+
+    if (company.trim().length > 100) {
+      return "Company name must be less than 100 characters";
+    }
+
+    return null;
+  },
+};
+
 const BookConsultation = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Form state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,28 +173,119 @@ const BookConsultation = () => {
     projectDetails: "",
     additionalNotes: "",
   });
+
+  // UI state
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [touchedFields, setTouchedFields] = useState({});
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  // Refs for auto-scroll functionality
+  const formRef = useRef(null);
+  const firstErrorRef = useRef(null);
+
+  // Individual refs for each form field for error navigation
+  const formRefs = {
+    name: useRef(null),
+    email: useRef(null),
+    phone: useRef(null),
+    company: useRef(null),
+    industry: useRef(null),
+    projectType: useRef(null),
+    projectDetails: useRef(null),
+    additionalNotes: useRef(null),
   };
 
+  // Enhanced input change handler with real-time validation
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Update form data
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+
+    // Mark field as touched
+    setTouchedFields((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+
+    // Real-time validation for better UX
+    if (touchedFields[name]) {
+      validateSingleField(name, value);
     }
+  };
+
+  // Handle field blur for immediate validation feedback
+  const handleFieldBlur = (e) => {
+    const { name, value } = e.target;
+    setTouchedFields((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+    validateSingleField(name, value);
+  };
+
+  // Single field validation for real-time feedback
+  const validateSingleField = (fieldName, value) => {
+    let error = null;
+
+    switch (fieldName) {
+      case "name":
+        error = ValidationUtils.validateTextOnly(value, "Full name");
+        break;
+      case "email":
+        error = ValidationUtils.validateEmail(value);
+        break;
+      case "phone":
+        error = ValidationUtils.validatePhone(value);
+        break;
+      case "company":
+        error = ValidationUtils.validateCompanyName(value);
+        break;
+      case "industry":
+        if (value && value.trim().length < 2) {
+          error = "Industry must be at least 2 characters";
+        }
+        break;
+      case "projectType":
+        if (!value) {
+          error = "Please select a project type";
+        }
+        break;
+      case "projectDetails":
+        error = ValidationUtils.validateProjectDetails(value);
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({
+      ...prev,
+      [fieldName]: error,
+    }));
+  };
+
+  // Get field validation class
+  const getFieldClass = (fieldName, baseClass) => {
+    const hasError = errors[fieldName];
+    const hasValue =
+      formData[fieldName] && formData[fieldName].toString().trim();
+    const wasTouched = touchedFields[fieldName];
+
+    let classes = baseClass;
+
+    if (hasError) {
+      classes += " error";
+    } else if (wasTouched && hasValue && !hasError) {
+      classes += " success";
+    }
+
+    return classes;
   };
 
   const handleFileUpload = (e) => {
@@ -74,6 +300,12 @@ const BookConsultation = () => {
         ...prev,
         files: "Some files were too large (max 10MB per file)",
       }));
+    } else {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.files;
+        return newErrors;
+      });
     }
 
     setUploadedFiles((prev) => [...prev, ...validFiles]);
@@ -83,88 +315,119 @@ const BookConsultation = () => {
     setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Comprehensive form validation
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+    // Validate all required fields
+    const requiredFields = {
+      name: ValidationUtils.validateTextOnly(formData.name, "Full name"),
+      email: ValidationUtils.validateEmail(formData.email),
+      phone: ValidationUtils.validatePhone(formData.phone),
+      projectType: !formData.projectType
+        ? "Please select a project type"
+        : null,
+      projectDetails: ValidationUtils.validateProjectDetails(
+        formData.projectDetails
+      ),
+    };
+
+    // Validate optional fields if they have values
+    if (formData.company) {
+      requiredFields.company = ValidationUtils.validateCompanyName(
+        formData.company
+      );
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+    if (
+      formData.industry &&
+      formData.industry.trim().length > 0 &&
+      formData.industry.trim().length < 2
+    ) {
+      requiredFields.industry = "Industry must be at least 2 characters";
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
-
-    if (!formData.projectType) {
-      newErrors.projectType = "Please select a project type";
-    }
-
-    if (!formData.projectDetails.trim()) {
-      newErrors.projectDetails = "Project details are required";
-    } else if (formData.projectDetails.trim().length < 50) {
-      newErrors.projectDetails = "Please provide at least 50 characters of detail";
-    }
+    // Filter out null errors
+    Object.keys(requiredFields).forEach((key) => {
+      if (requiredFields[key]) {
+        newErrors[key] = requiredFields[key];
+      }
+    });
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  // Auto-scroll to first error
+  const scrollToFirstError = () => {
+    const errorFields = Object.keys(errors);
+    if (errorFields.length > 0) {
+      const firstErrorField = errorFields[0];
+      const fieldRef = formRefs[firstErrorField];
+
+      if (fieldRef && fieldRef.current) {
+        fieldRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+
+        // Focus the input field
+        const input = fieldRef.current.querySelector("input, select, textarea");
+        if (input) {
+          setTimeout(() => input.focus(), 300);
+        }
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
+      scrollToFirstError();
       return;
     }
 
     setIsSubmitting(true);
+    setSubmitError("");
 
     try {
-      // EmailJS configuration from environment variables
+      // Prepare email data
+      const emailData = {
+        ...formData,
+        files: uploadedFiles.map((file) => file.name).join(", "),
+        submission_date: new Date().toLocaleDateString(),
+      };
+
+      // EmailJS configuration
       const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-      const customerEmail = import.meta.env.VITE_CUSTOMER_SERVICE_EMAIL;
 
-      // Check if all required environment variables are set
+      // Check if credentials are properly configured
       if (!serviceID || !templateID || !publicKey) {
-        throw new Error('EmailJS configuration is missing. Please check your environment variables.');
+        throw new Error("Email service configuration is missing");
       }
 
-      // Prepare email data
-      const emailData = {
-        to_email: customerEmail || 'contact@softscape-solutions.com', // Fallback email
-        from_name: formData.name,
-        from_email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
-        industry: formData.industry,
-        project_type: formData.projectType,
-        budget: formData.budget,
-        timeline: formData.timeline,
-        project_details: formData.projectDetails,
-        additional_notes: formData.additionalNotes,
-        uploaded_files: uploadedFiles.length > 0 ? uploadedFiles.map(f => f.name).join(', ') : 'No files uploaded',
-        submission_date: new Date().toLocaleDateString(),
-        submission_time: new Date().toLocaleTimeString()
-      };
+      // Check for placeholder values
+      if (
+        serviceID === "service_ook8gqa" ||
+        templateID === "template_123456" ||
+        publicKey === "public_123456" ||
+        templateID.includes("123456") ||
+        publicKey.includes("123456")
+      ) {
+        throw new Error("EmailJS credentials need to be configured with real values");
+      }
 
-      // Send email using EmailJS
-      const response = await emailjs.send(
-        serviceID,
-        templateID,
-        emailData,
-        publicKey
-      );
+      console.log("Attempting to send email with EmailJS...", {
+        serviceID: serviceID.substring(0, 10) + "...",
+        templateID: templateID.substring(0, 10) + "...",
+        publicKey: publicKey.substring(0, 10) + "...",
+      });
 
-      console.log('Email sent successfully:', response);
-      
-      // Success - reset form
-      setIsSubmitting(false);
+      await emailjs.send(serviceID, templateID, emailData, publicKey);
+
       setSubmitSuccess(true);
       setFormData({
         name: "",
@@ -179,194 +442,95 @@ const BookConsultation = () => {
         additionalNotes: "",
       });
       setUploadedFiles([]);
-
-      // Hide success message after 5 seconds
-      setTimeout(() => {
-        setSubmitSuccess(false);
-      }, 5000);
-
+      setTouchedFields({});
+      setErrors({});
     } catch (error) {
-      console.error('Error sending email:', error);
-      setIsSubmitting(false);
+      console.error("Form submission error:", error);
       
-      // Set user-friendly error message
-      if (error.message.includes('EmailJS configuration')) {
-        setSubmitError('Email service is not configured. Please contact us directly at contact@softscape-solutions.com');
-      } else if (error.text && error.text.includes('rate limit')) {
-        setSubmitError('Too many requests. Please try again in a few minutes.');
-      } else {
-        setSubmitError('Sorry, there was an error sending your consultation request. Please try again or contact us directly at contact@softscape-solutions.com');
+      let errorMessage = "There was an error submitting your form. Please try again or contact us directly.";
+      
+      // Provide more specific error messages
+      if (error.message.includes("credentials need to be configured")) {
+        errorMessage = "Email service is not properly configured. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
+      } else if (error.message.includes("configuration is missing")) {
+        errorMessage = "Email service configuration is missing. Please contact support directly at softscapesolution@outlook.com.";
+      } else if (error.text && error.text.includes("Invalid")) {
+        errorMessage = "Invalid email configuration. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
+      } else if (error.status === 400) {
+        errorMessage = "Invalid form data. Please check your entries and try again.";
+      } else if (error.status === 404) {
+        errorMessage = "Email service not found. Please contact support at softscapesolution@outlook.com.";
       }
-
-      // Clear error message after 10 seconds
-      setTimeout(() => {
-        setSubmitError("");
-      }, 10000);
+      
+      setSubmitError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const projectTypes = [
-    "AI Chatbots & Agents",
-    "Smart Automation Tools",
-    "AI-Enhanced Applications",
-    "Custom AI Solutions",
-    "Multiple Services",
-    "Not Sure Yet",
+    "AI Chatbot Development",
+    "Machine Learning Model",
+    "Data Analytics Platform",
+    "Automation System",
+    "Computer Vision Solution",
+    "Natural Language Processing",
+    "Predictive Analytics",
+    "AI Integration Consulting",
+    "Custom AI Solution",
+    "Other",
   ];
 
   const budgetRanges = [
-    "Under $10,000",
-    "$10,000 - $25,000",
-    "$25,000 - $50,000",
-    "$50,000 - $100,000",
-    "$100,000+",
-    "To be discussed",
+    "Under £5,000",
+    "£5,000 - £15,000",
+    "£15,000 - £50,000",
+    "£50,000 - £100,000",
+    "Over £100,000",
+    "Let's discuss",
   ];
 
   const timelines = [
-    "ASAP (1-2 months)",
+    "ASAP (Rush job)",
+    "1-2 weeks",
+    "1-2 months",
     "3-6 months",
-    "6-12 months",
-    "12+ months",
-    "Flexible",
+    "6+ months",
+    "Flexible timeline",
   ];
 
   if (submitSuccess) {
     return (
-      <div className="relative min-h-screen">
-        <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <Link to="/" className="flex items-center animate-slide-in-left">
-                <img
-                  src="/softscape-logo.png"
-                  alt="SoftScape Solutions Logo"
-                  className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-                />
-                <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                  SoftScape Solutions
-                </div>
-              </Link>
-            </div>
-          </div>
-        </nav>
-
-        <div className="success-container px-4 sm:px-6 lg:px-8">
+      <Layout>
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen flex items-center">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="success-icon">
-              <CheckCircle2 />
+            <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-8">
+              <CheckCircle2 className="h-12 w-12 text-white" />
             </div>
-            <h1 className="success-title">
-              Consultation Request Received!
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Thank You!
             </h1>
-            <p className="success-description">
-              Thank you for your interest! Our team will review your request and
+            <p className="text-xl text-gray-600 mb-8">
+              Your consultation request has been submitted successfully. We'll
               get back to you within 24 hours.
             </p>
-            <div className="success-info-card text-left">
-              <div className="success-info-item">
-                <CheckCircle2 className="success-info-icon green" />
-                <div>
-                  <h3 className="success-info-title">What happens next?</h3>
-                  <p className="success-info-text">
-                    Our AI experts will review your project details and prepare a
-                    customized consultation
-                  </p>
-                </div>
-              </div>
-              <div className="success-info-item">
-                <Clock className="success-info-icon blue" />
-                <div>
-                  <h3 className="success-info-title">Response time</h3>
-                  <p className="success-info-text">
-                    You'll receive a personalized response within 24 hours
-                  </p>
-                </div>
-              </div>
-              <div className="success-info-item">
-                <Calendar className="success-info-icon purple" />
-                <div>
-                  <h3 className="success-info-title">Schedule meeting</h3>
-                  <p className="success-info-text">
-                    We'll provide available time slots for your consultation
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="success-button-group">
-              <Link to="/">
-                <Button size="lg" className="btn-primary-enhanced">
-                  Back to Home
-                </Button>
-              </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="hover-glow"
-                onClick={() => setSubmitSuccess(false)}
-              >
-                Submit Another Request
+            <div className="space-y-4">
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <Link to="/">Return to Home</Link>
               </Button>
+              <p className="text-sm text-gray-500">
+                In the meantime, feel free to explore our other services and
+                solutions.
+              </p>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </Layout>
     );
   }
 
   return (
-    <div className="relative">
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
-              </div>
-            </Link>
-
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                Home
-              </Link>
-              <a href="/#services" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                AI Tools
-              </a>
-              <Link to="/about" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                About
-              </Link>
-            </div>
-
-            <div className="md:hidden">
-              <button onClick={toggleMobileMenu} className="text-gray-600 hover:text-blue-600 transition-colors p-2">
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-
-          {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
-              <div className="px-4 py-4 space-y-4">
-                <Link to="/" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  Home
-                </Link>
-                <a href="/#services" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  AI Tools
-                </a>
-                <Link to="/about" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  About
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
-
+    <Layout>
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center animate-fade-in">
@@ -390,7 +554,9 @@ const BookConsultation = () => {
                   <Users className="h-6 w-6" />
                 </div>
                 <CardTitle className="text-lg">Expert Guidance</CardTitle>
-                <CardDescription>Talk to experienced AI consultants</CardDescription>
+                <CardDescription>
+                  Talk to experienced AI consultants
+                </CardDescription>
               </CardHeader>
             </Card>
 
@@ -400,7 +566,9 @@ const BookConsultation = () => {
                   <Target className="h-6 w-6" />
                 </div>
                 <CardTitle className="text-lg">Tailored Solutions</CardTitle>
-                <CardDescription>Custom recommendations for your business</CardDescription>
+                <CardDescription>
+                  Custom recommendations for your business
+                </CardDescription>
               </CardHeader>
             </Card>
 
@@ -410,7 +578,9 @@ const BookConsultation = () => {
                   <Clock className="h-6 w-6" />
                 </div>
                 <CardTitle className="text-lg">Quick Response</CardTitle>
-                <CardDescription>We'll get back to you within 24 hours</CardDescription>
+                <CardDescription>
+                  We'll get back to you within 24 hours
+                </CardDescription>
               </CardHeader>
             </Card>
           </div>
@@ -419,15 +589,53 @@ const BookConsultation = () => {
 
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleSubmit} className="consultation-form-container space-y-8">
+          {/* Direct Contact Information */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Prefer to Contact Us Directly?
+              </h3>
+              <p className="text-gray-600 mb-4">
+                You can also reach us using the contact information below:
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Mail className="h-5 w-5 text-blue-600" />
+                  <a 
+                    href="mailto:softscapesolution@outlook.com" 
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    softscapesolution@outlook.com
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="h-5 w-5 text-green-600" />
+                  <a 
+                    href="tel:+447789667804" 
+                    className="text-green-600 hover:text-green-800 font-medium"
+                  >
+                    +44 7789667804
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            className="consultation-form-container space-y-8"
+            ref={formRef}
+          >
             <Card className="consultation-card card-enhanced">
               <CardHeader>
                 <CardTitle className="text-2xl">Personal Information</CardTitle>
-                <CardDescription>Tell us about yourself so we can get in touch</CardDescription>
+                <CardDescription>
+                  Tell us about yourself so we can get in touch
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div>
+                  <div ref={formRefs.name}>
                     <label className="form-label">
                       Full Name <span className="required">*</span>
                     </label>
@@ -436,18 +644,21 @@ const BookConsultation = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className={`form-input ${errors.name ? "error" : ""}`}
+                      onBlur={handleFieldBlur}
+                      className={getFieldClass("name", "form-input")}
                       placeholder="John Doe"
+                      aria-invalid={errors.name ? "true" : "false"}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                     />
                     {errors.name && (
-                      <p className="error-message">
+                      <p className="error-message" id="name-error" role="alert">
                         <AlertCircle />
                         {errors.name}
                       </p>
                     )}
                   </div>
 
-                  <div>
+                  <div ref={formRefs.email}>
                     <label className="form-label">
                       Email Address <span className="required">*</span>
                     </label>
@@ -456,11 +667,20 @@ const BookConsultation = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`form-input ${errors.email ? "error" : ""}`}
+                      onBlur={handleFieldBlur}
+                      className={getFieldClass("email", "form-input")}
                       placeholder="john@company.com"
+                      aria-invalid={errors.email ? "true" : "false"}
+                      aria-describedby={
+                        errors.email ? "email-error" : undefined
+                      }
                     />
                     {errors.email && (
-                      <p className="error-message">
+                      <p
+                        className="error-message"
+                        id="email-error"
+                        role="alert"
+                      >
                         <AlertCircle />
                         {errors.email}
                       </p>
@@ -469,7 +689,7 @@ const BookConsultation = () => {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div>
+                  <div ref={formRefs.phone}>
                     <label className="form-label">
                       Phone Number <span className="required">*</span>
                     </label>
@@ -478,40 +698,79 @@ const BookConsultation = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className={`form-input ${errors.phone ? "error" : ""}`}
-                      placeholder="+1 (555) 123-4567"
+                      onBlur={handleFieldBlur}
+                      className={getFieldClass("phone", "form-input")}
+                      placeholder="+966 5 1234 5678"
+                      aria-invalid={errors.phone ? "true" : "false"}
+                      aria-describedby={
+                        errors.phone ? "phone-error" : undefined
+                      }
                     />
                     {errors.phone && (
-                      <p className="error-message">
+                      <p
+                        className="error-message"
+                        id="phone-error"
+                        role="alert"
+                      >
                         <AlertCircle />
                         {errors.phone}
                       </p>
                     )}
                   </div>
 
-                  <div>
+                  <div ref={formRefs.company}>
                     <label className="form-label">Company Name</label>
                     <input
                       type="text"
                       name="company"
                       value={formData.company}
                       onChange={handleInputChange}
-                      className="form-input"
+                      onBlur={handleFieldBlur}
+                      className={getFieldClass("company", "form-input")}
                       placeholder="Your Company Inc."
+                      aria-invalid={errors.company ? "true" : "false"}
+                      aria-describedby={
+                        errors.company ? "company-error" : undefined
+                      }
                     />
+                    {errors.company && (
+                      <p
+                        className="error-message"
+                        id="company-error"
+                        role="alert"
+                      >
+                        <AlertCircle />
+                        {errors.company}
+                      </p>
+                    )}
                   </div>
                 </div>
 
-                <div>
+                <div ref={formRefs.industry}>
                   <label className="form-label">Industry</label>
                   <input
                     type="text"
                     name="industry"
                     value={formData.industry}
                     onChange={handleInputChange}
-                    className="form-input"
+                    onBlur={handleFieldBlur}
+                    className={getFieldClass("industry", "form-input")}
                     placeholder="e.g., Healthcare, Finance, Retail"
+                    aria-invalid={errors.industry ? "true" : "false"}
+                    aria-describedby={
+                      errors.industry ? "industry-error" : undefined
+                    }
                   />
+                  {errors.industry && (
+                    <p
+                      className="error-message"
+                      id="industry-error"
+                      role="alert"
+                    >
+                      <AlertCircle />
+                      {errors.industry}
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -519,10 +778,12 @@ const BookConsultation = () => {
             <Card className="consultation-card card-enhanced">
               <CardHeader>
                 <CardTitle className="text-2xl">Project Information</CardTitle>
-                <CardDescription>Help us understand your AI project needs</CardDescription>
+                <CardDescription>
+                  Help us understand your AI project needs
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div>
+                <div ref={formRefs.projectType}>
                   <label className="form-label">
                     Project Type <span className="required">*</span>
                   </label>
@@ -530,7 +791,12 @@ const BookConsultation = () => {
                     name="projectType"
                     value={formData.projectType}
                     onChange={handleInputChange}
-                    className={`form-select ${errors.projectType ? "error" : ""}`}
+                    onBlur={handleFieldBlur}
+                    className={getFieldClass("projectType", "form-select")}
+                    aria-invalid={errors.projectType ? "true" : "false"}
+                    aria-describedby={
+                      errors.projectType ? "projectType-error" : undefined
+                    }
                   >
                     <option value="">Select a project type</option>
                     {projectTypes.map((type) => (
@@ -540,7 +806,11 @@ const BookConsultation = () => {
                     ))}
                   </select>
                   {errors.projectType && (
-                    <p className="error-message">
+                    <p
+                      className="error-message"
+                      id="projectType-error"
+                      role="alert"
+                    >
                       <AlertCircle />
                       {errors.projectType}
                     </p>
@@ -583,26 +853,47 @@ const BookConsultation = () => {
                   </div>
                 </div>
 
-                <div>
+                <div ref={formRefs.projectDetails}>
                   <label className="form-label">
-                    Project Details / Requirements <span className="required">*</span>
+                    Project Details / Requirements{" "}
+                    <span className="required">*</span>
                   </label>
                   <textarea
                     name="projectDetails"
                     value={formData.projectDetails}
                     onChange={handleInputChange}
+                    onBlur={handleFieldBlur}
                     rows="6"
-                    className={`form-textarea ${errors.projectDetails ? "error" : ""}`}
+                    className={getFieldClass("projectDetails", "form-textarea")}
                     placeholder="Please describe your project in detail. Include your goals, challenges, current situation, and what you hope to achieve with AI. The more details you provide, the better we can prepare for our consultation."
+                    aria-invalid={errors.projectDetails ? "true" : "false"}
+                    aria-describedby={
+                      errors.projectDetails
+                        ? "projectDetails-error"
+                        : "projectDetails-help"
+                    }
                   />
                   <div className="character-counter">
                     {errors.projectDetails && (
-                      <p className="error-message">
+                      <p
+                        className="error-message"
+                        id="projectDetails-error"
+                        role="alert"
+                      >
                         <AlertCircle />
                         {errors.projectDetails}
                       </p>
                     )}
-                    <p className="character-count">
+                    <p
+                      className={`character-count ${
+                        formData.projectDetails.length >= 50
+                          ? "success"
+                          : formData.projectDetails.length >= 25
+                          ? "warning"
+                          : ""
+                      }`}
+                      id="projectDetails-help"
+                    >
                       {formData.projectDetails.length} characters (min. 50)
                     </p>
                   </div>
@@ -629,7 +920,9 @@ const BookConsultation = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => document.getElementById("file-upload").click()}
+                      onClick={() =>
+                        document.getElementById("file-upload").click()
+                      }
                     >
                       Choose Files
                     </Button>
@@ -641,7 +934,9 @@ const BookConsultation = () => {
                         <div key={index} className="uploaded-file-item">
                           <div className="uploaded-file-info">
                             <CheckCircle2 className="uploaded-file-icon" />
-                            <span className="uploaded-file-name">{file.name}</span>
+                            <span className="uploaded-file-name">
+                              {file.name}
+                            </span>
                             <span className="uploaded-file-size">
                               ({(file.size / 1024 / 1024).toFixed(2)} MB)
                             </span>
@@ -666,16 +961,36 @@ const BookConsultation = () => {
                   )}
                 </div>
 
-                <div>
+                <div ref={formRefs.additionalNotes}>
                   <label className="form-label">Additional Notes</label>
                   <textarea
                     name="additionalNotes"
                     value={formData.additionalNotes}
                     onChange={handleInputChange}
+                    onBlur={handleFieldBlur}
                     rows="4"
-                    className="form-textarea"
+                    className={getFieldClass(
+                      "additionalNotes",
+                      "form-textarea"
+                    )}
                     placeholder="Any other information you'd like to share? Preferred consultation times? Specific questions?"
+                    aria-invalid={errors.additionalNotes ? "true" : "false"}
+                    aria-describedby={
+                      errors.additionalNotes
+                        ? "additionalNotes-error"
+                        : undefined
+                    }
                   />
+                  {errors.additionalNotes && (
+                    <p
+                      className="error-message"
+                      id="additionalNotes-error"
+                      role="alert"
+                    >
+                      <AlertCircle />
+                      {errors.additionalNotes}
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -706,52 +1021,14 @@ const BookConsultation = () => {
                 )}
               </button>
               <p className="privacy-text">
-                By submitting this form, you agree to our privacy policy and terms of service
+                By submitting this form, you agree to our privacy policy and
+                terms of service
               </p>
             </div>
           </form>
         </div>
       </section>
-
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Brain className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">SoftScape AI Solutions</span>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Revolutionizing businesses through cutting-edge AI technology and intelligent automation.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
-                <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li>AI Tools</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>consult@softscape.solutions</li>
-                <li>+1 (555) AI-CONSULT</li>
-                <li>LinkedIn</li>
-                <li>Twitter</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 SoftScape-Solutions. Powering the future with artificial intelligence.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };
 

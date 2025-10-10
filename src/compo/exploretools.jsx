@@ -32,9 +32,14 @@ const ExploreTools = () => {
       id: 1,
       title: "Intelligent Customer Support Bot",
       category: "chatbots",
-      description: "24/7 AI-powered customer support that handles inquiries, resolves issues, and learns from every interaction.",
+      description:
+        "24/7 AI-powered customer support that handles inquiries, resolves issues, and learns from every interaction.",
       icon: Bot,
-      features: ["Natural Language Processing", "Multi-language Support", "Self-Learning"],
+      features: [
+        "Natural Language Processing",
+        "Multi-language Support",
+        "Self-Learning",
+      ],
       link: "/ai-chatbots",
       gradient: "from-blue-500 to-cyan-500",
     },
@@ -42,7 +47,8 @@ const ExploreTools = () => {
       id: 2,
       title: "Sales Assistant AI",
       category: "chatbots",
-      description: "Conversational AI that qualifies leads, schedules meetings, and assists in the sales process.",
+      description:
+        "Conversational AI that qualifies leads, schedules meetings, and assists in the sales process.",
       icon: MessageCircle,
       features: ["Lead Qualification", "Meeting Scheduling", "CRM Integration"],
       link: "/ai-chatbots",
@@ -52,7 +58,8 @@ const ExploreTools = () => {
       id: 3,
       title: "Document Processing Automation",
       category: "automation",
-      description: "Automatically extract, classify, and process documents with AI-powered OCR and data extraction.",
+      description:
+        "Automatically extract, classify, and process documents with AI-powered OCR and data extraction.",
       icon: Workflow,
       features: ["OCR Technology", "Data Extraction", "Auto-Classification"],
       link: "/smart-automation",
@@ -62,7 +69,8 @@ const ExploreTools = () => {
       id: 4,
       title: "Workflow Automation Engine",
       category: "automation",
-      description: "Connect your apps and automate repetitive tasks with intelligent workflow automation.",
+      description:
+        "Connect your apps and automate repetitive tasks with intelligent workflow automation.",
       icon: Zap,
       features: ["1000+ Integrations", "Smart Triggers", "No-Code Builder"],
       link: "/smart-automation",
@@ -72,9 +80,14 @@ const ExploreTools = () => {
       id: 6,
       title: "Predictive Analytics Platform",
       category: "applications",
-      description: "Web-based analytics platform powered by machine learning for business intelligence.",
+      description:
+        "Web-based analytics platform powered by machine learning for business intelligence.",
       icon: Sparkles,
-      features: ["Real-time Insights", "Predictive Models", "Custom Dashboards"],
+      features: [
+        "Real-time Insights",
+        "Predictive Models",
+        "Custom Dashboards",
+      ],
       link: "/ai-applications",
       gradient: "from-pink-500 to-purple-500",
     },
@@ -82,7 +95,8 @@ const ExploreTools = () => {
       id: 8,
       title: "Enterprise AI Integration",
       category: "custom",
-      description: "Seamlessly integrate AI capabilities into your existing enterprise systems and workflows.",
+      description:
+        "Seamlessly integrate AI capabilities into your existing enterprise systems and workflows.",
       icon: Brain,
       features: ["Legacy Integration", "Scalable", "Enterprise Security"],
       link: "/custom-ai",
@@ -98,13 +112,13 @@ const ExploreTools = () => {
     { id: "custom", name: "Custom Solutions" },
   ];
 
-  const filteredTools = selectedCategory === "all" 
-    ? tools 
-    : tools.filter(tool => tool.category === selectedCategory);
+  const filteredTools =
+    selectedCategory === "all"
+      ? tools
+      : tools.filter((tool) => tool.category === selectedCategory);
 
   return (
     <Layout>
-
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
@@ -117,7 +131,8 @@ const ExploreTools = () => {
               <span className="gradient-text-ai block">AI Tools</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Discover our comprehensive suite of AI-powered tools designed to transform your business operations and drive innovation.
+              Discover our comprehensive suite of AI-powered tools designed to
+              transform your business operations and drive innovation.
             </p>
           </div>
 
@@ -145,14 +160,21 @@ const ExploreTools = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
             {filteredTools.map((tool, index) => (
-              <Card key={tool.id} className="card-enhanced hover-lift animate-slide-in">
+              <Card
+                key={tool.id}
+                className="card-enhanced hover-lift animate-slide-in"
+              >
                 <CardHeader>
                   <div className="flex items-start gap-4">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${tool.gradient} rounded-xl flex items-center justify-center flex-shrink-0 animate-pulse-glow`}>
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-r ${tool.gradient} rounded-xl flex items-center justify-center flex-shrink-0 animate-pulse-glow`}
+                    >
                       <tool.icon className="h-8 w-8 text-white" />
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-2xl mb-2">{tool.title}</CardTitle>
+                      <CardTitle className="text-2xl mb-2">
+                        {tool.title}
+                      </CardTitle>
                       <CardDescription className="text-base mb-4">
                         {tool.description}
                       </CardDescription>
@@ -192,12 +214,20 @@ const ExploreTools = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/book-consultation">
-              <Button size="lg" variant="secondary" className="text-lg px-8 py-3 btn-primary-enhanced">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="text-lg px-8 py-3 btn-primary-enhanced"
+              >
                 Book Consultation
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-blue-600">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-blue-600"
+              >
                 Contact Us
               </Button>
             </Link>

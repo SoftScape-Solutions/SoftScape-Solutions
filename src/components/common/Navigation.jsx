@@ -12,7 +12,7 @@ const Navigation = ({
 }) => {
   const location = useLocation();
   const currentPath = location.pathname;
-  
+
   // Get navigation links based on current page
   const getNavigationLinks = () => {
     return PAGE_NAVIGATION[currentPath] || NAVIGATION_LINKS;
@@ -66,7 +66,7 @@ const Navigation = ({
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-            {desktopLinks.map(link => renderNavLink(link))}
+            {desktopLinks.map((link) => renderNavLink(link))}
           </div>
 
           {/* Mobile menu button */}
@@ -89,7 +89,7 @@ const Navigation = ({
         {isMobileMenuOpen && (
           <div className="mobile-menu-container">
             <div className="px-4 py-4 space-y-4">
-              {mobileLinks.map(link => renderNavLink(link, true))}
+              {mobileLinks.map((link) => renderNavLink(link, true))}
             </div>
           </div>
         )}

@@ -14,8 +14,6 @@ import {
   Zap,
   Clock,
   TrendingUp,
-  Menu,
-  X,
   CheckCircle2,
   ArrowRight,
   Sparkles,
@@ -23,16 +21,11 @@ import {
   BarChart3,
   RefreshCw,
 } from "lucide-react";
+import Layout from "../components/common/Layout";
 import "./landingPage.css";
 import "./smartAutomation.css";
 
 const SmartAutomation = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
   const automationProcesses = [
     {
       title: "Identify",
@@ -61,65 +54,7 @@ const SmartAutomation = () => {
   ];
 
   return (
-    <div className="relative">
-      {/* Navigation */}
-      <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center animate-slide-in-left">
-              <img
-                src="/softscape-logo.png"
-                alt="SoftScape Solutions Logo"
-                className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
-              />
-              <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
-              </div>
-            </Link>
-
-            <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                Home
-              </Link>
-              <a href="/#services" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                AI Tools
-              </a>
-              <Link to="/about" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                About
-              </Link>
-              <a href="/#contact" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                Contact
-              </a>
-            </div>
-
-            <div className="md:hidden">
-              <button onClick={toggleMobileMenu} className="text-gray-600 hover:text-blue-600 transition-colors p-2">
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-
-          {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
-              <div className="px-4 py-4 space-y-4">
-                <Link to="/" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  Home
-                </Link>
-                <a href="/#services" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  AI Tools
-                </a>
-                <Link to="/about" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  About
-                </Link>
-                <a href="/#contact" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  Contact
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
-
+    <Layout>
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto">
@@ -132,7 +67,9 @@ const SmartAutomation = () => {
               <span className="gradient-text-ai block">Tools</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              AI-powered workflow automation that eliminates repetitive tasks, boosts productivity by 70%, and frees your team to focus on what matters most
+              AI-powered workflow automation that eliminates repetitive tasks,
+              boosts productivity by 70%, and frees your team to focus on what
+              matters most
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="btn-primary-enhanced">
@@ -167,7 +104,8 @@ const SmartAutomation = () => {
                 </div>
                 <CardTitle className="text-xl">Save 20+ Hours Weekly</CardTitle>
                 <CardDescription className="text-base">
-                  Automate repetitive tasks and reclaim valuable time for strategic work
+                  Automate repetitive tasks and reclaim valuable time for
+                  strategic work
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -177,7 +115,9 @@ const SmartAutomation = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
                   <TrendingUp className="h-8 w-8 text-white" />
                 </div>
-                <CardTitle className="text-xl">70% Productivity Boost</CardTitle>
+                <CardTitle className="text-xl">
+                  70% Productivity Boost
+                </CardTitle>
                 <CardDescription className="text-base">
                   Accelerate workflows and accomplish more with less effort
                 </CardDescription>
@@ -213,17 +153,27 @@ const SmartAutomation = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {automationProcesses.map((process, index) => (
-              <Card key={index} className="card-enhanced hover-lift animate-slide-in text-center">
+              <Card
+                key={index}
+                className="card-enhanced hover-lift animate-slide-in text-center"
+              >
                 <CardHeader>
-                  <div className={`w-16 h-16 bg-gradient-to-r ${
-                    process.color === 'blue' ? 'from-blue-500 to-cyan-500' :
-                    process.color === 'purple' ? 'from-purple-500 to-pink-500' :
-                    process.color === 'green' ? 'from-green-500 to-emerald-500' :
-                    'from-orange-500 to-red-500'
-                  } rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow`}>
+                  <div
+                    className={`w-16 h-16 bg-gradient-to-r ${
+                      process.color === "blue"
+                        ? "from-blue-500 to-cyan-500"
+                        : process.color === "purple"
+                        ? "from-purple-500 to-pink-500"
+                        : process.color === "green"
+                        ? "from-green-500 to-emerald-500"
+                        : "from-orange-500 to-red-500"
+                    } rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow`}
+                  >
                     <process.icon className="h-8 w-8 text-white" />
                   </div>
-                  <CardTitle className="text-xl mb-2">{process.title}</CardTitle>
+                  <CardTitle className="text-xl mb-2">
+                    {process.title}
+                  </CardTitle>
                   <CardDescription className="text-base">
                     {process.description}
                   </CardDescription>
@@ -252,7 +202,8 @@ const SmartAutomation = () => {
                       Workflow Integration
                     </h3>
                     <p className="text-gray-600">
-                      Connect seamlessly with 1000+ apps and services including Slack, Gmail, Salesforce, and more
+                      Connect seamlessly with 1000+ apps and services including
+                      Slack, Gmail, Salesforce, and more
                     </p>
                   </div>
                 </div>
@@ -266,7 +217,8 @@ const SmartAutomation = () => {
                       Smart Triggers
                     </h3>
                     <p className="text-gray-600">
-                      AI-powered triggers that know when to act based on complex conditions and patterns
+                      AI-powered triggers that know when to act based on complex
+                      conditions and patterns
                     </p>
                   </div>
                 </div>
@@ -280,7 +232,8 @@ const SmartAutomation = () => {
                       Real-time Analytics
                     </h3>
                     <p className="text-gray-600">
-                      Track performance, identify bottlenecks, and optimize your automated workflows
+                      Track performance, identify bottlenecks, and optimize your
+                      automated workflows
                     </p>
                   </div>
                 </div>
@@ -294,7 +247,8 @@ const SmartAutomation = () => {
                       No-Code Builder
                     </h3>
                     <p className="text-gray-600">
-                      Create complex automations with our intuitive drag-and-drop interface
+                      Create complex automations with our intuitive
+                      drag-and-drop interface
                     </p>
                   </div>
                 </div>
@@ -311,7 +265,10 @@ const SmartAutomation = () => {
                       <span className="font-bold">75%</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-3">
-                      <div className="bg-white rounded-full h-3" style={{ width: '75%' }}></div>
+                      <div
+                        className="bg-white rounded-full h-3"
+                        style={{ width: "75%" }}
+                      ></div>
                     </div>
                   </div>
                   <div>
@@ -320,7 +277,10 @@ const SmartAutomation = () => {
                       <span className="font-bold">95%</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-3">
-                      <div className="bg-white rounded-full h-3" style={{ width: '95%' }}></div>
+                      <div
+                        className="bg-white rounded-full h-3"
+                        style={{ width: "95%" }}
+                      ></div>
                     </div>
                   </div>
                   <div>
@@ -329,7 +289,10 @@ const SmartAutomation = () => {
                       <span className="font-bold">60%</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-3">
-                      <div className="bg-white rounded-full h-3" style={{ width: '60%' }}></div>
+                      <div
+                        className="bg-white rounded-full h-3"
+                        style={{ width: "60%" }}
+                      ></div>
                     </div>
                   </div>
                   <div>
@@ -338,7 +301,10 @@ const SmartAutomation = () => {
                       <span className="font-bold">85%</span>
                     </div>
                     <div className="w-full bg-white/20 rounded-full h-3">
-                      <div className="bg-white rounded-full h-3" style={{ width: '85%' }}></div>
+                      <div
+                        className="bg-white rounded-full h-3"
+                        style={{ width: "85%" }}
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -360,62 +326,29 @@ const SmartAutomation = () => {
             Ready to Automate Your Workflow?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of businesses saving time and money with intelligent automation
+            Join thousands of businesses saving time and money with intelligent
+            automation
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-3 btn-primary-enhanced">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="text-lg px-8 py-3 btn-primary-enhanced"
+            >
               Start Free Trial
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-blue-600">
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-blue-600"
+            >
               Schedule Demo
             </Button>
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Brain className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">
-                  SoftScape AI Solutions
-                </span>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Revolutionizing businesses through cutting-edge AI technology and intelligent automation.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
-                <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li>AI Tools</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>automation@softscape.solutions</li>
-                <li>+1 (555) AUTOMATE</li>
-                <li>LinkedIn</li>
-                <li>Twitter</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 SoftScape AI Solutions. Powering the future with artificial intelligence.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };
 
