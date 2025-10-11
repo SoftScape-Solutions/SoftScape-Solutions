@@ -18,9 +18,9 @@ import {
   BarChart3,
   Activity
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import consultationStorage from '../utils/consultationStorage';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import consultationStorage from "../../utils/consultationStorage";
 import './TeamManagement.css';
 
 const TeamManagement = ({ currentAdmin }) => {

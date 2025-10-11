@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Brain,
   Workflow,
@@ -21,8 +21,10 @@ import {
   BarChart3,
   RefreshCw,
 } from "lucide-react";
-import Layout from "../components/common/Layout";
-import "./landingPage.css";
+import Layout from "../../components/common/Layout";
+import { SERVICES_CONFIG, COMPANY_INFO } from "../../config";
+import "../LandingPage/LandingPage.css";
+import "./SmartAutomation.css";
 import "./smartAutomation.css";
 
 const SmartAutomation = () => {

@@ -18,10 +18,10 @@ import {
   Key,
   Server
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import githubBackendService from '../utils/githubBackendService';
-import consultationStorage from '../utils/consultationStorage';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import githubBackendService from "../../utils/githubBackendService";
+import consultationStorage from "../../utils/consultationStorage";
 import './GitHubManagement.css';
 
 const GitHubManagement = ({ currentAdmin }) => {

@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Brain,
   Calendar,
@@ -21,10 +21,10 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
-import consultationStorage from "../utils/consultationStorage";
-import Layout from "../components/common/Layout";
-import "./landingPage.css";
-import "./bookConsultation.css";
+import consultationStorage from "../../utils/consultationStorage";
+import Layout from "../../components/common/Layout";
+import { CONTACT_INFO, APP_CONFIG, COMPANY_INFO } from "../../config";
+import "./BookConsultation.css";
 
 // Validation utilities with best practices
 const ValidationUtils = {
@@ -128,8 +128,8 @@ const ValidationUtils = {
       return "Please provide at least 50 characters describing your project";
     }
 
-    if (details.trim().length > 2000) {
-      return "Project details must be less than 2000 characters";
+    if (details.trim().length > APP_CONFIG.validation.projectDetails.maxLength) {
+      return `Project details must be less than ${APP_CONFIG.validation.projectDetails.maxLength} characters`;
     }
 
     // Check for meaningful content (not just repeated characters)
@@ -292,7 +292,7 @@ const BookConsultation = () => {
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     const validFiles = files.filter((file) => {
-      const maxSize = 10 * 1024 * 1024;
+      const maxSize = APP_CONFIG.upload.maxFileSize;
       return file.size <= maxSize;
     });
 
@@ -449,19 +449,19 @@ const BookConsultation = () => {
       // Provide more specific error messages
       if (error.message.includes("credentials need to be configured")) {
         errorMessage =
-          "Email service is not properly configured. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
+          "Email service is not properly configured. Please contact support at " + CONTACT_INFO.email.primary + " or call " + CONTACT_INFO.phone.support + ".";
       } else if (error.message.includes("configuration is missing")) {
         errorMessage =
-          "Email service configuration is missing. Please contact support directly at softscapesolution@outlook.com.";
+          `Email service configuration is missing. Please contact support directly at ${CONTACT_INFO.email.primary}.`;
       } else if (error.text && error.text.includes("Invalid")) {
         errorMessage =
-          "Invalid email configuration. Please contact support at softscapesolution@outlook.com or call +44 7789667804.";
+          `Invalid email configuration. Please contact support at ${CONTACT_INFO.email.primary} or call ${CONTACT_INFO.phone.primary}.`;
       } else if (error.status === 400) {
         errorMessage =
           "Invalid form data. Please check your entries and try again.";
       } else if (error.status === 404) {
         errorMessage =
-          "Email service not found. Please contact support at softscapesolution@outlook.com.";
+          `Email service not found. Please contact support at ${CONTACT_INFO.email.primary}.`;
       }
 
       setSubmitError(errorMessage);
@@ -543,7 +543,7 @@ const BookConsultation = () => {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <h3 className="font-semibold text-amber-800 mb-2">📞 Need Immediate Help?</h3>
                 <p className="text-sm text-amber-700">
-                  <strong>Email:</strong> softscapesolution@outlook.com<br/>
+                  <strong>Email:</strong> {CONTACT_INFO.email.primary}<br/>
                   <strong>Phone:</strong> +44 7789667804
                 </p>
               </div>
@@ -639,10 +639,10 @@ const BookConsultation = () => {
                 <div className="flex items-center gap-2">
                   <Mail className="h-5 w-5 text-blue-600" />
                   <a
-                    href="mailto:softscapesolution@outlook.com"
+                    href={`mailto:${CONTACT_INFO.email.primary}`}
                     className="text-blue-600 hover:text-blue-800 font-medium"
                   >
-                    softscapesolution@outlook.com
+                    {CONTACT_INFO.email.primary}
                   </a>
                 </div>
                 <div className="flex items-center gap-2">

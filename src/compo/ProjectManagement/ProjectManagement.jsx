@@ -20,10 +20,10 @@ import {
   Target,
   TrendingUp
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import consultationStorage from '../utils/consultationStorage';
-import githubBackendService from '../utils/githubBackendService';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import consultationStorage from "../../utils/consultationStorage";
+import githubBackendService from "../../utils/githubBackendService";
 import './ProjectManagement.css';
 
 const ProjectManagement = () => {

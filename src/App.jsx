@@ -4,18 +4,18 @@ import { ROUTES } from "./constants/routes";
 import ScrollToTop from "./components/common/ScrollToTop";
 
 // Lazy load components for better performance
-import LandingPage from "./compo/landingPage";
-import About from "./compo/about";
-import AIChatbots from "./compo/aiChatbots";
-import SmartAutomation from "./compo/smartAutomation";
-import AIApplications from "./compo/aiApplications";
-import CustomAI from "./compo/customAI";
-import BookConsultation from "./compo/bookconsultation";
-import Contact from "./compo/contact";
-import JoinTeam from "./compo/jointeam";
-import AIVision from "./compo/aiVision";
-import ExploreTools from "./compo/exploretools";
-import AdminPanel from "./compo/AdminPanel";
+import LandingPage from "./compo/LandingPage/LandingPage";
+import About from "./compo/About/About";
+import AIChatbots from "./compo/AIChatbots/AIChatbots";
+import SmartAutomation from "./compo/SmartAutomation/SmartAutomation";
+import AIApplications from "./compo/AIApplications/AIApplications";
+import CustomAI from "./compo/CustomAI/CustomAI";
+import BookConsultation from "./compo/BookConsultation/BookConsultation";
+import Contact from "./compo/Contact/Contact";
+import JoinTeam from "./compo/JoinTeam/JoinTeam";
+import AIVision from "./compo/AIVision/AIVision";
+import ExploreTools from "./compo/ExploreTools/ExploreTools";
+import AdminPanel from "./compo/AdminPanel/AdminPanel";
 
 import "./App.css";
 

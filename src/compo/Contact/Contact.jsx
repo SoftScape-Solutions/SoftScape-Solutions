@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Brain,
   Mail,
@@ -20,7 +20,8 @@ import {
   Github,
   Linkedin,
 } from "lucide-react";
-import "./contact.css";
+import { CONTACT_INFO, COMPANY_INFO } from "../../config";
+import "./Contact.css";
 
 const Contact = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,45 +30,28 @@ const Contact = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email",
-      value: "softscapesolution@outlook.com",
-      link: "mailto:softscapesolution@outlook.com",
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      value: "+966 XXX XXX XXXX",
-      link: "tel:+966XXXXXXXXX",
-    },
-    {
-      icon: MapPin,
-      title: "Location",
-      value: "Jeddah, Mecca Region, Saudi Arabia",
-      link: null,
-    },
+  const contactInfo = CONTACT_INFO.quickContact.concat([
     {
       icon: Clock,
-      title: "Business Hours",
-      value: "Sun - Thu: 9:00 AM - 6:00 PM",
-      link: null,
-    },
-  ];
+      type: "hours",
+      label: "Business Hours",
+      value: `${CONTACT_INFO.businessHours.workDays}: ${CONTACT_INFO.businessHours.hours}`,
+      link: null
+    }
+  ]);
 
   const socialLinks = [
     {
       icon: Github,
       name: "GitHub",
-      url: "https://github.com/softscape-solutions",
-      username: "@softscape-solutions",
+      url: CONTACT_INFO.social.github.url,
+      username: CONTACT_INFO.social.github.username,
     },
     {
       icon: Linkedin,
-      name: "LinkedIn",
-      url: "https://linkedin.com/company/softscape-solutions",
-      username: "SoftScape Solutions",
+      name: "LinkedIn", 
+      url: CONTACT_INFO.social.linkedin.url,
+      username: CONTACT_INFO.social.linkedin.username,
     },
   ];
 
@@ -84,7 +68,7 @@ const Contact = () => {
                 className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
               />
               <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
-                SoftScape Solutions
+                {COMPANY_INFO.name}
               </div>
             </Link>
 
@@ -159,7 +143,7 @@ const Contact = () => {
                   <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
                     <info.icon className="h-8 w-8 text-white" />
                   </div>
-                  <CardTitle className="text-xl mb-2">{info.title}</CardTitle>
+                  <CardTitle className="text-xl mb-2">{info.label || info.title}</CardTitle>
                   {info.link ? (
                     <a href={info.link} className="text-blue-600 hover:text-blue-700 transition-colors">
                       {info.value}
@@ -245,7 +229,7 @@ const Contact = () => {
                   <Brain className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">
-                  SoftScape AI Solutions
+                  {COMPANY_INFO.name}
                 </span>
               </div>
               <p className="text-gray-400 mb-4 max-w-md">
@@ -263,14 +247,14 @@ const Contact = () => {
             <div>
               <h3 className="text-white font-semibold mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-400">
-                <li>softscapesolution@outlook.com</li>
-                <li>+966 XXX XXX XXXX</li>
-                <li>Jeddah, Saudi Arabia</li>
+                <li>{CONTACT_INFO.email.primary}</li>
+                <li>{CONTACT_INFO.phone.primary}</li>
+                <li>{CONTACT_INFO.address.city}, {CONTACT_INFO.address.country}</li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 SoftScape AI Solutions. Powering the future with artificial intelligence.</p>
+            <p>&copy; {COMPANY_INFO.copyright.year} {COMPANY_INFO.copyright.text}</p>
           </div>
         </div>
       </footer>
