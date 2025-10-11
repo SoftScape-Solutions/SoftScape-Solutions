@@ -128,9 +128,7 @@ class GitHubService {
   // Create a file in the repository
   async createFile(repoName, path, content, message) {
     // Encode content as base64 (Unicode-safe)
-    const utf8Bytes = new TextEncoder().encode(content);
-    const binaryString = Array.from(utf8Bytes, byte => String.fromCharCode(byte)).join('');
-    const encodedContent = btoa(binaryString);
+    const encodedContent = btoa(unescape(encodeURIComponent(content)));
     
     return await this.makeRequest(`/repos/${this.organization}/${repoName}/contents/${path}`, {
       method: 'PUT',
