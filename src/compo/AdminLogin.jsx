@@ -150,7 +150,7 @@ const AdminLogin = ({ onLogin }) => {
             </form>
 
             <div className="login-footer">
-              {process.env.NODE_ENV !== 'production' && (
+              {import.meta.env.MODE !== 'production' && (
                 <div className="default-credentials">
                   <h4>Default Credentials:</h4>
                   <p><strong>Username:</strong> admin</p>
