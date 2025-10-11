@@ -453,7 +453,7 @@ class GitHubBackendService {
 
   // Create file in repository
   async createFile(repoName, path, content, message) {
-    const encodedContent = btoa(decodeURIComponent(encodeURIComponent(content)));
+    const encodedContent = btoa(unescape(encodeURIComponent(content)));
     
     return await this.makeRequest(`/repos/${this.organization}/${repoName}/contents/${path}`, {
       method: 'PUT',
