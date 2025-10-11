@@ -217,7 +217,7 @@ class ConsultationStorageService {
 
   // Generate unique ID
   generateId() {
-    return 'consultation_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'consultation_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
   }
 
   // Admin authentication
