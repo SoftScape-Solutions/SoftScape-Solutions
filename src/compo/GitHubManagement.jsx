@@ -71,6 +71,11 @@ const GitHubManagement = ({ currentAdmin }) => {
   const handleConfigureToken = async (e) => {
     e.preventDefault();
     
+    if (!tokenForm.token || tokenForm.token.trim() === '') {
+      alert('Please enter a GitHub token');
+      return;
+    }
+    
     try {
       setLoading(true);
       const result = await githubBackendService.configureOrganizationToken(
@@ -79,15 +84,65 @@ const GitHubManagement = ({ currentAdmin }) => {
       );
       
       if (result.success) {
-        alert('GitHub organization token configured successfully!');
+        let message = 'GitHub organization token configured successfully!';
+        
+        if (result.warnings && result.warnings.length > 0) {
+          message += '\n\nWarnings:\n' + result.warnings.join('\n');
+        }
+        
+        if (!result.organizationAccess) {
+          message += '\n\nNote: Limited organization access. You may need to:\n' +
+                    '1. Be added to the SoftScape-Solutions organization\n' +
+                    '2. Grant organization permissions to your token\n' +
+                    '3. Contact the organization owner';
+        }
+        
+        alert(message);
         setShowTokenConfig(false);
         setTokenForm({ token: '', confirmRemove: false });
         await loadGitHubData();
       } else {
-        alert('Error configuring token: ' + result.error);
+        alert('Error configuring token:\n\n' + result.error + '\n\nPlease check:\n' +
+              '1. Token is valid and not expired\n' +
+              '2. Token has required permissions (repo, admin:org, user)\n' +
+              '3. You have access to the GitHub account');
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert('Error: ' + error.message + '\n\nPlease check your internet connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTestToken = async () => {
+    if (!tokenForm.token || tokenForm.token.trim() === '') {
+      alert('Please enter a GitHub token to test');
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      const validation = await githubBackendService.validateToken(tokenForm.token.trim());
+      
+      if (validation.valid) {
+        let message = '✅ Token is valid!\n\n';
+        message += `User: ${validation.user.login}\n`;
+        message += `Organization Access: ${validation.organizationAccess ? 'Yes' : 'No'}\n`;
+        
+        if (validation.warnings && validation.warnings.length > 0) {
+          message += '\nWarnings:\n' + validation.warnings.join('\n');
+        }
+        
+        if (validation.organizationError) {
+          message += '\nOrganization Issue:\n' + validation.organizationError;
+        }
+        
+        alert(message);
+      } else {
+        alert('❌ Token validation failed:\n\n' + validation.error);
+      }
+    } catch (error) {
+      alert('❌ Test failed:\n\n' + error.message);
     } finally {
       setLoading(false);
     }
@@ -469,8 +524,11 @@ const GitHubManagement = ({ currentAdmin }) => {
                     <Button type="button" variant="outline" onClick={() => setShowTokenConfig(false)}>
                       Cancel
                     </Button>
-                    <Button type="submit">
-                      Configure Token
+                    <Button type="button" variant="outline" onClick={handleTestToken} disabled={loading}>
+                      {loading ? 'Testing...' : 'Test Token'}
+                    </Button>
+                    <Button type="submit" disabled={loading}>
+                      {loading ? 'Configuring...' : 'Configure Token'}
                     </Button>
                   </div>
                 </form>

@@ -17,35 +17,56 @@ class GitHubBackendService {
   // Super admin sets the organization token (one-time setup)
   async configureOrganizationToken(token, adminId) {
     try {
+      if (!token || token.trim() === '') {
+        return {
+          success: false,
+          error: 'Token cannot be empty'
+        };
+      }
+
+      // Clean the token
+      const cleanToken = token.trim();
+      
+      console.log('Configuring GitHub token for admin:', adminId);
+      
       // Validate token first
-      const validation = await this.validateToken(token);
+      const validation = await this.validateToken(cleanToken);
       
       if (!validation.valid) {
-        throw new Error('Invalid GitHub token provided');
+        return {
+          success: false,
+          error: validation.error
+        };
       }
 
       // Store the token with metadata
       const tokenData = {
-        token: token,
+        token: cleanToken,
         configuredBy: adminId,
         configuredAt: new Date().toISOString(),
         organizationAccess: validation.organizationAccess,
-        userInfo: validation.user
+        organizationError: validation.organizationError,
+        userInfo: validation.user,
+        warnings: validation.warnings || []
       };
 
       localStorage.setItem(this.tokenKey, JSON.stringify(tokenData));
       this.isConfigured = true;
 
+      console.log('GitHub token configured successfully');
+
       return {
         success: true,
         message: 'Organization GitHub token configured successfully',
-        userInfo: validation.user
+        userInfo: validation.user,
+        organizationAccess: validation.organizationAccess,
+        warnings: validation.warnings || []
       };
     } catch (error) {
       console.error('Error configuring GitHub token:', error);
       return {
         success: false,
-        error: error.message
+        error: `Configuration failed: ${error.message}`
       };
     }
   }
@@ -153,7 +174,14 @@ class GitHubBackendService {
       return { valid: false, error: 'No token provided' };
     }
 
+    // Basic token format validation
+    if (!testToken.startsWith('ghp_') && !testToken.startsWith('github_pat_')) {
+      return { valid: false, error: 'Invalid token format. GitHub tokens should start with "ghp_" or "github_pat_"' };
+    }
+
     try {
+      console.log('Testing GitHub token...');
+      
       // Test user access
       const userResponse = await fetch(`${this.baseURL}/user`, {
         headers: {
@@ -163,10 +191,16 @@ class GitHubBackendService {
       });
 
       if (!userResponse.ok) {
-        return { valid: false, error: 'Invalid token or insufficient permissions' };
+        const errorData = await userResponse.json().catch(() => ({}));
+        console.error('User authentication failed:', errorData);
+        return { 
+          valid: false, 
+          error: `Token authentication failed: ${userResponse.status} - ${errorData.message || 'Invalid token or insufficient permissions'}` 
+        };
       }
 
       const user = await userResponse.json();
+      console.log('User authenticated:', user.login);
 
       // Test organization access
       const orgResponse = await fetch(`${this.baseURL}/orgs/${this.organization}`, {
@@ -177,8 +211,21 @@ class GitHubBackendService {
       });
 
       const organizationAccess = orgResponse.ok;
+      let orgError = null;
+      
+      if (!organizationAccess) {
+        const orgErrorData = await orgResponse.json().catch(() => ({}));
+        orgError = `Organization access failed: ${orgResponse.status} - ${orgErrorData.message || 'Cannot access organization'}`;
+        console.warn('Organization access warning:', orgError);
+        
+        // Check if organization exists at all
+        const publicOrgResponse = await fetch(`${this.baseURL}/orgs/${this.organization}`);
+        if (!publicOrgResponse.ok) {
+          orgError += '. Organization may not exist or is private.';
+        }
+      }
 
-      // Test repository creation permissions
+      // Test basic permissions
       const permissionsResponse = await fetch(`${this.baseURL}/orgs/${this.organization}/members/${user.login}`, {
         headers: {
           'Authorization': `token ${testToken}`,
@@ -190,17 +237,20 @@ class GitHubBackendService {
         valid: true,
         user: user,
         organizationAccess: organizationAccess,
+        organizationError: orgError,
         canCreateRepos: organizationAccess,
         permissions: {
           user: true,
           organization: organizationAccess,
           repos: organizationAccess
-        }
+        },
+        warnings: organizationAccess ? [] : ['Organization access limited - you may need to be added to the organization or have different permissions']
       };
     } catch (error) {
+      console.error('Token validation error:', error);
       return {
         valid: false,
-        error: error.message
+        error: `Network or API error: ${error.message}`
       };
     }
   }
