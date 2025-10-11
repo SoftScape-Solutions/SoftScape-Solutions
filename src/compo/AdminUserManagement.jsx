@@ -28,6 +28,8 @@ const AdminUserManagement = ({ currentAdmin }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('add'); // 'add', 'edit'
   const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [showAuditLogs, setShowAuditLogs] = useState(false);
+  const [auditLogs, setAuditLogs] = useState([]);
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -124,11 +126,6 @@ const AdminUserManagement = ({ currentAdmin }) => {
         throw new Error('Only Super Admins can create user accounts');
       }
       
-      // Super admins cannot create other super admin accounts
-      if (formData.role === 'super_admin') {
-        throw new Error('Cannot create Super Admin accounts. Contact system administrator.');
-      }
-      
       // Validation
       if (!formData.username || !formData.email || !formData.name) {
         throw new Error('Please fill in all required fields');
@@ -139,8 +136,31 @@ const AdminUserManagement = ({ currentAdmin }) => {
       }
 
       if (modalType === 'add') {
-        // Add new admin
-        await consultationStorage.addAdmin(formData, currentAdmin.id);
+        // Check if creating super admin and use enhanced method
+        if (formData.role === 'super_admin') {
+          // Confirm super admin creation
+          const confirmCreate = window.confirm(
+            '⚠️ SECURITY WARNING ⚠️\n\n' +
+            'You are about to create a Super Administrator account.\n' +
+            'Super Admins have full system access and can:\n' +
+            '• Create other Super Admins\n' +
+            '• Manage all users and data\n' +
+            '• Access audit logs\n' +
+            '• Delete accounts\n\n' +
+            'Are you sure you want to proceed?'
+          );
+          
+          if (!confirmCreate) {
+            setLoading(false);
+            return;
+          }
+          
+          // Use enhanced super admin creation method
+          await consultationStorage.addSuperAdmin(formData, currentAdmin.id);
+        } else {
+          // Add regular admin
+          await consultationStorage.addAdmin(formData, currentAdmin.id);
+        }
       } else {
         // Update existing admin
         const updates = { ...formData };
@@ -267,6 +287,18 @@ const AdminUserManagement = ({ currentAdmin }) => {
     return currentAdmin.role === 'super_admin' && currentAdmin.id !== targetAdmin.id;
   };
 
+  const loadAuditLogs = () => {
+    try {
+      if (currentAdmin.role === 'super_admin') {
+        const logs = consultationStorage.getAuditLogs(currentAdmin.id);
+        setAuditLogs(logs);
+        setShowAuditLogs(true);
+      }
+    } catch (error) {
+      setError('Failed to load audit logs: ' + error.message);
+    }
+  };
+
   return (
     <div className="admin-user-management">
       {/* Header */}
@@ -277,10 +309,16 @@ const AdminUserManagement = ({ currentAdmin }) => {
         </div>
         
         {currentAdmin.role === 'super_admin' && (
-          <Button onClick={openAddModal} className="add-admin-button">
-            <UserPlus className="w-4 h-4 mr-2" />
-            Add Team Member
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={loadAuditLogs} variant="outline" className="audit-logs-button">
+              <Shield className="w-4 h-4 mr-2" />
+              Audit Logs
+            </Button>
+            <Button onClick={openAddModal} className="add-admin-button">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Add Team Member
+            </Button>
+          </div>
         )}
       </div>
 
@@ -553,7 +591,8 @@ const AdminUserManagement = ({ currentAdmin }) => {
                       onChange={handleInputChange}
                       required
                     >
-                      {/* Super admin can create any role below them */}
+                      {/* Super admin can create any role including other super admins */}
+                      <option value="super_admin">Super Administrator</option>
                       <option value="admin">Manager</option>
                       <option value="team_lead">Team Lead</option>
                       <option value="executive">Executive</option>
@@ -561,7 +600,9 @@ const AdminUserManagement = ({ currentAdmin }) => {
                       <option value="viewer">Viewer</option>
                     </select>
                     <small className="help-text">
-                      Only Super Admins can create user accounts. Only Super Admins have administrator privileges.
+                      {formData.role === 'super_admin' 
+                        ? '⚠️ Super Administrators have full system access and can create other super admins. Use with caution!'
+                        : 'Only Super Admins can create user accounts. Choose the appropriate role for the user.'}
                     </small>
                   </div>
                 )}
@@ -600,6 +641,48 @@ const AdminUserManagement = ({ currentAdmin }) => {
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Audit Logs Modal */}
+      {showAuditLogs && currentAdmin.role === 'super_admin' && (
+        <div className="modal-overlay">
+          <div className="modal-content audit-modal">
+            <div className="modal-header">
+              <h3>🔐 Security Audit Logs</h3>
+              <button onClick={() => setShowAuditLogs(false)} className="close-button">×</button>
+            </div>
+            
+            <div className="modal-body">
+              {auditLogs.length === 0 ? (
+                <p className="text-gray-500">No audit logs available.</p>
+              ) : (
+                <div className="audit-logs-list">
+                  {auditLogs.map((log, index) => (
+                    <div key={index} className="audit-log-entry">
+                      <div className="audit-header">
+                        <span className="audit-action">{log.action}</span>
+                        <span className="audit-timestamp">{formatDate(log.timestamp)}</span>
+                      </div>
+                      <div className="audit-details">
+                        <p><strong>Performed by:</strong> {log.createdBy} ({log.createdByEmail})</p>
+                        {log.newAdminUsername && (
+                          <p><strong>New Admin Created:</strong> {log.newAdminUsername} ({log.newAdminEmail})</p>
+                        )}
+                        <p><strong>IP Address:</strong> {log.ipAddress}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div className="modal-actions">
+              <Button onClick={() => setShowAuditLogs(false)} variant="outline">
+                Close
+              </Button>
+            </div>
           </div>
         </div>
       )}

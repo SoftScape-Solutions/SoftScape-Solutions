@@ -35,7 +35,7 @@ const AdminLogin = ({ onLogin }) => {
       }
 
       // Check credentials with storage service
-      const adminData = consultationStorage.validateAdmin(credentials.username, credentials.password);
+      const adminData = await consultationStorage.validateAdmin(credentials.username, credentials.password);
       
       if (adminData) {
         // Store login session
@@ -150,13 +150,11 @@ const AdminLogin = ({ onLogin }) => {
             </form>
 
             <div className="login-footer">
-              {import.meta.env.MODE !== 'production' && (
-                <div className="default-credentials">
-                  <h4>Default Credentials:</h4>
-                  <p><strong>Username:</strong> admin</p>
-                  <p><strong>Password:</strong> softscape2024</p>
+              {import.meta.env.MODE === 'development' && (
+                <div className="security-notice">
                   <small className="security-note">
-                    ⚠️ Please change these credentials after first login
+                    🔒 For initial setup, check the browser console for temporary credentials.
+                    Change password immediately after first login.
                   </small>
                 </div>
               )}

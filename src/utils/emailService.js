@@ -5,12 +5,15 @@
 
 class EmailService {
   constructor() {
-    this.web3formsApiKey = import.meta.env.VITE_WEB3FORMS_API_KEY;
-    if (!this.web3formsApiKey) {
-      throw new Error('VITE_WEB3FORMS_API_KEY environment variable is not set');
+    this.apiKey = import.meta.env.VITE_WEB3FORMS_API_KEY;
+    if (!this.apiKey) {
+      console.warn('VITE_WEB3FORMS_API_KEY environment variable is not set. Email functionality will be limited.');
     }
     this.web3formsEndpoint = 'https://api.web3forms.com/submit';
-    this.fallbackEndpoint = 'https://formspree.io/f/YOUR_FORM_ID'; // Formspree as backup
+    
+    // Optional fallback service configuration
+    this.fallbackEnabled = import.meta.env.VITE_FALLBACK_EMAIL_SERVICE === 'true';
+    this.fallbackEndpoint = import.meta.env.VITE_FALLBACK_EMAIL_ENDPOINT;
   }
 
   // Send consultation confirmation email
@@ -40,6 +43,14 @@ class EmailService {
 
   // Send via Web3Forms
   async sendViaWeb3Forms(emailData) {
+    if (!this.web3formsEndpoint || this.web3formsEndpoint.includes('YOUR_FORM_ID')) {
+      throw new Error('Web3Forms API endpoint not properly configured');
+    }
+
+    if (!this.apiKey || this.apiKey.includes('YOUR_API_KEY')) {
+      throw new Error('Web3Forms API key not properly configured');
+    }
+
     const response = await fetch(this.web3formsEndpoint, {
       method: 'POST',
       headers: {
@@ -47,7 +58,7 @@ class EmailService {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        access_key: this.web3formsApiKey,
+        access_key: this.apiKey,
         from_email: 'softscapesolution@outlook.com',
         from_name: 'SoftScape Solutions',
         to_email: emailData.to,

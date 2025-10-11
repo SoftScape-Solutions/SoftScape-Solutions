@@ -1,4 +1,7 @@
 // Local Storage Service for Consultation Bookings
+import SecureIdGenerator from './secureIdGenerator.js';
+import PasswordSecurity from './passwordSecurity.js';
+
 class ConsultationStorageService {
   constructor() {
     this.storageKey = 'consultation_bookings';
@@ -7,19 +10,25 @@ class ConsultationStorageService {
   }
 
   // Initialize storage with default data if empty
-  initializeStorage() {
+  async initializeStorage() {
     if (!localStorage.getItem(this.storageKey)) {
       localStorage.setItem(this.storageKey, JSON.stringify([]));
     }
     
-    // Set default admin users array (you should change these)
+    // Set default admin users array
     if (!localStorage.getItem(this.adminKey)) {
+      // Generate a secure temporary password that must be changed on first login
+      const tempPassword = PasswordSecurity.generateSecurePassword(12);
+      const hashedPassword = await PasswordSecurity.hashPassword(tempPassword);
+      
       const defaultAdmins = [
         {
-          id: 'admin_1',
+          id: SecureIdGenerator.generateAdminId(),
           username: 'admin',
-          password: 'softscape2024', // Change this!
-          email: 'admin@softscape.com',
+          password: hashedPassword, // Secure hashed password
+          tempPassword: tempPassword, // Store temp password for initial setup (remove after first login)
+          passwordChangeRequired: true, // Force password change on first login
+          email: import.meta.env.VITE_ADMIN_EMAIL || 'softscapesolution@outlook.com',
           role: 'super_admin', // super_admin (Administrator), admin (Manager), team_lead, executive, developer, viewer
           name: 'System Administrator',
           createdAt: new Date().toISOString(),
@@ -30,10 +39,21 @@ class ConsultationStorageService {
           workload: 0, // Current number of active projects
           maxWorkload: 10, // Maximum projects they can handle
           teamLeadFor: [], // Array of project IDs they lead
-          teamMemberOf: [] // Array of project IDs they're member of
+          teamMemberOf: [], // Array of project IDs they're member of
+          loginAttempts: 0, // Track failed login attempts
+          lockedUntil: null // Account lockout timestamp
         }
       ];
+      
       localStorage.setItem(this.adminKey, JSON.stringify(defaultAdmins));
+      
+      // Log the temporary password for initial setup (development only)
+      if (import.meta.env.MODE === 'development') {
+        console.warn('⚠️ INITIAL ADMIN SETUP:');
+        console.warn('Username: admin');
+        console.warn('Temporary Password:', tempPassword);
+        console.warn('This password must be changed on first login!');
+      }
     }
   }
 
@@ -43,7 +63,7 @@ class ConsultationStorageService {
       const consultations = this.getAllConsultations();
       
       const newConsultation = {
-        id: this.generateId(),
+        id: SecureIdGenerator.generateConsultationId(),
         ...consultationData,
         submittedAt: new Date().toISOString(),
         status: 'pending', // pending, contacted, completed, cancelled
@@ -215,28 +235,64 @@ class ConsultationStorageService {
     }, {});
   }
 
-  // Generate unique ID
+  // Generate unique ID (deprecated - use SecureIdGenerator instead)
   generateId() {
-    return 'consultation_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+    console.warn('generateId() is deprecated. Use SecureIdGenerator methods instead.');
+    return SecureIdGenerator.generateConsultationId();
   }
 
   // Admin authentication
-  validateAdmin(username, password) {
+  async validateAdmin(username, password) {
     try {
       const adminData = localStorage.getItem(this.adminKey);
       if (!adminData) return false;
       
       const admins = JSON.parse(adminData);
-      const admin = admins.find(a => a.username === username && a.password === password && a.isActive);
+      const admin = admins.find(a => a.username === username && a.isActive);
       
-      if (admin) {
-        // Update last login time
-        admin.lastLogin = new Date().toISOString();
-        localStorage.setItem(this.adminKey, JSON.stringify(admins));
-        return admin;
+      if (!admin) return false;
+      
+      // Check if account is locked
+      if (admin.lockedUntil && new Date(admin.lockedUntil) > new Date()) {
+        throw new Error('Account is temporarily locked due to multiple failed login attempts');
       }
       
-      return false;
+      let isValidPassword = false;
+      
+      // Check temporary password (for initial setup)
+      if (admin.tempPassword && password === admin.tempPassword) {
+        isValidPassword = true;
+      } else {
+        // Check hashed password
+        const hashedPassword = await PasswordSecurity.hashPassword(password);
+        isValidPassword = admin.password === hashedPassword;
+      }
+      
+      if (isValidPassword) {
+        // Reset login attempts on successful login
+        admin.loginAttempts = 0;
+        admin.lockedUntil = null;
+        admin.lastLogin = new Date().toISOString();
+        
+        // Remove temporary password after first successful login
+        if (admin.tempPassword) {
+          delete admin.tempPassword;
+        }
+        
+        localStorage.setItem(this.adminKey, JSON.stringify(admins));
+        return admin;
+      } else {
+        // Increment failed login attempts
+        admin.loginAttempts = (admin.loginAttempts || 0) + 1;
+        
+        // Lock account after 5 failed attempts for 30 minutes
+        if (admin.loginAttempts >= 5) {
+          admin.lockedUntil = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+        }
+        
+        localStorage.setItem(this.adminKey, JSON.stringify(admins));
+        return false;
+      }
     } catch (error) {
       console.error('Error validating admin:', error);
       return false;
@@ -255,7 +311,7 @@ class ConsultationStorageService {
   }
 
   // Add new admin user
-  addAdmin(adminData, currentAdminId) {
+  async addAdmin(adminData, currentAdminId) {
     try {
       const admins = this.getAllAdmins();
       const currentAdmin = admins.find(a => a.id === currentAdminId);
@@ -275,17 +331,59 @@ class ConsultationStorageService {
         throw new Error('Email already exists');
       }
 
+      // Validate password strength
+      const passwordValidation = PasswordSecurity.validatePasswordStrength(adminData.password);
+      if (!passwordValidation.isValid) {
+        throw new Error('Password requirements not met: ' + passwordValidation.errors.join(', '));
+      }
+
+      // Validate role
+      const validRoles = ['super_admin', 'admin', 'team_lead', 'executive', 'developer', 'viewer'];
+      if (!validRoles.includes(adminData.role)) {
+        throw new Error('Invalid role specified. Valid roles: ' + validRoles.join(', '));
+      }
+
+      // Additional validation for creating super_admin
+      if (adminData.role === 'super_admin') {
+        console.warn('⚠️ Creating new super administrator:', adminData.username);
+        
+        // Extra security check - require confirmation that this is intentional
+        if (!adminData.confirmSuperAdmin) {
+          throw new Error('Creating super admin requires explicit confirmation. Set confirmSuperAdmin: true');
+        }
+        
+        // Log the creation for audit purposes
+        console.log('🔐 Super admin created by:', currentAdmin.username, 'at', new Date().toISOString());
+      }
+
+      // Check for common passwords
+      if (PasswordSecurity.isCommonPassword(adminData.password)) {
+        throw new Error('Password is too common. Please choose a more secure password.');
+      }
+
+      // Hash the password
+      const hashedPassword = await PasswordSecurity.hashPassword(adminData.password);
+
       const newAdmin = {
-        id: 'admin_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+        id: SecureIdGenerator.generateAdminId(),
         username: adminData.username,
-        password: adminData.password,
+        password: hashedPassword,
         email: adminData.email,
-        role: adminData.role || 'admin',
+        role: adminData.role || 'viewer',
         name: adminData.name,
+        department: adminData.department || '',
+        skills: adminData.skills || [],
+        maxWorkload: adminData.maxWorkload || 5,
+        workload: 0,
+        teamLeadFor: [],
+        teamMemberOf: [],
         createdAt: new Date().toISOString(),
         lastLogin: null,
         isActive: true,
-        createdBy: currentAdminId
+        createdBy: currentAdminId,
+        loginAttempts: 0,
+        lockedUntil: null,
+        passwordChangeRequired: false
       };
 
       admins.push(newAdmin);
@@ -296,6 +394,134 @@ class ConsultationStorageService {
       console.error('Error adding admin:', error);
       throw error;
     }
+  }
+
+  // Specialized method for creating super administrators with enhanced security
+  async addSuperAdmin(superAdminData, currentAdminId) {
+    try {
+      const currentAdmin = this.getAdminById(currentAdminId);
+      
+      // Only existing super_admin can create new super_admin
+      if (!currentAdmin || currentAdmin.role !== 'super_admin') {
+        throw new Error('Only super administrators can create new super administrators');
+      }
+
+      // Enhanced validation for super admin creation
+      if (!superAdminData.username || !superAdminData.password || !superAdminData.email || !superAdminData.name) {
+        throw new Error('All fields are required for super admin creation: username, password, email, name');
+      }
+
+      // Check password strength with stricter requirements for super admin
+      const passwordValidation = PasswordSecurity.validatePasswordStrength(superAdminData.password);
+      if (!passwordValidation.isValid) {
+        throw new Error('Super admin password requirements not met: ' + passwordValidation.errors.join(', '));
+      }
+
+      // Extra strong password requirement for super admins
+      if (superAdminData.password.length < 12) {
+        throw new Error('Super admin passwords must be at least 12 characters long');
+      }
+
+      // Audit log for super admin creation
+      const auditEntry = {
+        action: 'SUPER_ADMIN_CREATED',
+        createdBy: currentAdmin.username,
+        createdByEmail: currentAdmin.email,
+        newAdminUsername: superAdminData.username,
+        newAdminEmail: superAdminData.email,
+        timestamp: new Date().toISOString(),
+        ipAddress: 'localhost', // In a real app, you'd capture the actual IP
+      };
+
+      console.log('🔐 SUPER ADMIN CREATION AUDIT:', auditEntry);
+
+      // Create the super admin using the standard method with confirmation
+      const newSuperAdmin = await this.addAdmin({
+        ...superAdminData,
+        role: 'super_admin',
+        confirmSuperAdmin: true, // Required for super admin creation
+        department: superAdminData.department || 'Administration',
+        maxWorkload: superAdminData.maxWorkload || 15, // Super admins can handle more
+      }, currentAdminId);
+
+      // Store audit log (in a real app, this would go to a secure audit database)
+      const auditLogs = JSON.parse(localStorage.getItem('admin_audit_logs') || '[]');
+      auditLogs.push(auditEntry);
+      localStorage.setItem('admin_audit_logs', JSON.stringify(auditLogs));
+
+      return newSuperAdmin;
+    } catch (error) {
+      console.error('Error creating super admin:', error);
+      throw error;
+    }
+  }
+
+  // Get audit logs (super admin only)
+  getAuditLogs(currentAdminId) {
+    const currentAdmin = this.getAdminById(currentAdminId);
+    
+    if (!currentAdmin || currentAdmin.role !== 'super_admin') {
+      throw new Error('Only super administrators can view audit logs');
+    }
+
+    return JSON.parse(localStorage.getItem('admin_audit_logs') || '[]');
+  }
+
+  // Get role hierarchy information
+  getRoleHierarchy() {
+    return {
+      super_admin: {
+        level: 5,
+        name: 'Super Administrator',
+        description: 'Full system access, can create other super admins',
+        permissions: ['all']
+      },
+      admin: {
+        level: 4,
+        name: 'Administrator',
+        description: 'System management, cannot create super admins',
+        permissions: ['user_management', 'project_management', 'team_management']
+      },
+      team_lead: {
+        level: 3,
+        name: 'Team Lead',
+        description: 'Team and project management',
+        permissions: ['team_management', 'project_management']
+      },
+      executive: {
+        level: 2,
+        name: 'Executive',
+        description: 'Business oversight and reporting',
+        permissions: ['reporting', 'business_oversight']
+      },
+      developer: {
+        level: 1,
+        name: 'Developer',
+        description: 'Development tasks and project participation',
+        permissions: ['development', 'project_participation']
+      },
+      viewer: {
+        level: 0,
+        name: 'Viewer',
+        description: 'Read-only access',
+        permissions: ['read_only']
+      }
+    };
+  }
+
+  // Check if current user can manage target user based on role hierarchy
+  canManageUser(currentAdminRole, targetAdminRole) {
+    const hierarchy = this.getRoleHierarchy();
+    const currentLevel = hierarchy[currentAdminRole]?.level || 0;
+    const targetLevel = hierarchy[targetAdminRole]?.level || 0;
+    
+    // Super admins can manage anyone
+    if (currentAdminRole === 'super_admin') {
+      return true;
+    }
+    
+    // Others can only manage users with lower level roles
+    return currentLevel > targetLevel;
   }
 
   // Update admin user
@@ -538,9 +764,10 @@ class ConsultationStorageService {
     }
   }
 
-  // Generate project ID
+  // Generate project ID (deprecated - use SecureIdGenerator instead)
   generateProjectId() {
-    return 'proj_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+    console.warn('generateProjectId() is deprecated. Use SecureIdGenerator.generateProjectId() instead.');
+    return SecureIdGenerator.generateProjectId();
   }
 
   // Save project
@@ -988,7 +1215,7 @@ class ConsultationStorageService {
       logs.push({
         action,
         ...data,
-        id: Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+        id: SecureIdGenerator.generateAuditId()
       });
 
       // Keep only last 1000 logs
