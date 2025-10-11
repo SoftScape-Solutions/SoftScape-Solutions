@@ -150,14 +150,16 @@ const AdminLogin = ({ onLogin }) => {
             </form>
 
             <div className="login-footer">
-              <div className="default-credentials">
-                <h4>Default Credentials:</h4>
-                <p><strong>Username:</strong> admin</p>
-                <p><strong>Password:</strong> softscape2024</p>
-                <small className="security-note">
-                  ⚠️ Please change these credentials after first login
-                </small>
-              </div>
+              {process.env.NODE_ENV !== 'production' && (
+                <div className="default-credentials">
+                  <h4>Default Credentials:</h4>
+                  <p><strong>Username:</strong> admin</p>
+                  <p><strong>Password:</strong> softscape2024</p>
+                  <small className="security-note">
+                    ⚠️ Please change these credentials after first login
+                  </small>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
