@@ -15,6 +15,7 @@ import Contact from "./compo/contact";
 import JoinTeam from "./compo/jointeam";
 import AIVision from "./compo/aiVision";
 import ExploreTools from "./compo/exploretools";
+import AdminPanel from "./compo/AdminPanel";
 
 import "./App.css";
 
@@ -31,6 +32,7 @@ const routeConfig = [
   { path: ROUTES.JOIN_TEAM, element: <JoinTeam /> },
   { path: ROUTES.AI_VISION, element: <AIVision /> },
   { path: ROUTES.EXPLORE_TOOLS, element: <ExploreTools /> },
+  { path: "/admin", element: <AdminPanel /> },
 ];
 
 function App() {
