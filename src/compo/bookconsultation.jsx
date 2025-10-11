@@ -21,7 +21,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
+import consultationStorage from "../utils/consultationStorage";
 import Layout from "../components/common/Layout";
 import "./landingPage.css";
 import "./bookConsultation.css";
@@ -181,6 +181,7 @@ const BookConsultation = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [touchedFields, setTouchedFields] = useState({});
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // Refs for auto-scroll functionality
   const formRef = useRef(null);
@@ -392,45 +393,38 @@ const BookConsultation = () => {
     setSubmitError("");
 
     try {
-      // Prepare email data
-      const emailData = {
-        ...formData,
-        files: uploadedFiles.map((file) => file.name).join(", "),
-        submission_date: new Date().toLocaleDateString(),
+      // Prepare consultation data for local storage
+      const consultationData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        industry: formData.industry,
+        projectType: formData.projectType,
+        budget: formData.budget,
+        timeline: formData.timeline,
+        projectDetails: formData.projectDetails,
+        additionalNotes: formData.additionalNotes,
+        files: uploadedFiles.map(file => file.name),
+        submissionDate: new Date().toISOString()
       };
 
-      // EmailJS configuration
-      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      console.log("Saving consultation booking...", consultationData);
 
-      // Check if credentials are properly configured
-      if (!serviceID || !templateID || !publicKey) {
-        throw new Error("Email service configuration is missing");
-      }
+      // Save to local storage (this will automatically send emails)
+      const savedConsultation = await consultationStorage.saveConsultation(consultationData);
+      
+      console.log("Consultation saved successfully:", savedConsultation.id);
 
-      // Check for placeholder values
-      if (
-        serviceID === "service_ook8gqa" ||
-        templateID === "template_123456" ||
-        publicKey === "public_123456" ||
-        templateID.includes("123456") ||
-        publicKey.includes("123456")
-      ) {
-        throw new Error(
-          "EmailJS credentials need to be configured with real values"
-        );
-      }
-
-      console.log("Attempting to send email with EmailJS...", {
-        serviceID: serviceID.substring(0, 10) + "...",
-        templateID: templateID.substring(0, 10) + "...",
-        publicKey: publicKey.substring(0, 10) + "...",
+      // Show success message
+      setSubmitSuccess(true);
+      setSuccessMessage({
+        title: "Consultation Request Submitted Successfully! 🎉",
+        message: `Thank you ${formData.name}! We've received your consultation request and sent a confirmation email to ${formData.email}. Our team will contact you within 24 hours.`,
+        consultationId: savedConsultation.id
       });
 
-      await emailjs.send(serviceID, templateID, emailData, publicKey);
-
-      setSubmitSuccess(true);
+      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -511,24 +505,59 @@ const BookConsultation = () => {
     return (
       <Layout>
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen flex items-center">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
               <CheckCircle2 className="h-12 w-12 text-white" />
             </div>
+            
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Thank You!
+              {successMessage?.title || "Thank You! 🎉"}
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Your consultation request has been submitted successfully. We'll
-              get back to you within 24 hours.
-            </p>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-200 shadow-lg">
+              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                {successMessage?.message || "Your consultation request has been submitted successfully. We'll get back to you within 24 hours."}
+              </p>
+              
+              {successMessage?.consultationId && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-blue-800">
+                    <strong>Consultation ID:</strong> {successMessage.consultationId}
+                  </p>
+                  <p className="text-xs text-blue-600 mt-1">
+                    Please save this ID for your records
+                  </p>
+                </div>
+              )}
+              
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-green-800 mb-2">📧 What's Next?</h3>
+                <ul className="text-sm text-green-700 text-left space-y-1">
+                  <li>✅ Confirmation email sent to your inbox</li>
+                  <li>⏱️ Our team will review your request within 2 hours</li>
+                  <li>📞 A senior consultant will contact you within 24 hours</li>
+                  <li>🎯 You'll receive a personalized AI solution proposal</li>
+                </ul>
+              </div>
+              
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <h3 className="font-semibold text-amber-800 mb-2">📞 Need Immediate Help?</h3>
+                <p className="text-sm text-amber-700">
+                  <strong>Email:</strong> softscapesolution@outlook.com<br/>
+                  <strong>Phone:</strong> +44 7789667804
+                </p>
+              </div>
+            </div>
+            
             <div className="space-y-4">
-              <Button asChild size="lg" className="w-full sm:w-auto">
+              <Button asChild size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 <Link to="/">Return to Home</Link>
               </Button>
-              <p className="text-sm text-gray-500">
-                In the meantime, feel free to explore our other services and
-                solutions.
+              <Button asChild variant="outline" size="lg" className="w-full sm:w-auto ml-0 sm:ml-4">
+                <Link to="/explore-tools">Explore Our AI Tools</Link>
+              </Button>
+              <p className="text-sm text-gray-500 mt-4">
+                Follow us on social media for AI insights and updates
               </p>
             </div>
           </div>
