@@ -30,7 +30,7 @@ class GitHubService {
     const url = `${this.baseURL}${endpoint}`;
     const config = {
       headers: {
-        'Authorization': `token ${token}`,
+        'Authorization': `Bearer ${token}`,
         'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json',
         ...options.headers
