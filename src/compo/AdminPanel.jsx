@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
-import { LogOut, Shield, Settings, Users, BarChart3, GitBranch, Server } from 'lucide-react';
+import { LogOut, Shield, Settings, Users, BarChart3, GitBranch, Server, UserCheck } from 'lucide-react';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import AdminUserManagement from './AdminUserManagement';
 import ProjectManagement from './ProjectManagement';
 import GitHubManagement from './GitHubManagement';
+import TeamManagement from './TeamManagement';
 import consultationStorage from '../utils/consultationStorage';
 import './AdminPanel.css';
 
@@ -13,7 +14,7 @@ const AdminPanel = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentAdmin, setCurrentAdmin] = useState(null);
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'users', 'projects', 'github'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'users', 'projects', 'github', 'team'
 
   useEffect(() => {
     // Check if user is already logged in
@@ -139,6 +140,16 @@ const AdminPanel = () => {
           
           {currentAdmin?.role === 'super_admin' && (
             <button
+              className={`nav-tab ${activeTab === 'team' ? 'active' : ''}`}
+              onClick={() => setActiveTab('team')}
+            >
+              <UserCheck className="w-4 h-4 mr-2" />
+              Team Management
+            </button>
+          )}
+          
+          {currentAdmin?.role === 'super_admin' && (
+            <button
               className={`nav-tab ${activeTab === 'github' ? 'active' : ''}`}
               onClick={() => setActiveTab('github')}
             >
@@ -153,7 +164,7 @@ const AdminPanel = () => {
               onClick={() => setActiveTab('users')}
             >
               <Users className="w-4 h-4 mr-2" />
-              User Management
+              Team Management
             </button>
           )}
         </div>
@@ -163,6 +174,9 @@ const AdminPanel = () => {
       <div className="admin-content">
         {activeTab === 'dashboard' && <AdminDashboard />}
         {activeTab === 'projects' && <ProjectManagement />}
+        {activeTab === 'team' && currentAdmin?.role === 'super_admin' && (
+          <TeamManagement currentAdmin={currentAdmin} />
+        )}
         {activeTab === 'github' && currentAdmin?.role === 'super_admin' && (
           <GitHubManagement currentAdmin={currentAdmin} />
         )}

@@ -39,6 +39,7 @@ const ProjectManagement = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedConsultation, setSelectedConsultation] = useState(null);
   const [serviceReady, setServiceReady] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Form states
   const [projectForm, setProjectForm] = useState({
@@ -65,6 +66,13 @@ const ProjectManagement = () => {
   });
 
   useEffect(() => {
+    // Get current user
+    const adminId = sessionStorage.getItem('admin_user_id');
+    if (adminId) {
+      const admin = consultationStorage.getAdminById(adminId);
+      setCurrentUser(admin);
+    }
+    
     loadProjectData();
     checkGitHubService();
   }, []);
@@ -76,7 +84,22 @@ const ProjectManagement = () => {
   const loadProjectData = async () => {
     try {
       setLoading(true);
-      const allProjects = consultationStorage.getAllProjects();
+      
+      // Get current user for role-based access
+      const adminId = sessionStorage.getItem('admin_user_id');
+      let allProjects = [];
+      
+      if (adminId) {
+        const admin = consultationStorage.getAdminById(adminId);
+        if (admin) {
+          // Get accessible projects based on role
+          allProjects = consultationStorage.getAccessibleProjects(admin.id);
+        }
+      } else {
+        // Fallback for backward compatibility
+        allProjects = consultationStorage.getAllProjects();
+      }
+      
       const convertible = consultationStorage.getConvertibleConsultations();
       
       setProjects(allProjects);
@@ -309,10 +332,13 @@ const ProjectManagement = () => {
           <p>Manage projects and GitHub repositories</p>
         </div>
         <div className="header-actions">
-          <Button onClick={() => setShowCreateProject(true)} className="btn-primary">
-            <Plus className="w-4 h-4 mr-2" />
-            Create Project
-          </Button>
+          {/* Only super_admin and managers can create projects */}
+          {currentUser && (currentUser.role === 'super_admin' || currentUser.role === 'admin') && (
+            <Button onClick={() => setShowCreateProject(true)} className="btn-primary">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Project
+            </Button>
+          )}
         </div>
       </div>
 
@@ -433,22 +459,32 @@ const ProjectManagement = () => {
                       {getStatusBadge(project.status)}
                     </div>
                     <div className="project-actions">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => {
-                          setSelectedProject(project);
-                          setShowCreateRepo(true);
-                        }}
-                        disabled={!!project.repositoryInfo || !serviceReady}
-                      >
-                        <GitBranch className="w-4 h-4 mr-1" />
-                        {!serviceReady 
-                          ? 'Service Not Ready' 
-                          : project.repositoryInfo 
-                            ? 'Repo Created' 
-                            : 'Create Repo'}
-                      </Button>
+                      {/* Only super_admins and managers can create repositories */}
+                      {currentUser && (currentUser.role === 'super_admin' || currentUser.role === 'admin') && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedProject(project);
+                            setShowCreateRepo(true);
+                          }}
+                          disabled={!!project.repositoryInfo || !serviceReady}
+                        >
+                          <GitBranch className="w-4 h-4 mr-1" />
+                          {!serviceReady 
+                            ? 'Service Not Ready' 
+                            : project.repositoryInfo 
+                              ? 'Repo Created' 
+                              : 'Create Repo'}
+                        </Button>
+                      )}
+                      {/* Team leads and developers can only view repository info */}
+                      {currentUser && (currentUser.role === 'team_lead' || currentUser.role === 'developer') && project.repositoryInfo && (
+                        <span className="repo-status">
+                          <GitBranch className="w-4 h-4 mr-1" />
+                          Repository Created
+                        </span>
+                      )}
                     </div>
                   </div>
 

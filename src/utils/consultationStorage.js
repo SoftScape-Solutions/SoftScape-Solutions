@@ -20,11 +20,17 @@ class ConsultationStorageService {
           username: 'admin',
           password: 'softscape2024', // Change this!
           email: 'admin@softscape.com',
-          role: 'super_admin', // super_admin, admin, viewer
+          role: 'super_admin', // super_admin (Administrator), admin (Manager), team_lead, executive, developer, viewer
           name: 'System Administrator',
           createdAt: new Date().toISOString(),
           lastLogin: null,
-          isActive: true
+          isActive: true,
+          skills: ['Project Management', 'System Administration'],
+          department: 'Management',
+          workload: 0, // Current number of active projects
+          maxWorkload: 10, // Maximum projects they can handle
+          teamLeadFor: [], // Array of project IDs they lead
+          teamMemberOf: [] // Array of project IDs they're member of
         }
       ];
       localStorage.setItem(this.adminKey, JSON.stringify(defaultAdmins));
@@ -680,6 +686,374 @@ class ConsultationStorageService {
     return consultations.filter(c => 
       c.status === 'completed' && !c.projectId
     );
+  }
+
+  // ===================== TEAM MANAGEMENT METHODS =====================
+
+  // Assign team lead to project (super admin only)
+  assignTeamLeadToProject(projectId, teamLeadId, assignedBy) {
+    try {
+      const project = this.getProject(projectId);
+      const teamLead = this.getAdminById(teamLeadId);
+      
+      if (!project) {
+        throw new Error('Project not found');
+      }
+      
+      if (!teamLead || teamLead.role !== 'team_lead') {
+        throw new Error('Team lead not found or invalid role');
+      }
+
+      // Update project with team lead
+      const updatedProject = this.updateProject(projectId, {
+        teamLeadId: teamLeadId,
+        teamLeadName: teamLead.name,
+        assignedBy: assignedBy,
+        assignedAt: new Date().toISOString()
+      });
+
+      // Update team lead's workload
+      this.updateAdminWorkload(teamLeadId, 'add', projectId);
+
+      // Log the assignment
+      this.logTeamAction('assign_team_lead', {
+        projectId,
+        teamLeadId,
+        teamLeadName: teamLead.name,
+        assignedBy,
+        timestamp: new Date().toISOString()
+      });
+
+      return updatedProject;
+    } catch (error) {
+      console.error('Error assigning team lead to project:', error);
+      throw error;
+    }
+  }
+
+  // Remove team lead from project
+  removeTeamLeadFromProject(projectId, removedBy) {
+    try {
+      const project = this.getProject(projectId);
+      
+      if (!project) {
+        throw new Error('Project not found');
+      }
+
+      const oldTeamLeadId = project.teamLeadId;
+      const oldTeamLeadName = project.teamLeadName;
+
+      // Update project
+      const updatedProject = this.updateProject(projectId, {
+        teamLeadId: null,
+        teamLeadName: null,
+        removedBy: removedBy,
+        removedAt: new Date().toISOString()
+      });
+
+      // Update team lead's workload
+      if (oldTeamLeadId) {
+        this.updateAdminWorkload(oldTeamLeadId, 'remove', projectId);
+      }
+
+      // Log the removal
+      this.logTeamAction('remove_team_lead', {
+        projectId,
+        oldTeamLeadId,
+        oldTeamLeadName,
+        removedBy,
+        timestamp: new Date().toISOString()
+      });
+
+      return updatedProject;
+    } catch (error) {
+      console.error('Error removing team lead from project:', error);
+      throw error;
+    }
+  }
+
+  // Assign team member to team lead (team lead can do this)
+  assignTeamMemberToProject(projectId, memberId, assignedBy) {
+    try {
+      const project = this.getProject(projectId);
+      const member = this.getAdminById(memberId);
+      
+      if (!project) {
+        throw new Error('Project not found');
+      }
+      
+      if (!member || (member.role !== 'developer' && member.role !== 'admin')) {
+        throw new Error('Team member not found or invalid role');
+      }
+
+      // Check if assignedBy is team lead of this project or super admin
+      const assignerRole = this.getAdminById(assignedBy);
+      if (assignerRole.role !== 'super_admin' && project.teamLeadId !== assignedBy) {
+        throw new Error('Only project team lead or super admin can assign team members');
+      }
+
+      // Add member to project team if not already added
+      const currentTeamMembers = project.teamMembers || [];
+      const memberExists = currentTeamMembers.find(tm => tm.id === memberId);
+      
+      if (memberExists) {
+        throw new Error('Member already assigned to this project');
+      }
+
+      const newTeamMember = {
+        id: memberId,
+        name: member.name,
+        username: member.username,
+        role: member.role,
+        assignedAt: new Date().toISOString(),
+        assignedBy: assignedBy
+      };
+
+      const updatedTeamMembers = [...currentTeamMembers, newTeamMember];
+      const updatedProject = this.updateProject(projectId, { teamMembers: updatedTeamMembers });
+
+      // Update member's workload
+      this.updateAdminWorkload(memberId, 'add', projectId);
+
+      // Log the assignment
+      this.logTeamAction('assign_team_member', {
+        projectId,
+        memberId,
+        memberName: member.name,
+        assignedBy,
+        timestamp: new Date().toISOString()
+      });
+
+      return updatedProject;
+    } catch (error) {
+      console.error('Error assigning team member to project:', error);
+      throw error;
+    }
+  }
+
+  // Remove team member from project
+  removeTeamMemberFromProject(projectId, memberId, removedBy) {
+    try {
+      const project = this.getProject(projectId);
+      
+      if (!project) {
+        throw new Error('Project not found');
+      }
+
+      // Check permissions
+      const removerRole = this.getAdminById(removedBy);
+      if (removerRole.role !== 'super_admin' && project.teamLeadId !== removedBy) {
+        throw new Error('Only project team lead or super admin can remove team members');
+      }
+
+      const currentTeamMembers = project.teamMembers || [];
+      const memberToRemove = currentTeamMembers.find(tm => tm.id === memberId);
+      
+      if (!memberToRemove) {
+        throw new Error('Member not found in project team');
+      }
+
+      const updatedTeamMembers = currentTeamMembers.filter(tm => tm.id !== memberId);
+      const updatedProject = this.updateProject(projectId, { teamMembers: updatedTeamMembers });
+
+      // Update member's workload
+      this.updateAdminWorkload(memberId, 'remove', projectId);
+
+      // Log the removal
+      this.logTeamAction('remove_team_member', {
+        projectId,
+        memberId,
+        memberName: memberToRemove.name,
+        removedBy,
+        timestamp: new Date().toISOString()
+      });
+
+      return updatedProject;
+    } catch (error) {
+      console.error('Error removing team member from project:', error);
+      throw error;
+    }
+  }
+
+  // Update admin workload
+  updateAdminWorkload(adminId, action, projectId) {
+    try {
+      const admins = this.getAllAdmins();
+      const adminIndex = admins.findIndex(a => a.id === adminId);
+      
+      if (adminIndex === -1) {
+        throw new Error('Admin not found');
+      }
+
+      if (action === 'add') {
+        admins[adminIndex].teamLeadFor = admins[adminIndex].teamLeadFor || [];
+        admins[adminIndex].teamMemberOf = admins[adminIndex].teamMemberOf || [];
+        
+        if (admins[adminIndex].role === 'team_lead') {
+          if (!admins[adminIndex].teamLeadFor.includes(projectId)) {
+            admins[adminIndex].teamLeadFor.push(projectId);
+          }
+        } else {
+          if (!admins[adminIndex].teamMemberOf.includes(projectId)) {
+            admins[adminIndex].teamMemberOf.push(projectId);
+          }
+        }
+        
+        admins[adminIndex].workload = (admins[adminIndex].workload || 0) + 1;
+      } else if (action === 'remove') {
+        if (admins[adminIndex].role === 'team_lead') {
+          admins[adminIndex].teamLeadFor = (admins[adminIndex].teamLeadFor || []).filter(id => id !== projectId);
+        } else {
+          admins[adminIndex].teamMemberOf = (admins[adminIndex].teamMemberOf || []).filter(id => id !== projectId);
+        }
+        
+        admins[adminIndex].workload = Math.max((admins[adminIndex].workload || 0) - 1, 0);
+      }
+
+      localStorage.setItem(this.adminKey, JSON.stringify(admins));
+      return admins[adminIndex];
+    } catch (error) {
+      console.error('Error updating admin workload:', error);
+      throw error;
+    }
+  }
+
+  // Get projects accessible to a specific admin based on their role and assignments
+  getAccessibleProjects(adminId) {
+    try {
+      const admin = this.getAdminById(adminId);
+      const allProjects = this.getAllProjects();
+      
+      if (!admin) {
+        return [];
+      }
+
+      // Super admins can see all projects
+      if (admin.role === 'super_admin') {
+        return allProjects;
+      }
+
+      // Team leads can see projects they're assigned to
+      if (admin.role === 'team_lead') {
+        return allProjects.filter(project => 
+          admin.teamLeadFor && admin.teamLeadFor.includes(project.id)
+        );
+      }
+
+      // Developers/admins can see projects they're team members of
+      if (admin.role === 'developer' || admin.role === 'admin') {
+        return allProjects.filter(project => 
+          admin.teamMemberOf && admin.teamMemberOf.includes(project.id)
+        );
+      }
+
+      // Viewers see no projects by default
+      return [];
+    } catch (error) {
+      console.error('Error getting accessible projects:', error);
+      return [];
+    }
+  }
+
+  // Get available team leads (users with team_lead role)
+  getAvailableTeamLeads() {
+    const admins = this.getAllAdmins();
+    return admins.filter(admin => 
+      admin.role === 'team_lead' && admin.isActive
+    ).map(admin => ({
+      ...admin,
+      currentProjects: admin.teamLeadFor ? admin.teamLeadFor.length : 0,
+      availableCapacity: (admin.maxWorkload || 5) - (admin.workload || 0)
+    }));
+  }
+
+  // Get available team members (developers and admins not assigned to max projects)
+  getAvailableTeamMembers() {
+    const admins = this.getAllAdmins();
+    return admins.filter(admin => 
+      (admin.role === 'developer' || admin.role === 'admin') && 
+      admin.isActive &&
+      (admin.workload || 0) < (admin.maxWorkload || 5)
+    ).map(admin => ({
+      ...admin,
+      currentProjects: admin.teamMemberOf ? admin.teamMemberOf.length : 0,
+      availableCapacity: (admin.maxWorkload || 5) - (admin.workload || 0)
+    }));
+  }
+
+  // Log team management actions
+  logTeamAction(action, data) {
+    try {
+      const logs = JSON.parse(localStorage.getItem('team_management_log') || '[]');
+      logs.push({
+        action,
+        ...data,
+        id: Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+      });
+
+      // Keep only last 1000 logs
+      if (logs.length > 1000) {
+        logs.splice(0, logs.length - 1000);
+      }
+
+      localStorage.setItem('team_management_log', JSON.stringify(logs));
+    } catch (error) {
+      console.error('Error logging team action:', error);
+    }
+  }
+
+  // Get team management logs
+  getTeamManagementLogs() {
+    try {
+      return JSON.parse(localStorage.getItem('team_management_log') || '[]');
+    } catch (error) {
+      console.error('Error getting team management logs:', error);
+      return [];
+    }
+  }
+
+  // Get team hierarchy for a project
+  getProjectTeamHierarchy(projectId) {
+    try {
+      const project = this.getProject(projectId);
+      
+      if (!project) {
+        return null;
+      }
+
+      const teamLead = project.teamLeadId ? this.getAdminById(project.teamLeadId) : null;
+      const teamMembers = (project.teamMembers || []).map(member => 
+        this.getAdminById(member.id)
+      ).filter(Boolean);
+
+      return {
+        project: {
+          id: project.id,
+          name: project.name,
+          status: project.status
+        },
+        teamLead: teamLead ? {
+          id: teamLead.id,
+          name: teamLead.name,
+          username: teamLead.username,
+          email: teamLead.email,
+          workload: teamLead.workload || 0,
+          maxWorkload: teamLead.maxWorkload || 5
+        } : null,
+        teamMembers: teamMembers.map(member => ({
+          id: member.id,
+          name: member.name,
+          username: member.username,
+          email: member.email,
+          role: member.role,
+          workload: member.workload || 0,
+          maxWorkload: member.maxWorkload || 5
+        }))
+      };
+    } catch (error) {
+      console.error('Error getting project team hierarchy:', error);
+      return null;
+    }
   }
 }
 

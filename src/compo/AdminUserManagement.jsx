@@ -12,7 +12,11 @@ import {
   XCircle,
   Crown,
   User,
-  Settings
+  Settings,
+  UserCheck,
+  UserCog,
+  Code,
+  Briefcase
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -29,7 +33,10 @@ const AdminUserManagement = ({ currentAdmin }) => {
     password: '',
     email: '',
     name: '',
-    role: 'admin'
+    role: 'viewer',
+    department: '',
+    skills: [],
+    maxWorkload: 5
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -54,7 +61,10 @@ const AdminUserManagement = ({ currentAdmin }) => {
       password: '',
       email: '',
       name: '',
-      role: 'admin'
+      role: 'viewer',
+      department: '',
+      skills: [],
+      maxWorkload: 5
     });
     setError('');
     setShowPassword(false);
@@ -73,7 +83,10 @@ const AdminUserManagement = ({ currentAdmin }) => {
       password: '', // Don't pre-fill password for security
       email: admin.email,
       name: admin.name,
-      role: admin.role
+      role: admin.role,
+      department: admin.department || '',
+      skills: admin.skills || [],
+      maxWorkload: admin.maxWorkload || 5
     });
     setModalType('edit');
     setSelectedAdmin(admin);
@@ -90,12 +103,32 @@ const AdminUserManagement = ({ currentAdmin }) => {
     if (error) setError('');
   };
 
+  const handleSkillsChange = (e) => {
+    const value = e.target.value;
+    const skillsArray = value.split(',').map(skill => skill.trim()).filter(skill => skill);
+    setFormData(prev => ({
+      ...prev,
+      skills: skillsArray
+    }));
+    if (error) setError('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
+      // Strict role hierarchy validation - only super admins can create accounts
+      if (currentAdmin.role !== 'super_admin') {
+        throw new Error('Only Super Admins can create user accounts');
+      }
+      
+      // Super admins cannot create other super admin accounts
+      if (formData.role === 'super_admin') {
+        throw new Error('Cannot create Super Admin accounts. Contact system administrator.');
+      }
+      
       // Validation
       if (!formData.username || !formData.email || !formData.name) {
         throw new Error('Please fill in all required fields');
@@ -157,10 +190,25 @@ const AdminUserManagement = ({ currentAdmin }) => {
       admin: { 
         color: 'bg-blue-100 text-blue-800', 
         icon: Shield, 
-        label: 'Admin' 
+        label: 'Manager' 
+      },
+      team_lead: { 
+        color: 'bg-orange-100 text-orange-800', 
+        icon: UserCheck, 
+        label: 'Team Lead' 
+      },
+      executive: { 
+        color: 'bg-indigo-100 text-indigo-800', 
+        icon: Briefcase, 
+        label: 'Executive' 
+      },
+      developer: { 
+        color: 'bg-green-100 text-green-800', 
+        icon: Code, 
+        label: 'Developer' 
       },
       viewer: { 
-        color: 'bg-green-100 text-green-800', 
+        color: 'bg-gray-100 text-gray-800', 
         icon: Eye, 
         label: 'Viewer' 
       }
@@ -224,14 +272,14 @@ const AdminUserManagement = ({ currentAdmin }) => {
       {/* Header */}
       <div className="management-header">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Admin User Management</h2>
-          <p className="text-gray-600">Manage administrator accounts and permissions</p>
+          <h2 className="text-2xl font-bold text-gray-900">Team Management</h2>
+          <p className="text-gray-600">Manage team members and roles (Super Admin Access Only)</p>
         </div>
         
         {currentAdmin.role === 'super_admin' && (
           <Button onClick={openAddModal} className="add-admin-button">
             <UserPlus className="w-4 h-4 mr-2" />
-            Add Admin User
+            Add Team Member
           </Button>
         )}
       </div>
@@ -239,7 +287,7 @@ const AdminUserManagement = ({ currentAdmin }) => {
       {/* Admin Users Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Administrator Accounts ({admins.length})</CardTitle>
+          <CardTitle>Team Members ({admins.length})</CardTitle>
           <CardDescription>
             Manage user accounts with different permission levels
           </CardDescription>
@@ -259,6 +307,8 @@ const AdminUserManagement = ({ currentAdmin }) => {
                     <th>User</th>
                     <th>Contact</th>
                     <th>Role</th>
+                    <th>Department</th>
+                    <th>Workload</th>
                     <th>Status</th>
                     <th>Last Login</th>
                     <th>Created</th>
@@ -285,6 +335,27 @@ const AdminUserManagement = ({ currentAdmin }) => {
                         </div>
                       </td>
                       <td>{getRoleBadge(admin.role)}</td>
+                      <td>
+                        <div className="department-info">
+                          {admin.department || 'Not Assigned'}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="workload-info">
+                          <span className="workload-value">
+                            {admin.workload || 0}/{admin.maxWorkload || 5}
+                          </span>
+                          <div className="workload-bar">
+                            <div 
+                              className="workload-progress" 
+                              style={{ 
+                                width: `${((admin.workload || 0) / (admin.maxWorkload || 5)) * 100}%`,
+                                backgroundColor: ((admin.workload || 0) / (admin.maxWorkload || 5)) > 0.8 ? '#ef4444' : '#22c55e'
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      </td>
                       <td>{getStatusBadge(admin.isActive)}</td>
                       <td>{formatDate(admin.lastLogin)}</td>
                       <td>{formatDate(admin.createdAt)}</td>
@@ -338,7 +409,7 @@ const AdminUserManagement = ({ currentAdmin }) => {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">
-                {modalType === 'add' ? 'Add New Admin User' : 'Edit Admin User'}
+                {modalType === 'add' ? 'Add New Team Member' : 'Edit Team Member'}
               </h3>
               <Button
                 variant="outline"
@@ -420,9 +491,59 @@ const AdminUserManagement = ({ currentAdmin }) => {
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="department">Department</label>
+                  <select
+                    id="department"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Department</option>
+                    <option value="Management">Management</option>
+                    <option value="Development">Development</option>
+                    <option value="Design">Design</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Quality Assurance">Quality Assurance</option>
+                    <option value="DevOps">DevOps</option>
+                    <option value="Business Analysis">Business Analysis</option>
+                  </select>
                 </div>
 
-                {currentAdmin.role === 'super_admin' && (
+                <div className="form-group">
+                  <label htmlFor="maxWorkload">Max Project Workload</label>
+                  <input
+                    type="number"
+                    id="maxWorkload"
+                    name="maxWorkload"
+                    value={formData.maxWorkload}
+                    onChange={handleInputChange}
+                    min="1"
+                    max="20"
+                    placeholder="Maximum concurrent projects"
+                  />
+                  <small className="help-text">Maximum number of projects this user can handle simultaneously</small>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="skills">Skills (comma-separated)</label>
+                <input
+                  type="text"
+                  id="skills"
+                  name="skills"
+                  value={Array.isArray(formData.skills) ? formData.skills.join(', ') : formData.skills}
+                  onChange={handleSkillsChange}
+                  placeholder="React, Node.js, Project Management, etc."
+                />
+                <small className="help-text">Enter skills separated by commas</small>
+              </div>
+
+              {currentAdmin.role === 'super_admin' && (
                   <div className="form-group">
                     <label htmlFor="role">Role *</label>
                     <select
@@ -432,10 +553,16 @@ const AdminUserManagement = ({ currentAdmin }) => {
                       onChange={handleInputChange}
                       required
                     >
-                      <option value="admin">Admin</option>
-                      <option value="super_admin">Super Admin</option>
+                      {/* Super admin can create any role below them */}
+                      <option value="admin">Manager</option>
+                      <option value="team_lead">Team Lead</option>
+                      <option value="executive">Executive</option>
+                      <option value="developer">Developer</option>
                       <option value="viewer">Viewer</option>
                     </select>
+                    <small className="help-text">
+                      Only Super Admins can create user accounts. Only Super Admins have administrator privileges.
+                    </small>
                   </div>
                 )}
               </div>
