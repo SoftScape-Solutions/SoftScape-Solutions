@@ -164,7 +164,7 @@ const AdminPanel = () => {
               onClick={() => setActiveTab('users')}
             >
               <Users className="w-4 h-4 mr-2" />
-              Team Management
+              User Management
             </button>
           )}
         </div>
