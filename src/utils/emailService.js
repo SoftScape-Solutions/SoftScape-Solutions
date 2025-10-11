@@ -1,9 +1,14 @@
 // Email Service for SoftScape Solutions
 // This handles automated consultation confirmation emails
 
+require('dotenv').config();
+
 class EmailService {
   constructor() {
-    this.web3formsApiKey = '5575d911-0911-45c5-a96a-9e19099c6a31'; // Your Web3Forms API key
+    this.web3formsApiKey = process.env.WEB3FORMS_API_KEY;
+    if (!this.web3formsApiKey) {
+      throw new Error('WEB3FORMS_API_KEY environment variable is not set');
+    }
     this.web3formsEndpoint = 'https://api.web3forms.com/submit';
     this.fallbackEndpoint = 'https://formspree.io/f/YOUR_FORM_ID'; // Formspree as backup
   }
