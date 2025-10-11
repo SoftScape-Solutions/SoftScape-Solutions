@@ -64,7 +64,12 @@ const testEmailService = async () => {
 // Web3Forms Configuration Info
 const showConfiguration = () => {
   console.log('\n🔧 Web3Forms Configuration:');
-  console.log('API Key: 5575d911-0911-45c5-a96a-9e19099c6a31');
+  // Do not print the actual API key; show if it's set via environment variable
+  if (typeof process !== 'undefined' && process.env && process.env.WEB3FORMS_API_KEY) {
+    console.log('API Key: [set via environment variable]');
+  } else {
+    console.log('API Key: [not set - please set WEB3FORMS_API_KEY in your environment]');
+  }
   console.log('Endpoint: https://api.web3forms.com/submit');
   console.log('From Email: softscapesolution@outlook.com');
   console.log('Admin Email: softscapesolution@outlook.com');
