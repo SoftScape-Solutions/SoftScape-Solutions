@@ -25,7 +25,7 @@ import Layout from "../../components/common/Layout";
 import { SERVICES_CONFIG, COMPANY_INFO } from "../../config";
 import "../LandingPage/LandingPage.css";
 import "./AIApplications.css";
-import "./aiApplications.css";
+// import "./aiApplications.css";
 
 const AIApplications = () => {
 
