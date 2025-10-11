@@ -84,7 +84,15 @@ class PasswordSecurity {
     const commonPasswords = [
       'password', '123456', '123456789', 'qwerty', 'abc123',
       'password123', 'admin', 'root', 'user', 'guest',
-      'welcome', 'login', 'pass', 'softscape2024'
+      'welcome', 'login', 'pass',
+      // Company-specific variations and recent years
+      'softscape2024', 'softscape2023', 'softscape2022', 'softscape2021',
+      'softscape', 'softscape!', 'softscape@2024', 'softscape#2024', 'softscape2024!',
+      'softscape2024@', 'softscape2024#', 'softscape2024$', 'softscape2024%',
+      'Softscape2024', 'Softscape2024!', 'Softscape2023', 'Softscape2022',
+      'softscapeadmin', 'softscapeuser', 'softscapepassword', 'softscape123',
+      'softscape1', 'softscape12', 'softscape1234', 'softscape12345',
+      'softscape2024admin', 'softscape2024user', 'softscape2024password'
     ];
     
     return commonPasswords.includes(password.toLowerCase());
