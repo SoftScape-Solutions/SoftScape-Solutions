@@ -23,6 +23,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import consultationStorage from '../../utils/consultationStorage';
+import netlifyAPI from '../../utils/netlifyAPI';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -30,33 +31,88 @@ const AdminDashboard = () => {
   const [filteredConsultations, setFilteredConsultations] = useState([]);
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('all');
   const [selectedConsultation, setSelectedConsultation] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    loadDashboardData();
+    // Get user info from localStorage (set during login)
+    const userInfo = localStorage.getItem('adminUser');
+    const authToken = localStorage.getItem('adminToken');
+    
+    if (userInfo && authToken) {
+      setUser(JSON.parse(userInfo));
+      loadDashboardData(authToken);
+    } else {
+      setError('Authentication required. Please log in again.');
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
     filterConsultations();
   }, [consultations, searchTerm, statusFilter, dateFilter]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (authToken) => {
     try {
       setLoading(true);
-      const allConsultations = consultationStorage.getAllConsultations();
-      const dashboardStats = consultationStorage.getDashboardStats();
+      setError(null);
       
-      setConsultations(allConsultations);
+      console.log('Loading dashboard data from Netlify Functions...');
+      
+      // Fetch consultations from Netlify Functions
+      const response = await netlifyAPI.getConsultations(authToken);
+      
+      setConsultations(response.consultations || []);
+      
+      // Calculate stats from the fetched data
+      const dashboardStats = calculateStats(response.consultations || []);
       setStats(dashboardStats);
+      
+      console.log('Dashboard data loaded successfully:', response);
+      
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      setError(`Failed to load dashboard data: ${error.message}`);
+      
+      // If token is invalid, redirect to login
+      if (error.message.includes('Authentication') || error.message.includes('token')) {
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('adminToken');
+        window.location.href = '/admin';
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  // Calculate dashboard statistics
+  const calculateStats = (consultationsData) => {
+    const total = consultationsData.length;
+    const pending = consultationsData.filter(c => c.status === 'pending').length;
+    const inProgress = consultationsData.filter(c => c.status === 'in-progress').length;
+    const completed = consultationsData.filter(c => c.status === 'completed').length;
+    
+    // Calculate this month's consultations
+    const now = new Date();
+    const thisMonth = consultationsData.filter(c => {
+      const createdDate = new Date(c.createdAt);
+      return createdDate.getMonth() === now.getMonth() && 
+             createdDate.getFullYear() === now.getFullYear();
+    }).length;
+
+    return {
+      total,
+      pending,
+      inProgress,
+      completed,
+      thisMonth,
+      conversionRate: total > 0 ? Math.round((completed / total) * 100) : 0
+    };
   };
 
   const filterConsultations = () => {
@@ -64,7 +120,14 @@ const AdminDashboard = () => {
 
     // Search filter
     if (searchTerm) {
-      filtered = consultationStorage.searchConsultations(searchTerm);
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(consultation => 
+        consultation.name?.toLowerCase().includes(searchLower) ||
+        consultation.email?.toLowerCase().includes(searchLower) ||
+        consultation.company?.toLowerCase().includes(searchLower) ||
+        consultation.service?.toLowerCase().includes(searchLower) ||
+        consultation.message?.toLowerCase().includes(searchLower)
+      );
     }
 
     // Status filter
@@ -77,25 +140,73 @@ const AdminDashboard = () => {
     switch (dateFilter) {
       case 'today':
         filtered = filtered.filter(consultation => {
-          const consultationDate = new Date(consultation.submittedAt);
+          const consultationDate = new Date(consultation.createdAt);
           return consultationDate.toDateString() === now.toDateString();
         });
         break;
       case 'week':
         const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         filtered = filtered.filter(consultation => 
-          new Date(consultation.submittedAt) >= oneWeekAgo
+          new Date(consultation.createdAt) >= oneWeekAgo
         );
         break;
       case 'month':
         const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         filtered = filtered.filter(consultation => 
-          new Date(consultation.submittedAt) >= oneMonthAgo
+          new Date(consultation.createdAt) >= oneMonthAgo
         );
         break;
     }
 
     setFilteredConsultations(filtered);
+  };
+
+  // Handle consultation status update
+  const handleStatusUpdate = async (consultationId, newStatus) => {
+    try {
+      const authToken = localStorage.getItem('adminToken');
+      
+      await netlifyAPI.updateConsultation(consultationId, { status: newStatus }, authToken);
+      
+      // Refresh the data
+      loadDashboardData(authToken);
+      
+      console.log(`Consultation ${consultationId} status updated to ${newStatus}`);
+      
+    } catch (error) {
+      console.error('Error updating consultation status:', error);
+      setError(`Failed to update consultation: ${error.message}`);
+    }
+  };
+
+  // Handle consultation deletion
+  const handleDeleteConsultation = async (consultationId) => {
+    if (!window.confirm('Are you sure you want to delete this consultation?')) {
+      return;
+    }
+
+    try {
+      const authToken = localStorage.getItem('adminToken');
+      
+      await netlifyAPI.deleteConsultation(consultationId, authToken);
+      
+      // Refresh the data
+      loadDashboardData(authToken);
+      
+      console.log(`Consultation ${consultationId} deleted successfully`);
+      
+    } catch (error) {
+      console.error('Error deleting consultation:', error);
+      setError(`Failed to delete consultation: ${error.message}`);
+    }
+  };
+
+  // Refresh dashboard data
+  const handleRefresh = () => {
+    const authToken = localStorage.getItem('adminToken');
+    if (authToken) {
+      loadDashboardData(authToken);
+    }
   };
 
   const updateConsultationStatus = async (id, status, notes = '') => {

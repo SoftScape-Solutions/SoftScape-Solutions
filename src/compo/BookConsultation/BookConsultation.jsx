@@ -22,6 +22,7 @@ import {
   Phone,
 } from "lucide-react";
 import consultationStorage from "../../utils/consultationStorage";
+import netlifyAPI from "../../utils/netlifyAPI";
 import Layout from "../../components/common/Layout";
 import { CONTACT_INFO, APP_CONFIG, COMPANY_INFO } from "../../config";
 import "./BookConsultation.css";
@@ -393,35 +394,34 @@ const BookConsultation = () => {
     setSubmitError("");
 
     try {
-      // Prepare consultation data for local storage
+      // Prepare consultation data for Netlify Functions
       const consultationData = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         company: formData.company,
         industry: formData.industry,
-        projectType: formData.projectType,
+        service: formData.projectType, // Map projectType to service for backend
         budget: formData.budget,
         timeline: formData.timeline,
-        projectDetails: formData.projectDetails,
+        message: formData.projectDetails,
         additionalNotes: formData.additionalNotes,
-        files: uploadedFiles.map(file => file.name),
-        submissionDate: new Date().toISOString()
+        files: uploadedFiles.map(file => file.name)
       };
 
-      console.log("Saving consultation booking...", consultationData);
+      console.log("Submitting consultation via Netlify Functions...", consultationData);
 
-      // Save to local storage (this will automatically send emails)
-      const savedConsultation = await consultationStorage.saveConsultation(consultationData);
+      // Submit via Netlify Functions API
+      const response = await netlifyAPI.submitConsultation(consultationData);
       
-      console.log("Consultation saved successfully:", savedConsultation.id);
+      console.log("Consultation submitted successfully:", response);
 
       // Show success message
       setSubmitSuccess(true);
       setSuccessMessage({
         title: "Consultation Request Submitted Successfully! 🎉",
         message: `Thank you ${formData.name}! We've received your consultation request and sent a confirmation email to ${formData.email}. Our team will contact you within 24 hours.`,
-        consultationId: savedConsultation.id
+        consultationId: response.consultationId || response.data?.id
       });
 
       // Reset form
@@ -447,7 +447,9 @@ const BookConsultation = () => {
         "There was an error submitting your form. Please try again or contact us directly.";
 
       // Provide more specific error messages
-      if (error.message.includes("credentials need to be configured")) {
+      if (error.message.includes("Network error")) {
+        errorMessage = "Network connection issue. Please check your internet connection and try again.";
+      } else if (error.message.includes("credentials")) {
         errorMessage =
           "Email service is not properly configured. Please contact support at " + CONTACT_INFO.email.primary + " or call " + CONTACT_INFO.phone.support + ".";
       } else if (error.message.includes("configuration is missing")) {

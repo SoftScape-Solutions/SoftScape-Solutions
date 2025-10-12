@@ -3,6 +3,7 @@ import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Lock, User, Eye, EyeOff, Shield } from 'lucide-react';
 import consultationStorage from '../../utils/consultationStorage';
+import netlifyAPI from '../../utils/netlifyAPI';
 import './AdminLogin.css';
 
 const AdminLogin = ({ onLogin }) => {
@@ -34,19 +35,23 @@ const AdminLogin = ({ onLogin }) => {
         throw new Error('Please enter both username and password');
       }
 
-      // Check credentials with storage service
-      const adminData = await consultationStorage.validateAdmin(credentials.username, credentials.password);
+      console.log('Authenticating with Netlify Functions...');
       
-      if (adminData) {
-        // Store login session
-        sessionStorage.setItem('admin_logged_in', 'true');
-        sessionStorage.setItem('admin_login_time', new Date().toISOString());
-        sessionStorage.setItem('admin_user_id', adminData.id);
+      // Authenticate with Netlify Functions
+      const response = await netlifyAPI.authenticateAdmin(credentials);
+      
+      if (response.success && response.token && response.user) {
+        // Store authentication data
+        localStorage.setItem('adminToken', response.token);
+        localStorage.setItem('adminUser', JSON.stringify(response.user));
+        localStorage.setItem('adminLoginTime', new Date().toISOString());
         
-        // Call parent component's login handler with admin data
-        onLogin(adminData);
+        console.log('Authentication successful:', response.user);
+        
+        // Call parent component's login handler with user data
+        onLogin(response.user);
       } else {
-        throw new Error('Invalid username or password');
+        throw new Error('Authentication failed');
       }
     } catch (error) {
       setError(error.message);
