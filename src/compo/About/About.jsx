@@ -36,7 +36,7 @@ const About = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               About
               <span className="gradient-text-ai block">
-                SoftScape AI Solutions
+                SoftScape Solutions
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed px-4">
