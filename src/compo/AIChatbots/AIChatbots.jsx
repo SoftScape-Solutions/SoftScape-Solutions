@@ -353,7 +353,7 @@ const AIChatbots = () => {
               </div>
             </div>
 
-            <div className="animate-slide-in lg:pl-12">
+            {/* <div className="animate-slide-in lg:pl-12">
               <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-2xl">
                 <h3 className="text-2xl font-bold mb-6">Proven Results</h3>
                 <div className="space-y-6">
@@ -386,7 +386,7 @@ const AIChatbots = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
