@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Brain,
   Users,
@@ -23,8 +23,9 @@ import {
   Award,
   Coffee,
 } from "lucide-react";
-import "./landingPage.css";
-import "./jointeam.css";
+import Layout from "../../components/common/Layout";
+import "../LandingPage/LandingPage.css";
+import "./JoinTeam.css";
 
 const JoinTeam = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

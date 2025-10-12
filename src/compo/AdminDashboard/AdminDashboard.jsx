@@ -20,9 +20,9 @@ import {
   Phone,
   Building
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import consultationStorage from '../utils/consultationStorage';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import consultationStorage from '../../utils/consultationStorage';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {

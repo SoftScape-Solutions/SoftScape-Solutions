@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Brain,
   Sparkles,
@@ -21,9 +21,11 @@ import {
   Palette,
   Zap,
 } from "lucide-react";
-import Layout from "../components/common/Layout";
-import "./landingPage.css";
-import "./aiApplications.css";
+import Layout from "../../components/common/Layout";
+import { SERVICES_CONFIG, COMPANY_INFO } from "../../config";
+import "../LandingPage/LandingPage.css";
+import "./AIApplications.css";
+// import "./aiApplications.css";
 
 const AIApplications = () => {
 

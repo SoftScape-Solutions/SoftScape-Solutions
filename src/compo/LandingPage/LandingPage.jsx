@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import { Brain, Sparkles, Bot, Cpu, Workflow } from "lucide-react";
 import { Link } from "react-router-dom";
-import Layout from "../components/common/Layout";
-import "./landingPage.css";
-import "./animations.css";
+import Layout from "../../components/common/Layout";
+import { HERO_CONFIG, SERVICES_CONFIG } from "../../config";
+import "./LandingPage.css";
+import "../animations.css";
 
 const LandingPage = () => {
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
@@ -89,76 +90,18 @@ const LandingPage = () => {
     };
   }, [isScrollingFromHero, lastScrollY, showScrollIndicator]);
 
-  const services = [
-    {
-      title: "AI Chatbots & Agents",
-      description:
-        "Intelligent conversational agents that automate customer service and business processes",
-      icon: Bot,
-      color: "blue",
-      link: "/ai-chatbots",
-      preview: {
-        products: [
-          "Customer Support Bot",
-          "Sales Assistant AI",
-          "Virtual Receptionist",
-        ],
-        overview:
-          "24/7 intelligent chat solutions that handle customer inquiries, qualify leads, and provide instant support across multiple platforms.",
-      },
-    },
-    {
-      title: "Smart Automation Tools",
-      description:
-        "AI-powered workflow automation that eliminates repetitive tasks and boosts productivity",
-      icon: Workflow,
-      color: "purple",
-      link: "/smart-automation",
-      preview: {
-        products: [
-          "Document Processing AI",
-          "Email Automation",
-          "Data Entry Assistant",
-        ],
-        overview:
-          "Streamline operations with intelligent automation that handles repetitive tasks, processes documents, and manages workflows.",
-      },
-    },
-    {
-      title: "AI-Enhanced Applications",
-      description:
-        "Web and mobile applications powered by artificial intelligence for superior user experiences",
-      icon: Sparkles,
-      color: "orange",
-      link: "/ai-applications",
-      preview: {
-        products: [
-          "Smart Analytics Dashboard",
-          "Predictive Mobile Apps",
-          "AI-Powered CRM",
-        ],
-        overview:
-          "Transform your digital presence with applications that learn from user behavior and provide intelligent insights.",
-      },
-    },
-    {
-      title: "Custom AI Solutions",
-      description:
-        "Tailored artificial intelligence systems designed specifically for your unique business needs",
-      icon: Cpu,
-      color: "indigo",
-      link: "/custom-ai",
-      preview: {
-        products: [
-          "Bespoke ML Models",
-          "Industry-Specific AI",
-          "AI Integration Services",
-        ],
-        overview:
-          "Get AI solutions built specifically for your business challenges, from custom machine learning models to complete AI integrations.",
-      },
-    },
-  ];
+  // Get services from config and add icon components
+  const services = SERVICES_CONFIG.aiServices.map(service => ({
+    ...service,
+    icon: service.icon === 'Bot' ? Bot : 
+          service.icon === 'Workflow' ? Workflow :
+          service.icon === 'Cpu' ? Cpu :
+          service.icon === 'Brain' ? Brain : Bot,
+    preview: {
+      products: service.features.slice(0, 3),
+      overview: service.detailedDescription
+    }
+  }));
 
   return (
     <Layout logoClassName="logo-text">
@@ -172,23 +115,21 @@ const LandingPage = () => {
               </div>
             </div>
             <h1 className="hero-title">
-              AI-Powered Software
+              {HERO_CONFIG.title.split(" ").slice(0, -1).join(" ")}
               <span className="gradient-text-ai block font-extrabold">
-                Solutions
+                {HERO_CONFIG.title.split(" ").slice(-1)}
               </span>
             </h1>
             <p className="hero-description">
-              We create intelligent AI-powered tools, automation agents, and
-              smart solutions that revolutionize how businesses operate.
-              Transform your workflow with cutting-edge artificial intelligence.
+              {HERO_CONFIG.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in animate-delay-400 px-4">
-              <Link to="/explore-tools">
+              <Link to={HERO_CONFIG.cta.primary.link}>
                 <Button size="lg" className="hero-button btn-primary-enhanced">
                   <span className="hidden sm:inline">
-                    Explore Our AI-Powered Tools
+                    {HERO_CONFIG.cta.primary.text}
                   </span>
-                  <span className="sm:hidden">Explore AI Tools</span>
+                  <span className="sm:hidden">{HERO_CONFIG.cta.primary.mobileText}</span>
                   <Sparkles className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </Link>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Lock, User, Eye, EyeOff, Shield } from 'lucide-react';
-import consultationStorage from '../utils/consultationStorage';
+import consultationStorage from '../../utils/consultationStorage';
 import './AdminLogin.css';
 
 const AdminLogin = ({ onLogin }) => {

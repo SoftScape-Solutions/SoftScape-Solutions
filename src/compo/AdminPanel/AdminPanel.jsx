@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '../components/ui/button';
+import { Button } from '../../components/ui/button';
 import { LogOut, Shield, Settings, Users, BarChart3, GitBranch, Server, UserCheck } from 'lucide-react';
-import AdminLogin from './AdminLogin';
-import AdminDashboard from './AdminDashboard';
-import AdminUserManagement from './AdminUserManagement';
-import ProjectManagement from './ProjectManagement';
-import GitHubManagement from './GitHubManagement';
-import TeamManagement from './TeamManagement';
-import consultationStorage from '../utils/consultationStorage';
+import AdminLogin from '../AdminLogin/AdminLogin';
+import AdminDashboard from '../AdminDashboard/AdminDashboard';
+import AdminUserManagement from '../AdminUserManagement/AdminUserManagement';
+import ProjectManagement from '../ProjectManagement/ProjectManagement';
+import GitHubManagement from '../GitHubManagement/GitHubManagement';
+import TeamManagement from '../TeamManagement/TeamManagement';
+import consultationStorage from '../../utils/consultationStorage';
 import './AdminPanel.css';
 
 const AdminPanel = () => {

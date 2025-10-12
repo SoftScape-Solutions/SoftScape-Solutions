@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Brain,
   Bot,
@@ -20,9 +20,9 @@ import {
   MessageCircle,
   Smartphone,
 } from "lucide-react";
-import Layout from "../components/common/Layout";
-import "./landingPage.css";
-import "./exploretools.css";
+import Layout from "../../components/common/Layout";
+import "../LandingPage/LandingPage.css";
+import "./ExploreTools.css";
 
 const ExploreTools = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");

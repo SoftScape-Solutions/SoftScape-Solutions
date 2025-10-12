@@ -1,12 +1,12 @@
 import React from "react";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../../components/ui/card";
 import {
   Code,
   Users,
@@ -20,9 +20,8 @@ import {
   Workflow,
 } from "lucide-react";
 
-import Layout from "../components/common/Layout";
-import "./about.css";
-import "./landingPage.css";
+import Layout from "../../components/common/Layout";
+import "./About.css";
 
 const About = () => {
   return (
