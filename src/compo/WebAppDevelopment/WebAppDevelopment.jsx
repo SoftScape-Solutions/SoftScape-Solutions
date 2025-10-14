@@ -45,13 +45,32 @@ const WebAppDevelopment = () => {
     { name: 'Vue.js', icon: '💚' },
     { name: 'Angular', icon: '🔺' },
     { name: 'Node.js', icon: '🟢' },
+    { name: 'Express.js', icon: '🚀' },
     { name: 'Python', icon: '🐍' },
+    { name: 'Django', icon: '🎯' },
+    { name: 'FastAPI', icon: '⚡' },
     { name: 'MongoDB', icon: '🍃' },
     { name: 'PostgreSQL', icon: '🐘' },
-    { name: 'AWS', icon: '☁️' }
+    { name: 'CI/CD', icon: '🔄' }
   ];
 
   const packages = [
+    {
+      name: 'MVP',
+      price: '$950',
+      duration: 'per project',
+      features: [
+        'Minimum Viable Product',
+        'Core Functionality Only',
+        'Basic Responsive Design',
+        'Simple UI/UX',
+        'Basic Testing',
+        '15 Days Support',
+        'Quick Launch'
+      ],
+      description: 'Perfect for validating your idea quickly with essential features only.',
+      recommended: false
+    },
     {
       name: 'Starter',
       price: '$1,500',
@@ -86,8 +105,8 @@ const WebAppDevelopment = () => {
     },
     {
       name: 'Enterprise',
-      price: '$4,500',
-      duration: 'per project',
+      price: '$5,000+',
+      duration: 'depending on requirements',
       features: [
         'Complex Web Application',
         'Advanced Features',
@@ -96,9 +115,10 @@ const WebAppDevelopment = () => {
         'Third-party Integrations',
         '90 Days Support',
         'Cloud Deployment',
-        'Maintenance Plan'
+        'Maintenance Plan',
+        'Custom Requirements'
       ],
-      description: 'Comprehensive solution for large organizations with complex requirements.',
+      description: 'Comprehensive solution for large organizations with complex and custom requirements.',
       recommended: false
     }
   ];
@@ -133,6 +153,11 @@ const WebAppDevelopment = () => {
       number: '6',
       title: 'Deployment',
       description: 'Launching your application and providing ongoing support'
+    },
+    {
+      number: '7',
+      title: 'Maintenance',
+      description: 'Ongoing website maintenance and updates with monthly service plans (fee discussed with client)'
     }
   ];
 

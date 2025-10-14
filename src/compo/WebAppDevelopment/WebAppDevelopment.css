@@ -253,14 +253,14 @@
 }
 
 .webapp-pricing-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 24px;
   padding: 3rem 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+  color: white;
 }
 
 .webapp-pricing-card::before {
@@ -286,13 +286,14 @@
 }
 
 .webapp-pricing-card.featured {
+  /* All cards now have the same purple background */
   background: linear-gradient(135deg, #667eea, #764ba2);
-  transform: scale(1.05);
-  border-color: transparent;
+  transform: scale(1.02);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .webapp-pricing-card.featured:hover {
-  transform: scale(1.08) translateY(-10px);
+  transform: scale(1.05) translateY(-10px);
   box-shadow: 0 40px 80px rgba(102, 126, 234, 0.4);
 }
 
@@ -362,7 +363,10 @@
   }
 
   .webapp-pricing-card.featured {
+    /* Keep same purple styling as other cards on mobile */
     transform: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-color: rgba(255, 255, 255, 0.3);
   }
 
   .webapp-cta {
