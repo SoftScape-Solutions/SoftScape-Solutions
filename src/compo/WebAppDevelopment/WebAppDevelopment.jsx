@@ -155,7 +155,7 @@ const WebAppDevelopment = () => {
   ];
 
   const handlePackageSelect = (pkg) => {
-    navigate('/book-consultation', {
+    navigate(ROUTES.bookConsultation, {
       state: {
         selectedPackage: {
           name: pkg.name,
