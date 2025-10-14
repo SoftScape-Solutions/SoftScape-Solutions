@@ -64,102 +64,143 @@ const BookConsultation = () => {
         throw new Error('Please enter a valid email address');
       }
 
-      // Validate EmailJS environment variables
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const adminTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_ADMIN;
-      const customerTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_CUSTOMER;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      // Debug logging for environment variables
-      console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
-      console.log('Service ID:', serviceId);
-      console.log('Admin Template ID:', adminTemplateId);
-      console.log('Customer Template ID:', customerTemplateId);
-      console.log('Public Key:', publicKey);
-      console.log('All env vars:', import.meta.env);
-      console.log('=====================================');
-
-      if (!serviceId || !adminTemplateId || !customerTemplateId || !publicKey) {
-        throw new Error(`EmailJS configuration missing. Missing values: ${!serviceId ? 'Service ID ' : ''}${!adminTemplateId ? 'Admin Template ' : ''}${!customerTemplateId ? 'Customer Template ' : ''}${!publicKey ? 'Public Key' : ''}`);
-      }
-
-      console.log('=== EMAILJS FORM SUBMISSION START ===');
+      console.log('=== FORM SUBMISSION START ===');
       console.log('Customer Email:', formData.email);
       console.log('Customer Name:', formData.name);
-      console.log('Service ID:', serviceId);
 
-      // Prepare template parameters for admin notification
-      const adminTemplateParams = {
-        to_email: 'softscapesolution@outlook.com',
-        from_name: formData.name,
-        from_email: formData.email,
+      const accessKey = formData.access_key;
+
+      // First submission: Admin notification
+      const adminFormData = {
+        access_key: accessKey,
+        name: formData.name,
+        email: formData.email,
         phone: formData.phone || 'Not provided',
         company: formData.company || 'Not provided',
         project_type: formData.projectType,
         budget: formData.budget,
-        timeline: formData.timeline || 'Flexible',
-        selected_package: formData.selectedPackage || 'None selected',
+        timeline: formData.timeline || 'Not specified',
+        selected_package: formData.selectedPackage || 'None',
         project_details: formData.projectDetails,
-        submission_date: new Date().toLocaleString(),
-        message: `New consultation request from ${formData.name} for ${formData.projectType} project with budget ${formData.budget}.`
+        
+        // Admin notification settings
+        subject: `🚀 NEW CONSULTATION REQUEST - ${formData.name} (${formData.projectType})`,
+        to: 'softscapesolution@outlook.com',
+        from_name: formData.name,
+        reply_to: formData.email,
+        
+        message: `
+========================================
+🚀 NEW CONSULTATION REQUEST
+========================================
+
+� CUSTOMER DETAILS:
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone || 'Not provided'}
+Company: ${formData.company || 'Not provided'}
+
+💼 PROJECT INFORMATION:
+Type: ${formData.projectType}
+Budget: ${formData.budget}
+Timeline: ${formData.timeline || 'Flexible'}
+Package: ${formData.selectedPackage || 'None selected'}
+
+📝 PROJECT DESCRIPTION:
+${formData.projectDetails}
+
+📅 SUBMITTED: ${new Date().toLocaleString()}
+
+========================================
+⚡ ACTION REQUIRED: Contact customer within 24 hours
+📧 Reply directly to this email to respond to customer
+========================================
+        `
       };
 
-      // Prepare template parameters for customer auto-reply
-      const customerTemplateParams = {
-        to_email: formData.email,
-        to_name: formData.name,
+      // Second submission: Customer confirmation email
+      const customerFormData = {
+        access_key: accessKey,
+        name: 'SoftScape Solutions',
+        email: 'softscapesolution@outlook.com',
+        to: formData.email,
         from_name: 'SoftScape Solutions',
-        project_type: formData.projectType,
-        budget: formData.budget,
-        timeline: formData.timeline || 'Flexible',
-        selected_package: formData.selectedPackage || 'None selected',
-        company_email: 'softscapesolution@outlook.com',
-        company_phone: '+44 7789667804',
-        website_url: 'https://softscape-solutions.netlify.app',
-        message: `Thank you ${formData.name} for your consultation request. We will contact you within 24 hours.`
+        reply_to: 'softscapesolution@outlook.com',
+        
+        subject: '✅ Consultation Request Confirmed - SoftScape Solutions',
+        message: `Dear ${formData.name},
+
+🎉 Thank you for reaching out to SoftScape Solutions!
+
+We have successfully received your consultation request and our team is excited to help transform your business with our cutting-edge AI solutions.
+
+📋 YOUR REQUEST SUMMARY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Project Type: ${formData.projectType}
+Budget Range: ${formData.budget}
+Timeline: ${formData.timeline || 'Flexible'}
+${formData.selectedPackage ? `Selected Package: ${formData.selectedPackage}` : ''}
+
+🚀 WHAT HAPPENS NEXT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Within 2 hours: Our team reviews your request
+✅ Within 24 hours: A senior consultant contacts you
+✅ Initial Discussion: We schedule a detailed consultation call
+✅ Custom Proposal: You receive a tailored solution proposal
+
+📞 NEED IMMEDIATE ASSISTANCE?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📧 Email: softscapesolution@outlook.com
+📱 Phone: +44 7789667804
+🌐 Website: https://softscape-solutions.netlify.app
+
+We're committed to delivering AI solutions that drive real business results. 
+
+Thank you for choosing SoftScape Solutions!
+
+Best regards,
+The SoftScape Solutions Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This is an automated confirmation.
+For inquiries, please contact us using the information above.`
       };
 
+      // Debug logging to verify email addresses
       console.log('=== EMAIL ROUTING DEBUG ===');
-      console.log('Service ID:', serviceId);
-      console.log('Admin Template ID:', adminTemplateId);
-      console.log('Customer Template ID:', customerTemplateId);
-      console.log('Public Key:', publicKey);
-      console.log('Admin template params:', adminTemplateParams);
-      console.log('Customer template params:', customerTemplateParams);
+      console.log('Customer Email from Form:', formData.email);
+      console.log('Customer Confirmation Will Be Sent To:', customerFormData.to);
+      console.log('Admin Notification Will Be Sent To:', adminFormData.to);
+      console.log('Form Data:', formData);
+      console.log('========================');
 
-      // Send admin notification email
-      console.log('Sending admin notification...');
-      let adminResponse;
-      try {
-        adminResponse = await emailjs.send(
-          serviceId,
-          adminTemplateId,
-          adminTemplateParams,
-          publicKey
-        );
-        console.log('Admin email result:', adminResponse);
-      } catch (adminError) {
-        console.error('Admin email failed:', adminError);
-        throw new Error(`Admin email failed: ${adminError.message || adminError.text || 'Unknown error'}`);
-      }
+      // Submit admin notification
+      console.log('Submitting admin notification...');
+      const adminResponse = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(adminFormData)
+      });
 
-      // Send customer auto-reply email
-      console.log('Sending customer auto-reply...');
-      let customerResponse;
-      try {
-        customerResponse = await emailjs.send(
-          serviceId,
-          customerTemplateId,
-          customerTemplateParams,
-          publicKey
-        );
-        console.log('Customer email result:', customerResponse);
-      } catch (customerError) {
-        console.error('Customer email failed:', customerError);
-        throw new Error(`Customer email failed: ${customerError.message || customerError.text || 'Unknown error'}`);
-      }
+      const adminResult = await adminResponse.json();
+      console.log('Admin submission result:', adminResult);
 
-      if (adminResponse.status === 200 && customerResponse.status === 200) {
+      // Submit customer confirmation
+      console.log('Submitting customer confirmation...');
+      const customerResponse = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customerFormData)
+      });
+
+      const customerResult = await customerResponse.json();
+      console.log('Customer submission result:', customerResult);
+
+      if (adminResult.success && customerResult.success) {
         // Save to local storage as backup
         await consultationStorage.saveConsultation({
           ...formData,
@@ -169,7 +210,7 @@ const BookConsultation = () => {
 
         setSubmitStatus({
           type: 'success',
-          message: '🎉 Success! Consultation request submitted via EmailJS. Both admin notification and customer confirmation emails have been sent successfully!'
+          message: '🎉 Success! Consultation request submitted and confirmation email sent to customer. We will contact them within 24 hours.'
         });
 
         // Reset form after 4 seconds
@@ -179,24 +220,17 @@ const BookConsultation = () => {
       } else {
         // If one failed, show which one
         const failedSubmissions = [];
-        if (adminResponse.status !== 200) failedSubmissions.push('admin notification');
-        if (customerResponse.status !== 200) failedSubmissions.push('customer confirmation');
+        if (!adminResult.success) failedSubmissions.push('admin notification');
+        if (!customerResult.success) failedSubmissions.push('customer confirmation');
         
         throw new Error(`Failed to send ${failedSubmissions.join(' and ')}`);
       }
 
     } catch (error) {
-      console.error('Error submitting consultation via EmailJS:', error);
-      
-      // Enhanced error logging
-      console.error('Full error object:', error);
-      console.error('Error message:', error.message);
-      console.error('Error text:', error.text);
-      console.error('Error status:', error.status);
-      
+      console.error('Error submitting consultation:', error);
       setSubmitStatus({
         type: 'error',
-        message: `❌ submission failed: ${error.message || error.text || error || 'Unknown error'}. Please try again or contact us directly at softscapesolution@outlook.com`
+        message: `❌ Submission failed: ${error.message}. Please try again or contact us directly at softscapesolution@outlook.com`
       });
     } finally {
       setIsSubmitting(false);
@@ -273,7 +307,13 @@ const BookConsultation = () => {
           {/* Consultation Form */}
           <div className="bg-white rounded-lg shadow-xl p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* EmailJS integration note - no hidden fields needed like Web3Forms */}
+              {/* Web3Forms hidden fields - simplified since we use dual submission */}
+              <input type="hidden" name="access_key" value={formData.access_key} />
+              <input type="hidden" name="from_name" value={formData.name || 'Website Visitor'} />
+              <input type="hidden" name="reply_to" value={formData.email} />
+              
+              {/* Honeypot field for spam protection */}
+              <input type="checkbox" name="botcheck" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
               
               {/* Personal Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -452,7 +492,7 @@ const BookConsultation = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Submitting via EmailJS...
+                      Submitting...
                     </span>
                   ) : (
                     'Submit Consultation Request'
