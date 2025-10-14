@@ -33,8 +33,8 @@ export const HERO_CONFIG = {
   // Call-to-action buttons
   cta: {
     primary: {
-      text: "Explore Our AI Tools",
-      mobileText: "Explore AI Tools",
+      text: "Explore Our Tools",
+      mobileText: "Explore Tools",
       link: "/explore-tools"
     },
     secondary: {

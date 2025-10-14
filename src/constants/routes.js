@@ -6,6 +6,7 @@ export const ROUTES = {
     SMART_AUTOMATION: "/smart-automation",
     AI_APPLICATIONS: "/ai-applications",
     CUSTOM_AI: "/custom-ai",
+    WEBAPP_DEVELOPMENT: "/webapp-development",
     BOOK_CONSULTATION: "/book-consultation",
     CONTACT: "/contact",
     JOIN_TEAM: "/join-team",
@@ -23,15 +24,28 @@ export const AI_TOOLS_DROPDOWN = [
     { to: ROUTES.EXPLORE_TOOLS, label: "Explore All Tools", description: "Discover our full AI toolkit" }
 ];
 
+// Development Services dropdown configuration
+export const DEVELOPMENT_SERVICES_DROPDOWN = [
+    { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web App Development", description: "Custom web applications & platforms" }
+];
+
+// All Services dropdown configuration
+export const ALL_SERVICES_DROPDOWN = [
+    ...AI_TOOLS_DROPDOWN,
+    ...DEVELOPMENT_SERVICES_DROPDOWN
+];
+
 // Navigation link configuration
 export const NAVIGATION_LINKS = {
     desktop: [
         { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+        { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web Development", type: "link" },
         { to: ROUTES.ABOUT, label: "About Us", type: "link" },
         { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
     ],
     mobile: [
         { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+        { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web Development", type: "link" },
         { to: ROUTES.ABOUT, label: "About Us", type: "link" },
         { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
     ]
@@ -42,25 +56,25 @@ export const PAGE_NAVIGATION = {
     [ROUTES.ABOUT]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
     },
     [ROUTES.AI_CHATBOTS]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
@@ -68,13 +82,13 @@ export const PAGE_NAVIGATION = {
     [ROUTES.SMART_AUTOMATION]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
@@ -82,13 +96,13 @@ export const PAGE_NAVIGATION = {
     [ROUTES.AI_APPLICATIONS]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
@@ -96,13 +110,13 @@ export const PAGE_NAVIGATION = {
     [ROUTES.AI_VISION]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
@@ -110,13 +124,13 @@ export const PAGE_NAVIGATION = {
     [ROUTES.CUSTOM_AI]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
@@ -124,13 +138,13 @@ export const PAGE_NAVIGATION = {
     [ROUTES.EXPLORE_TOOLS]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]
@@ -138,16 +152,32 @@ export const PAGE_NAVIGATION = {
     [ROUTES.BOOK_CONSULTATION]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" }
         ]
     },
     [ROUTES.CONTACT]: {
+        desktop: [
+            { to: ROUTES.HOME, label: "Home", type: "link" },
+            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web Development", type: "link" },
+            { to: ROUTES.ABOUT, label: "About Us", type: "link" },
+            { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
+        ],
+        mobile: [
+            { to: ROUTES.HOME, label: "Home", type: "link" },
+            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web Development", type: "link" },
+            { to: ROUTES.ABOUT, label: "About", type: "link" },
+            { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
+        ]
+    },
+    [ROUTES.WEBAPP_DEVELOPMENT]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
             { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
@@ -164,13 +194,13 @@ export const PAGE_NAVIGATION = {
     [ROUTES.JOIN_TEAM]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About Us", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ],
         mobile: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
-            { label: "AI Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
             { to: ROUTES.ABOUT, label: "About", type: "link" },
             { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
         ]

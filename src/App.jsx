@@ -10,6 +10,7 @@ import AIChatbots from "./compo/AIChatbots/AIChatbots";
 import SmartAutomation from "./compo/SmartAutomation/SmartAutomation";
 import AIApplications from "./compo/AIApplications/AIApplications";
 import CustomAI from "./compo/CustomAI/CustomAI";
+import WebAppDevelopment from "./compo/WebAppDevelopment/WebAppDevelopment";
 import BookConsultation from "./compo/BookConsultation/BookConsultation";
 import Contact from "./compo/Contact/Contact";
 import JoinTeam from "./compo/JoinTeam/JoinTeam";
@@ -27,6 +28,7 @@ const routeConfig = [
   { path: ROUTES.SMART_AUTOMATION, element: <SmartAutomation /> },
   { path: ROUTES.AI_APPLICATIONS, element: <AIApplications /> },
   { path: ROUTES.CUSTOM_AI, element: <CustomAI /> },
+  { path: ROUTES.WEBAPP_DEVELOPMENT, element: <WebAppDevelopment /> },
   { path: ROUTES.BOOK_CONSULTATION, element: <BookConsultation /> },
   { path: ROUTES.CONTACT, element: <Contact /> },
   { path: ROUTES.JOIN_TEAM, element: <JoinTeam /> },

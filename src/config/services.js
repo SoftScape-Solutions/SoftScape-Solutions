@@ -105,6 +105,32 @@ export const SERVICES_CONFIG = {
         starting: "$5,000",
         tier: "per project"
       }
+    },
+    {
+      id: "webapp-development",
+      title: "Web App Development",
+      description: "Modern, responsive web applications built with cutting-edge technologies for optimal performance",
+      detailedDescription: "Create powerful web applications that deliver exceptional user experiences with modern frameworks, responsive design, and scalable architecture.",
+      icon: "Globe",
+      color: "emerald",
+      gradient: "from-emerald-500 to-teal-500",
+      link: "/webapp-development",
+      features: [
+        "React & Next.js Development",
+        "Progressive Web Apps (PWA)",
+        "E-commerce Solutions",
+        "Dashboard & Analytics"
+      ],
+      benefits: [
+        "Fast loading & responsive design",
+        "Cross-platform compatibility",
+        "SEO optimized architecture",
+        "Scalable cloud deployment"
+      ],
+      pricing: {
+        starting: "$2,500",
+        tier: "per project"
+      }
     }
   ],
 
@@ -138,7 +164,7 @@ export const SERVICES_CONFIG = {
     development: {
       name: "Development",
       description: "Custom AI-powered applications",
-      services: ["ai-applications", "custom-ai"]
+      services: ["ai-applications", "custom-ai", "webapp-development"]
     },
     consulting: {
       name: "Consulting",
