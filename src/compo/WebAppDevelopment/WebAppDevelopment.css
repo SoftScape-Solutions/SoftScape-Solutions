@@ -1,14 +1,15 @@
-/* Web App Development Component Styles */
+/* Web App Development Component - Modern Professional Styles */
 
 .webapp-development {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  background: #ffffff;
 }
 
+/* Hero Section - Modern Gradient */
 .webapp-hero {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 100px 0 80px;
+  padding: 120px 0 100px;
   position: relative;
   overflow: hidden;
 }
@@ -21,265 +22,22 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(5, 150, 105, 0.3) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.4) 0%, transparent 50%);
+  animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 .webapp-hero-content {
   position: relative;
   z-index: 2;
+  animation: fadeInUp 0.8s ease-out;
 }
 
-.webapp-hero h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(45deg, #ffffff, #d1fae5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.webapp-hero p {
-  font-size: 1.25rem;
-  opacity: 0.9;
-  margin-bottom: 2rem;
-  max-width: 600px;
-}
-
-.webapp-features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin: 4rem 0;
-}
-
-.webapp-feature-card {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  border: 1px solid #e5e7eb;
-}
-
-.webapp-feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
-  border-color: #10b981;
-}
-
-.webapp-feature-icon {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  color: white;
-}
-
-.webapp-tech-stack {
-  background: white;
-  border-radius: 20px;
-  padding: 3rem;
-  margin: 4rem 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.webapp-tech-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.webapp-tech-item {
-  text-align: center;
-  padding: 1.5rem;
-  border-radius: 15px;
-  background: #f9fafb;
-  transition: all 0.3s ease;
-}
-
-.webapp-tech-item:hover {
-  background: #f0fdf4;
-  transform: translateY(-3px);
-}
-
-.webapp-tech-item .icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: #10b981;
-}
-
-.webapp-pricing {
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  color: white;
-  padding: 4rem 0;
-  border-radius: 20px;
-  margin: 4rem 0;
-}
-
-.webapp-pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.webapp-pricing-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-}
-
-.webapp-pricing-card:hover {
-  transform: translateY(-5px);
-  border-color: #10b981;
-  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
-}
-
-.webapp-pricing-card.featured {
-  background: linear-gradient(135deg, #10b981, #059669);
-  transform: scale(1.05);
-}
-
-.webapp-process {
-  margin: 4rem 0;
-}
-
-.webapp-process-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.webapp-process-step {
-  text-align: center;
-  padding: 2rem;
-  position: relative;
-}
-
-.webapp-process-step::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: -1rem;
-  width: 2rem;
-  height: 2px;
-  background: #10b981;
-  transform: translateY(-50%);
-}
-
-.webapp-process-step:last-child::before {
-  display: none;
-}
-
-.webapp-process-number {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  color: white;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.webapp-portfolio {
-  margin: 4rem 0;
-}
-
-.webapp-portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.webapp-portfolio-item {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.webapp-portfolio-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
-}
-
-.webapp-portfolio-image {
-  height: 200px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 3rem;
-}
-
-.webapp-portfolio-content {
-  padding: 2rem;
-}
-
-.webapp-cta {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  padding: 4rem 0;
-  border-radius: 20px;
-  text-align: center;
-  margin: 4rem 0;
-}
-
-.webapp-cta h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.webapp-cta p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .webapp-hero h1 {
-    font-size: 2.5rem;
-  }
-  
-  .webapp-features-grid,
-  .webapp-tech-grid,
-  .webapp-pricing-grid,
-  .webapp-portfolio-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .webapp-process-steps {
-    grid-template-columns: 1fr;
-  }
-  
-  .webapp-process-step::before {
-    display: none;
-  }
-}
-
-/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -291,14 +49,385 @@
   }
 }
 
-.webapp-feature-card,
-.webapp-tech-item,
-.webapp-pricing-card,
+/* Features Grid - Card Style */
+.webapp-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.webapp-feature-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #f3f4f6;
+  position: relative;
+  overflow: hidden;
+}
+
+.webapp-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  transform-origin: left;
+}
+
+.webapp-feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+  border-color: #667eea;
+}
+
+.webapp-feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.webapp-feature-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  transition: transform 0.4s ease;
+}
+
+.webapp-feature-card:hover .webapp-feature-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Tech Stack Section */
+.webapp-tech-stack {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 30px;
+  padding: 4rem 3rem;
+  margin: 4rem 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.webapp-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.webapp-tech-item {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  background: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.webapp-tech-item:hover {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+/* Process Steps - Timeline Style */
+.webapp-process-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  position: relative;
+}
+
+.webapp-process-step {
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.webapp-process-step:nth-child(1) { animation-delay: 0.1s; }
+.webapp-process-step:nth-child(2) { animation-delay: 0.2s; }
+.webapp-process-step:nth-child(3) { animation-delay: 0.3s; }
+.webapp-process-step:nth-child(4) { animation-delay: 0.4s; }
+.webapp-process-step:nth-child(5) { animation-delay: 0.5s; }
+.webapp-process-step:nth-child(6) { animation-delay: 0.6s; }
+
+.webapp-process-number {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.webapp-process-step:hover .webapp-process-number {
+  transform: scale(1.15);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+}
+
+/* Portfolio Items */
+.webapp-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
 .webapp-portfolio-item {
-  animation: fadeInUp 0.6s ease-out;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+}
+
+.webapp-portfolio-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+}
+
+.webapp-portfolio-image {
+  height: 220px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.webapp-portfolio-item:hover .webapp-portfolio-image {
+  transform: scale(1.05);
+}
+
+.webapp-portfolio-content {
+  padding: 2rem;
+}
+
+/* Pricing Section - Premium Cards */
+.webapp-pricing {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  padding: 6rem 0;
+  margin: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.webapp-pricing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 70%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+}
+
+.webapp-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.webapp-pricing-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.webapp-pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.webapp-pricing-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 30px 60px rgba(102, 126, 234, 0.3);
+}
+
+.webapp-pricing-card:hover::before {
+  opacity: 1;
+}
+
+.webapp-pricing-card.featured {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  transform: scale(1.05);
+  border-color: transparent;
+}
+
+.webapp-pricing-card.featured:hover {
+  transform: scale(1.08) translateY(-10px);
+  box-shadow: 0 40px 80px rgba(102, 126, 234, 0.4);
+}
+
+/* CTA Section */
+.webapp-cta {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 5rem 3rem;
+  border-radius: 30px;
+  text-align: center;
+  margin: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.webapp-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.webapp-cta h2,
+.webapp-cta p {
+  position: relative;
+  z-index: 1;
+}
+
+.webapp-cta button {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.webapp-cta .flex {
+  position: relative;
+  z-index: 2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .webapp-hero {
+    padding: 80px 0 60px;
+  }
+
+  .webapp-features-grid,
+  .webapp-tech-grid,
+  .webapp-pricing-grid,
+  .webapp-portfolio-grid,
+  .webapp-process-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .webapp-tech-stack {
+    padding: 3rem 2rem;
+    border-radius: 20px;
+  }
+
+  .webapp-pricing-card.featured {
+    transform: none;
+  }
+
+  .webapp-cta {
+    padding: 3rem 2rem;
+    border-radius: 20px;
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.webapp-feature-card {
+  animation: slideIn 0.6s ease-out;
 }
 
 .webapp-feature-card:nth-child(1) { animation-delay: 0.1s; }
 .webapp-feature-card:nth-child(2) { animation-delay: 0.2s; }
 .webapp-feature-card:nth-child(3) { animation-delay: 0.3s; }
 .webapp-feature-card:nth-child(4) { animation-delay: 0.4s; }
+.webapp-feature-card:nth-child(5) { animation-delay: 0.5s; }
+.webapp-feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading states */
+.webapp-pricing-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Focus states for accessibility */
+.webapp-pricing-card button:focus,
+.webapp-cta button:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* Additional CTA button styling */
+.webapp-cta button {
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.webapp-cta button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.webapp-cta button:active {
+  transform: translateY(0);
+}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
+import { ROUTES } from "../../constants/routes";
 import {
   Card,
   CardContent,
@@ -108,7 +109,7 @@ const JoinTeam = () => {
       <nav className="border-b nav-enhanced fixed top-0 w-full z-50 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center animate-slide-in-left">
+            <Link to={ROUTES.HOME} className="flex items-center animate-slide-in-left">
               <img
                 src="/softscape-logo.png"
                 alt="SoftScape Solutions Logo"
@@ -120,7 +121,7 @@ const JoinTeam = () => {
             </Link>
 
             <div className="hidden md:flex items-center space-x-8 animate-slide-in-right">
-              <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
+              <Link to={ROUTES.HOME} className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
                 Home
               </Link>
               <a href="/#services" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
@@ -144,7 +145,7 @@ const JoinTeam = () => {
           {isMobileMenuOpen && (
             <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm border-b shadow-lg animate-slide-in">
               <div className="px-4 py-4 space-y-4">
-                <Link to="/" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
+                <Link to={ROUTES.HOME} className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
                   Home
                 </Link>
                 <a href="/#services" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
@@ -311,9 +312,9 @@ const JoinTeam = () => {
             <div>
               <h3 className="text-white font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
-                <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link to={ROUTES.HOME} className="hover:text-white transition-colors">Home</Link></li>
+                <li><Link to={ROUTES.ABOUT} className="hover:text-white transition-colors">About</Link></li>
+                <li><Link to={ROUTES.CONTACT} className="hover:text-white transition-colors">Contact</Link></li>
               </ul>
             </div>
             <div>
