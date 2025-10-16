@@ -89,8 +89,9 @@ const BookConsultation = () => {
       console.log('Service ID:', serviceId);
 
       // Prepare template parameters for admin notification
+      // THIS MUST GO TO ADMIN ONLY - softscapesolution@outlook.com
       const adminTemplateParams = {
-        to_email: 'softscapesolution@outlook.com',
+        to_email: 'softscapesolution@outlook.com', // ADMIN receives this
         from_name: formData.name,
         from_email: formData.email,
         phone: formData.phone || 'Not provided',
@@ -101,14 +102,16 @@ const BookConsultation = () => {
         selected_package: formData.selectedPackage || 'None selected',
         project_details: formData.projectDetails,
         submission_date: new Date().toLocaleString(),
-        message: `New consultation request from ${formData.name} for ${formData.projectType} project with budget ${formData.budget}.`
+        // Additional fields to ensure proper routing
+        admin_email: 'softscapesolution@outlook.com',
+        customer_email: formData.email
       };
 
       // Prepare template parameters for customer auto-reply
+      // THIS MUST GO TO CUSTOMER ONLY - the person who filled the form
       const customerTemplateParams = {
-        to_email: formData.email,
+        to_email: formData.email, // CUSTOMER receives this
         to_name: formData.name,
-        from_name: 'SoftScape Solutions',
         project_type: formData.projectType,
         budget: formData.budget,
         timeline: formData.timeline || 'Flexible',
@@ -116,19 +119,30 @@ const BookConsultation = () => {
         company_email: 'softscapesolution@outlook.com',
         company_phone: '+44 7789667804',
         website_url: 'https://softscape-solutions.netlify.app',
-        message: `Thank you ${formData.name} for your consultation request. We will contact you within 24 hours.`
+        // Additional fields to ensure proper routing
+        customer_name: formData.name,
+        customer_email: formData.email
       };
 
       console.log('=== EMAIL ROUTING DEBUG ===');
+      console.log('🔍 Customer filled form with email:', formData.email);
+      console.log('🔍 Customer name:', formData.name);
+      console.log('');
+      console.log('📧 ADMIN NOTIFICATION will be sent to:', adminTemplateParams.to_email);
+      console.log('📧 CUSTOMER CONFIRMATION will be sent to:', customerTemplateParams.to_email);
+      console.log('');
+      console.log('⚠️  IMPORTANT: Customer should ONLY receive the confirmation email!');
+      console.log('⚠️  Admin should ONLY receive the notification email!');
+      console.log('');
       console.log('Service ID:', serviceId);
       console.log('Admin Template ID:', adminTemplateId);
       console.log('Customer Template ID:', customerTemplateId);
-      console.log('Public Key:', publicKey);
-      console.log('Admin template params:', adminTemplateParams);
-      console.log('Customer template params:', customerTemplateParams);
+      console.log('=====================================');
 
-      // Send admin notification email
-      console.log('Sending admin notification...');
+      // Send admin notification email ONLY
+      console.log('🔴 SENDING ADMIN NOTIFICATION ONLY...');
+      console.log('Admin Template ID:', adminTemplateId);
+      console.log('Admin Recipient:', adminTemplateParams.to_email);
       let adminResponse;
       try {
         adminResponse = await emailjs.send(
@@ -137,14 +151,16 @@ const BookConsultation = () => {
           adminTemplateParams,
           publicKey
         );
-        console.log('Admin email result:', adminResponse);
+        console.log('✅ Admin email sent successfully:', adminResponse);
       } catch (adminError) {
-        console.error('Admin email failed:', adminError);
+        console.error('❌ Admin email failed:', adminError);
         throw new Error(`Admin email failed: ${adminError.message || adminError.text || 'Unknown error'}`);
       }
 
-      // Send customer auto-reply email
-      console.log('Sending customer auto-reply...');
+      // Send customer auto-reply email ONLY
+      console.log('🔵 SENDING CUSTOMER AUTO-REPLY ONLY...');
+      console.log('Customer Template ID:', customerTemplateId);
+      console.log('Customer Recipient:', formData.email);
       let customerResponse;
       try {
         customerResponse = await emailjs.send(
@@ -153,9 +169,9 @@ const BookConsultation = () => {
           customerTemplateParams,
           publicKey
         );
-        console.log('Customer email result:', customerResponse);
+        console.log('✅ Customer email sent successfully:', customerResponse);
       } catch (customerError) {
-        console.error('Customer email failed:', customerError);
+        console.error('❌ Customer email failed:', customerError);
         throw new Error(`Customer email failed: ${customerError.message || customerError.text || 'Unknown error'}`);
       }
 
