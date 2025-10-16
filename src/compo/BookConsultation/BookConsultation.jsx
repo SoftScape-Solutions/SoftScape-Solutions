@@ -185,7 +185,7 @@ const BookConsultation = () => {
 
         setSubmitStatus({
           type: 'success',
-          message: '🎉 Success! Consultation request submitted via EmailJS. Both admin notification and customer confirmation emails have been sent successfully!'
+          message: '🎉 Success! Consultation request submitted successfully!'
         });
 
         // Reset form after 4 seconds
@@ -202,7 +202,7 @@ const BookConsultation = () => {
       }
 
     } catch (error) {
-      console.error('Error submitting consultation via EmailJS:', error);
+      console.error('Error submitting consultation:', error);
       
       // Enhanced error logging
       console.error('Full error object:', error);

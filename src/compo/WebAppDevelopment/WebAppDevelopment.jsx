@@ -1,416 +1,280 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Rocket, 
+  Smartphone, 
+  Shield, 
+  Zap, 
+  Globe,
+  Eye,
+  ArrowRight,
+  CheckCircle,
+  Star
+} from 'lucide-react';
 import Layout from '../../components/common/Layout';
 import { ROUTES } from '../../constants/routes';
-import './WebAppDevelopment.css';
 
 const WebAppDevelopment = () => {
   const navigate = useNavigate();
 
-  const features = [
+  // Service packages with the color scheme from the image
+  const servicePackages = [
     {
-      icon: '🚀',
-      title: 'High Performance',
-      description: 'Lightning-fast web applications built with modern frameworks and optimized for speed and efficiency.'
+      id: 1,
+      title: "Starter Web Apps",
+      subtitle: "Perfect for small businesses",
+      description: "Simple yet effective web applications with essential features to get your business online",
+      icon: Globe,
+      iconColor: "text-blue-600",
+      bgColor: "bg-blue-100",
+      buttonColor: "bg-blue-600 hover:bg-blue-700",
+      popular: false,
+      price: "From $1,999/project",
+      features: [
+        "Responsive Design",
+        "Basic UI/UX",
+        "Contact Forms", 
+        "SEO Optimization",
+        "30 Days Support"
+      ]
     },
     {
-      icon: '📱',
-      title: 'Responsive Design',
-      description: 'Fully responsive applications that work seamlessly across all devices and screen sizes.'
+      id: 2,
+      title: "Professional Web Apps",
+      subtitle: "Advanced business solutions", 
+      description: "Feature-rich applications with custom functionality and advanced integrations",
+      icon: Rocket,
+      iconColor: "text-purple-600",
+      bgColor: "bg-purple-100", 
+      buttonColor: "bg-purple-600 hover:bg-purple-700",
+      popular: true,
+      price: "From $4,999/project",
+      features: [
+        "Custom Features",
+        "Database Integration",
+        "User Authentication",
+        "Admin Dashboard",
+        "API Integration"
+      ]
     },
     {
-      icon: '🔒',
-      title: 'Secure & Scalable',
-      description: 'Enterprise-grade security measures and scalable architecture to grow with your business.'
+      id: 3,
+      title: "Enterprise Solutions",
+      subtitle: "Scalable enterprise apps",
+      description: "Complex systems with advanced security, scalability and enterprise-grade features",
+      icon: Shield,
+      iconColor: "text-green-600",
+      bgColor: "bg-green-100",
+      buttonColor: "bg-green-600 hover:bg-green-700", 
+      popular: false,
+      price: "From $9,999/project",
+      features: [
+        "Microservices Architecture",
+        "Advanced Security",
+        "Cloud Deployment", 
+        "Performance Optimization",
+        "24/7 Support"
+      ]
     },
     {
-      icon: '⚡',
-      title: 'Real-time Features',
-      description: 'Interactive real-time features including live chat, notifications, and collaborative tools.'
-    },
-    {
-      icon: '🎨',
-      title: 'Custom UI/UX',
-      description: 'Beautiful, intuitive user interfaces designed specifically for your brand and users.'
-    },
-    {
-      icon: '🔧',
-      title: 'API Integration',
-      description: 'Seamless integration with third-party APIs and services to extend functionality.'
+      id: 4,
+      title: "AI-Enhanced Apps",
+      subtitle: "Intelligent web applications",
+      description: "Custom applications powered by artificial intelligence and machine learning capabilities",
+      icon: Eye,
+      iconColor: "text-orange-600", 
+      bgColor: "bg-orange-100",
+      buttonColor: "bg-orange-600 hover:bg-orange-700",
+      popular: false,
+      price: "From $7,999/project", 
+      features: [
+        "AI/ML Integration",
+        "Smart Analytics",
+        "Predictive Features",
+        "Custom AI Models",
+        "Advanced Insights"
+      ]
     }
   ];
 
-  const techStack = [
-    { name: 'React', icon: '⚛️' },
-    { name: 'Vue.js', icon: '💚' },
-    { name: 'Angular', icon: '🔺' },
-    { name: 'Node.js', icon: '🟢' },
-    { name: 'Express.js', icon: '🚀' },
-    { name: 'Python', icon: '🐍' },
-    { name: 'Django', icon: '🎯' },
-    { name: 'FastAPI', icon: '⚡' },
-    { name: 'MongoDB', icon: '🍃' },
-    { name: 'PostgreSQL', icon: '🐘' },
-    { name: 'CI/CD', icon: '🔄' }
-  ];
-
-  const packages = [
-    {
-      name: 'MVP',
-      price: '$950',
-      duration: 'per project',
-      features: [
-        'Minimum Viable Product',
-        'Core Functionality Only',
-        'Basic Responsive Design',
-        'Simple UI/UX',
-        'Basic Testing',
-        '15 Days Support',
-        'Quick Launch'
-      ],
-      description: 'Perfect for validating your idea quickly with essential features only.',
-      recommended: false
-    },
-    {
-      name: 'Starter',
-      price: '$1,500',
-      duration: 'per project',
-      features: [
-        'Simple Web Application',
-        'Responsive Design',
-        'Basic UI/UX',
-        'Contact Form Integration',
-        '30 Days Support',
-        'Basic SEO Optimization'
-      ],
-      description: 'Perfect for small businesses and startups looking to establish their online presence.',
-      recommended: false
-    },
-    {
-      name: 'Professional',
-      price: '$2,500',
-      duration: 'per project',
-      features: [
-        'Full-Featured Web App',
-        'Custom UI/UX Design',
-        'User Authentication',
-        'Database Integration',
-        'API Development',
-        '60 Days Support',
-        'Advanced SEO',
-        'Performance Optimization'
-      ],
-      description: 'Ideal for growing businesses that need advanced features and custom functionality.',
-      recommended: true
-    },
-    {
-      name: 'Enterprise',
-      price: '$5,000+',
-      duration: 'depending on requirements',
-      features: [
-        'Complex Web Application',
-        'Advanced Features',
-        'Real-time Functionality',
-        'Multi-user System',
-        'Third-party Integrations',
-        '90 Days Support',
-        'Cloud Deployment',
-        'Maintenance Plan',
-        'Custom Requirements'
-      ],
-      description: 'Comprehensive solution for large organizations with complex and custom requirements.',
-      recommended: false
-    }
-  ];
-
-  const processSteps = [
-    {
-      number: '1',
-      title: 'Discovery',
-      description: 'Understanding your requirements, goals, and target audience'
-    },
-    {
-      number: '2',
-      title: 'Planning',
-      description: 'Creating wireframes, architecture, and project timeline'
-    },
-    {
-      number: '3',
-      title: 'Design',
-      description: 'Crafting beautiful UI/UX designs tailored to your brand'
-    },
-    {
-      number: '4',
-      title: 'Development',
-      description: 'Building your application with cutting-edge technologies'
-    },
-    {
-      number: '5',
-      title: 'Testing',
-      description: 'Rigorous testing to ensure quality and performance'
-    },
-    {
-      number: '6',
-      title: 'Deployment',
-      description: 'Launching your application and providing ongoing support'
-    },
-    {
-      number: '7',
-      title: 'Maintenance',
-      description: 'Ongoing website maintenance and updates with monthly service plans (fee discussed with client)'
-    }
-  ];
-
-  const portfolioItems = [
-    {
-      title: 'E-Commerce Platform',
-      description: 'Full-featured online store with payment integration and inventory management',
-      tech: 'React, Node.js, MongoDB'
-    },
-    {
-      title: 'Project Management Tool',
-      description: 'Collaborative workspace with real-time updates and team management',
-      tech: 'Vue.js, Express, PostgreSQL'
-    },
-    {
-      title: 'Learning Management System',
-      description: 'Educational platform with course management and progress tracking',
-      tech: 'Angular, Django, MySQL'
-    }
-  ];
-
-  const handlePackageSelect = (pkg) => {
-    navigate(ROUTES.bookConsultation, {
-      state: {
-        selectedPackage: {
-          name: pkg.name,
-          price: pkg.price,
-          service: 'Web App Development',
-          packageType: pkg.name,
-          features: pkg.features,
-          description: pkg.description
-        }
+  const handleGetStarted = (packageInfo) => {
+    navigate(ROUTES.BOOK_CONSULTATION, { 
+      state: { 
+        selectedPackage: packageInfo.title,
+        service: 'Web Application Development',
+        price: packageInfo.price
       }
     });
   };
 
   return (
     <Layout>
-      <div className="webapp-development">
+      <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="webapp-hero">
-          <div className="container mx-auto px-4">
-            <div className="webapp-hero-content max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Web Application Development
-              </h1>
-              <p className="text-lg md:text-xl mb-8 opacity-90">
-                Transform your ideas into powerful, scalable web applications. 
-                We build custom solutions that drive business growth and deliver exceptional user experiences.
-              </p>
-              <button 
-                onClick={() => navigate('/book-consultation')}
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
-              >
-                Start Your Project
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <div className="container mx-auto px-4">
-          {/* Features Section */}
-          <section className="py-20">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Why Choose Our Web App Development?
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                We deliver cutting-edge web applications that combine performance, security, and beautiful design
-              </p>
-            </div>
-            
-            <div className="webapp-features-grid">
-              {features.map((feature, index) => (
-                <div key={index} className="webapp-feature-card">
-                  <div className="webapp-feature-icon">
-                    <span className="text-3xl">{feature.icon}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Technology Stack */}
-          <section className="webapp-tech-stack">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Our Technology Stack
-              </h2>
-              <p className="text-xl text-gray-600">
-                We use the latest and most reliable technologies to build your applications
-              </p>
-            </div>
-            
-            <div className="webapp-tech-grid">
-              {techStack.map((tech, index) => (
-                <div key={index} className="webapp-tech-item">
-                  <div className="text-4xl mb-3">{tech.icon}</div>
-                  <h4 className="font-semibold">{tech.name}</h4>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Development Process */}
-          <section className="webapp-process py-20">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Our Development Process
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                A proven methodology that ensures project success from concept to deployment
-              </p>
-            </div>
-            
-            <div className="webapp-process-steps">
-              {processSteps.map((step, index) => (
-                <div key={index} className="webapp-process-step">
-                  <div className="webapp-process-number">{step.number}</div>
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Portfolio */}
-          <section className="webapp-portfolio py-20">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Recent Projects
-              </h2>
-              <p className="text-xl text-gray-600">
-                Explore some of our successful web application projects
-              </p>
-            </div>
-            
-            <div className="webapp-portfolio-grid">
-              {portfolioItems.map((item, index) => (
-                <div key={index} className="webapp-portfolio-item">
-                  <div className="webapp-portfolio-image">
-                    <span className="text-6xl">🖥️</span>
-                  </div>
-                  <div className="webapp-portfolio-content">
-                    <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                    <p className="text-gray-600 mb-4">{item.description}</p>
-                    <div className="text-sm text-gray-500">
-                      <strong>Tech Stack:</strong> {item.tech}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        {/* Pricing Section */}
-        <section className="webapp-pricing">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                Investment Packages
-              </h2>
-              <p className="text-xl text-white opacity-90">
-                Choose the perfect package for your web application needs
-              </p>
-            </div>
-            
-            <div className="webapp-pricing-grid">
-              {packages.map((pkg, index) => (
-                <div 
-                  key={index} 
-                  className={`webapp-pricing-card ${pkg.recommended ? 'featured' : ''}`}
-                >
-                  {pkg.recommended && (
-                    <div className="absolute top-0 right-0 bg-yellow-400 text-gray-900 px-4 py-1 rounded-bl-lg rounded-tr-lg font-semibold text-sm">
-                      Recommended
-                    </div>
-                  )}
-                  <h3 className="text-2xl font-bold mb-4">{pkg.name}</h3>
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold">{pkg.price}</span>
-                    <span className="text-lg opacity-75 ml-2">{pkg.duration}</span>
-                  </div>
-                  <p className="text-sm opacity-90 mb-6">{pkg.description}</p>
-                  <ul className="space-y-3 mb-8">
-                    {pkg.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="text-green-400 mr-2">✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={() => handlePackageSelect(pkg)}
-                    className={`w-full py-3 rounded-lg font-semibold transition-all transform hover:scale-105 ${
-                      pkg.recommended
-                        ? 'bg-white text-blue-600 hover:bg-gray-100'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
-                  >
-                    Get Started
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <div className="container mx-auto px-4">
-          {/* CTA Section */}
-          <section className="webapp-cta my-20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Build Your Web Application?
-            </h2>
-            <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto">
-              Let's discuss your project requirements and create a solution that exceeds your expectations. 
-              Our team is ready to turn your vision into reality.
+        <section className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white py-20">
+          <div className="container mx-auto px-6 text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              Web Application Development
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-blue-100">
+              Transform your business ideas into powerful, scalable web applications that drive growth and deliver exceptional user experiences
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  try {
-                    navigate(ROUTES.BOOK_CONSULTATION);
-                  } catch (error) {
-                    console.error('Navigation error:', error);
-                  }
-                }}
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
-              >
-                Book Free Consultation
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  try {
-                    navigate(ROUTES.CONTACT);
-                  } catch (error) {
-                    console.error('Navigation error:', error);
-                  }
-                }}
-                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all"
-              >
-                Contact Us
-              </button>
+            <button 
+              onClick={() => navigate(ROUTES.BOOK_CONSULTATION)}
+              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+            >
+              Start Your Project Today
+            </button>
+          </div>
+        </section>
+
+        {/* Service Packages */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                Choose Your Perfect Solution
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Select from our range of web application development packages designed to meet different business needs and budgets
+              </p>
             </div>
-          </section>
-        </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {servicePackages.map((pkg) => {
+                const IconComponent = pkg.icon;
+                return (
+                  <div key={pkg.id} className={`${pkg.cardBg} rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative border border-gray-100 flex flex-col h-full`}>
+                    {pkg.popular && (
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
+                          ⭐ Popular
+                        </span>
+                      </div>
+                    )}
+                    
+                    <div className={`${pkg.bgColor} rounded-2xl p-4 w-fit mb-6`}>
+                      <IconComponent className={`w-8 h-8 ${pkg.iconColor}`} />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                      {pkg.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm font-medium mb-4">
+                      {pkg.subtitle}
+                    </p>
+                    
+                    <p className="text-gray-700 mb-6 leading-relaxed flex-grow">
+                      {pkg.description}
+                    </p>
+                    
+                    <div className="space-y-3 mb-8">
+                      {pkg.features.map((feature, index) => (
+                        <div key={index} className="flex items-center text-sm text-gray-600">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-auto">
+                      <div className="text-lg font-bold text-gray-800 mb-4">
+                        {pkg.price}
+                      </div>
+                      
+                      <button
+                        onClick={() => handleGetStarted(pkg)}
+                        className={`w-full ${pkg.buttonColor} text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center group`}
+                      >
+                        <span>Learn More</span>
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Technology Stack */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                Technology Stack
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                We use the latest and most reliable technologies to build robust, scalable applications
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+              {[
+                { name: 'React', color: 'text-blue-500', bg: 'bg-blue-50' },
+                { name: 'Vue.js', color: 'text-green-500', bg: 'bg-green-50' },
+                { name: 'Angular', color: 'text-red-500', bg: 'bg-red-50' },
+                { name: 'Node.js', color: 'text-green-600', bg: 'bg-green-50' },
+                { name: 'Python', color: 'text-yellow-500', bg: 'bg-yellow-50' },
+                { name: 'MongoDB', color: 'text-green-600', bg: 'bg-green-50' },
+              ].map((tech, index) => (
+                <div key={index} className={`${tech.bg} rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}>
+                  <div className={`text-3xl font-bold ${tech.color} mb-2`}>
+                    {tech.name.charAt(0)}
+                  </div>
+                  <div className="text-sm font-semibold text-gray-700">
+                    {tech.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="py-20 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 text-white">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                Ready to Build Your Web Application?
+              </h2>
+              <p className="text-xl mb-8 text-blue-100">
+                Let's transform your vision into a powerful web application that drives your business forward
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => navigate(ROUTES.BOOK_CONSULTATION)}
+                  className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105"
+                >
+                  Get Started Today
+                </button>
+                <button
+                  onClick={() => navigate(ROUTES.CONTACT)}
+                  className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-blue-600 transition-all"
+                >
+                  Contact Us
+                </button>
+              </div>
+              
+              <div className="mt-12 flex justify-center items-center space-x-8 text-blue-200">
+                <div className="flex items-center space-x-2">
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <span>5.0 Rating</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Shield className="w-5 h-5 text-green-400" />
+                  <span>100% Secure</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-5 h-5 text-purple-300" />
+                  <span>Fast Delivery</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </Layout>
   );
