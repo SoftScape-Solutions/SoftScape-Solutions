@@ -80,7 +80,12 @@ const BookConsultation = () => {
       console.log('=====================================');
 
       if (!serviceId || !adminTemplateId || !customerTemplateId || !publicKey) {
-        throw new Error(`EmailJS configuration missing. Missing values: ${!serviceId ? 'Service ID ' : ''}${!adminTemplateId ? 'Admin Template ' : ''}${!customerTemplateId ? 'Customer Template ' : ''}${!publicKey ? 'Public Key' : ''}`);
+        const missingVars = [];
+        if (!serviceId) missingVars.push('Service ID');
+        if (!adminTemplateId) missingVars.push('Admin Template');
+        if (!customerTemplateId) missingVars.push('Customer Template');
+        if (!publicKey) missingVars.push('Public Key');
+        throw new Error(`EmailJS configuration missing. Missing values: ${missingVars.join(', ')}`);
       }
 
       console.log('=== EMAILJS FORM SUBMISSION START ===');
