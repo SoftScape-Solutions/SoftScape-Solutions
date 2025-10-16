@@ -144,7 +144,7 @@ const WebAppDevelopment = () => {
               {servicePackages.map((pkg) => {
                 const IconComponent = pkg.icon;
                 return (
-                  <div key={pkg.id} className={`${pkg.cardBg} rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative border border-gray-100 flex flex-col h-full`}>
+                  <div key={pkg.id} className={`bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative border border-gray-100 flex flex-col h-full`}>
                     {pkg.popular && (
                       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                         <span className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-sm font-semibold flex items-center">

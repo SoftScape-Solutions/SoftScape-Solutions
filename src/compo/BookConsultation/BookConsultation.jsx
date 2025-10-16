@@ -80,7 +80,12 @@ const BookConsultation = () => {
       console.log('=====================================');
 
       if (!serviceId || !adminTemplateId || !customerTemplateId || !publicKey) {
-        throw new Error(`EmailJS configuration missing. Missing values: ${!serviceId ? 'Service ID ' : ''}${!adminTemplateId ? 'Admin Template ' : ''}${!customerTemplateId ? 'Customer Template ' : ''}${!publicKey ? 'Public Key' : ''}`);
+        const missingVars = [];
+        if (!serviceId) missingVars.push('Service ID');
+        if (!adminTemplateId) missingVars.push('Admin Template');
+        if (!customerTemplateId) missingVars.push('Customer Template');
+        if (!publicKey) missingVars.push('Public Key');
+        throw new Error(`EmailJS configuration missing. Missing values: ${missingVars.join(', ')}`);
       }
 
       console.log('=== EMAILJS FORM SUBMISSION START ===');
@@ -468,7 +473,7 @@ const BookConsultation = () => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Submitting via EmailJS...
+                      Submitting request...
                     </span>
                   ) : (
                     'Submit Consultation Request'
