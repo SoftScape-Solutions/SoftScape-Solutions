@@ -18,8 +18,6 @@ import {
   Menu,
   X,
   Send,
-  Github,
-  Linkedin,
 } from "lucide-react";
 import { CONTACT_INFO, COMPANY_INFO } from "../../config";
 import "./Contact.css";
@@ -33,27 +31,40 @@ const Contact = () => {
 
   const contactInfo = CONTACT_INFO.quickContact.concat([
     {
-      icon: Clock,
+      icon: "https://cdn.jsdelivr.net/npm/ionicons@7.2.1/dist/svg/time-outline.svg",
       type: "hours",
       label: "Business Hours",
       value: `${CONTACT_INFO.businessHours.workDays}: ${CONTACT_INFO.businessHours.hours}`,
-      link: null
+      link: null,
+      bgColor: "from-yellow-500 to-yellow-600"
     }
-  ]);
+  ]).map(info => ({
+    ...info,
+    icon: info.type === "email" ? "https://cdn.jsdelivr.net/npm/ionicons@7.2.1/dist/svg/mail-outline.svg" :
+          info.type === "phone" ? "https://cdn.jsdelivr.net/npm/ionicons@7.2.1/dist/svg/call-outline.svg" :
+          info.type === "address" ? "https://cdn.jsdelivr.net/npm/feather-icons@4.29.0/dist/icons/map-pin.svg" :
+          info.icon,
+    bgColor: info.type === "email" ? "from-red-500 to-red-600" :
+             info.type === "phone" ? "from-green-500 to-green-600" :
+             info.type === "address" ? "from-blue-500 to-blue-600" :
+             info.bgColor || "from-purple-500 to-purple-600"
+  }));
 
   const socialLinks = [
     {
-      icon: Github,
+      logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg",
       name: "GitHub",
       url: CONTACT_INFO.social.github.url,
       username: CONTACT_INFO.social.github.username,
+      bgColor: "from-gray-700 to-black"
     },
     {
-      icon: Linkedin,
+      logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg",
       name: "LinkedIn", 
       url: CONTACT_INFO.social.linkedin.url,
       username: CONTACT_INFO.social.linkedin.username,
-    },
+      bgColor: "from-blue-600 to-blue-800"
+    }
   ];
 
   return (
@@ -67,7 +78,17 @@ const Contact = () => {
                 src="/softscape-logo.png"
                 alt="SoftScape Solutions Logo"
                 className="h-12 sm:h-16 md:h-20 w-auto -my-2 sm:-my-4 md:-my-4 mr-2 sm:mr-4"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
               />
+              <div 
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-2 sm:mr-4"
+                style={{ display: 'none' }}
+              >
+                <Brain className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
+              </div>
               <div className="text-gray-700 font-bold tracking-wide bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm sm:text-lg md:text-xl">
                 {COMPANY_INFO.name}
               </div>
@@ -77,9 +98,9 @@ const Contact = () => {
               <Link to={ROUTES.HOME} className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
                 Home
               </Link>
-              <a href="/#services" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
-                AI Tools
-              </a>
+              <Link to="/explore-tools" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
+                Tools
+              </Link>
               <Link to="/about" className="text-gray-600 hover:text-blue-600 transition-colors hover-scale font-medium tracking-wide text-lg">
                 About
               </Link>
@@ -101,9 +122,9 @@ const Contact = () => {
                 <Link to={ROUTES.HOME} className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
                   Home
                 </Link>
-                <a href="/#services" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
-                  AI Tools
-                </a>
+                <Link to="/explore-tools" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
+                  Tools
+                </Link>
                 <Link to="/about" className="block text-gray-600 hover:text-blue-600 transition-colors font-medium tracking-wide text-lg py-2" onClick={toggleMobileMenu}>
                   About
                 </Link>
@@ -141,8 +162,26 @@ const Contact = () => {
             {contactInfo.map((info, index) => (
               <Card key={index} className="card-enhanced hover-lift animate-slide-in text-center">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                    <info.icon className="h-8 w-8 text-white" />
+                  <div className={`w-16 h-16 bg-gradient-to-r ${info.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow`}>
+                    {typeof info.icon === 'string' ? (
+                      <img 
+                        src={info.icon} 
+                        alt={`${info.label || info.title} icon`}
+                        className="h-8 w-8 object-contain filter brightness-0 invert"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : (
+                      <info.icon className="h-8 w-8 text-white" />
+                    )}
+                    <div 
+                      className="h-8 w-8 flex items-center justify-center text-white"
+                      style={{ display: 'none' }}
+                    >
+                      <Brain className="h-6 w-6" />
+                    </div>
                   </div>
                   <CardTitle className="text-xl mb-2">{info.label || info.title}</CardTitle>
                   {info.link ? (
@@ -156,6 +195,98 @@ const Contact = () => {
                   )}
                 </CardHeader>
               </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Technologies We Use */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Technologies We Use
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              We leverage cutting-edge technologies to build powerful AI solutions and applications
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {[
+              { 
+                name: 'React', 
+                logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/react.svg',
+                bg: 'bg-blue-50' 
+              },
+              { 
+                name: 'Node.js', 
+                logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nodedotjs.svg',
+                bg: 'bg-green-50' 
+              },
+              { 
+                name: 'Python', 
+                logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/python.svg',
+                bg: 'bg-yellow-50' 
+              },
+              // { 
+              //   name: 'TensorFlow', 
+              //   logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tensorflow.svg',
+              //   bg: 'bg-orange-50' 
+              // },
+              { 
+                name: 'OpenAI', 
+                logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/openai.svg',
+                bg: 'bg-gray-50' 
+              },
+              { 
+                name: 'MongoDB', 
+                logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mongodb.svg',
+                bg: 'bg-pink-50' 
+              },
+              // { 
+              //   name: 'PostgreSQL', 
+              //   logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/postgresql.svg',
+              //   bg: 'bg-blue-50' 
+              // },
+              // { 
+              //   name: 'TypeScript', 
+              //   logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/typescript.svg',
+              //   bg: 'bg-blue-50' 
+              // },
+              { 
+                name: 'Next.js', 
+                logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nextdotjs.svg',
+                bg: 'bg-purple-50' 
+              }
+              // { 
+              //   name: 'FastAPI', 
+              //   logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/fastapi.svg',
+              //   bg: 'bg-green-50' 
+              // }
+            ].map((tech, index) => (
+              <div key={index} className={`${tech.bg} rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group`}>
+                <div className="flex justify-center mb-3">
+                  <img 
+                    src={tech.logo} 
+                    alt={`${tech.name} logo`}
+                    className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div 
+                    className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center"
+                    style={{ display: 'none' }}
+                  >
+                    <Brain className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
+                  {tech.name}
+                </h3>
+              </div>
             ))}
           </div>
         </div>
@@ -177,8 +308,22 @@ const Contact = () => {
             {socialLinks.map((social, index) => (
               <Card key={index} className="card-enhanced hover-lift">
                 <CardHeader className="text-center">
-                  <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <social.icon className="h-10 w-10 text-white" />
+                  <div className={`w-20 h-20 bg-gradient-to-r ${social.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+                    <img 
+                      src={social.logo} 
+                      alt={`${social.name} logo`}
+                      className="h-10 w-10 object-contain filter brightness-0 invert"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div 
+                      className="h-10 w-10 flex items-center justify-center text-white"
+                      style={{ display: 'none' }}
+                    >
+                      <Brain className="h-8 w-8" />
+                    </div>
                   </div>
                   <CardTitle className="text-2xl mb-2">{social.name}</CardTitle>
                   <CardDescription className="text-base mb-4">
@@ -212,9 +357,9 @@ const Contact = () => {
             Schedule a consultation with our AI experts today
           </p>
           <Link to="/book-consultation">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-3 btn-primary-enhanced">
+            <Button size="lg" variant="secondary" className="text-lg px-8 py-3 btn-primary-enhanced flex items-center">
               Book Consultation
-              <Mail className="ml-2 h-5 w-5" />
+              <Mail className="ml-2 h-5 w-5" style={{ display: 'none' }} />
             </Button>
           </Link>
         </div>
@@ -226,7 +371,19 @@ const Contact = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <img
+                  src="/softscape-logo.png"
+                  alt="SoftScape Solutions Logo"
+                  className="w-8 h-8 object-contain"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div 
+                  className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center"
+                  style={{ display: 'none' }}
+                >
                   <Brain className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">

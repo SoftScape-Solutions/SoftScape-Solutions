@@ -7,6 +7,7 @@ export const ROUTES = {
     AI_APPLICATIONS: "/ai-applications",
     CUSTOM_AI: "/custom-ai",
     WEBAPP_DEVELOPMENT: "/webapp-development",
+    APP_DEVELOPMENT: "/app-development",
     BOOK_CONSULTATION: "/book-consultation",
     CONTACT: "/contact",
     JOIN_TEAM: "/join-team",
@@ -22,12 +23,14 @@ export const AI_TOOLS_DROPDOWN = [
     { to: ROUTES.AI_VISION, label: "AI Vision", description: "Computer vision and image analysis" },
     { to: ROUTES.CUSTOM_AI, label: "Custom AI", description: "Tailored AI solutions" },
     { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web App Development", description: "Custom web applications & platforms" },
+    { to: ROUTES.APP_DEVELOPMENT, label: "Mobile App Development", description: "Native & cross-platform mobile apps" },
     { to: ROUTES.EXPLORE_TOOLS, label: "Explore All Tools", description: "Discover our full AI toolkit" }
 ];
 
 // Development Services dropdown configuration
 export const DEVELOPMENT_SERVICES_DROPDOWN = [
-    { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web App Development", description: "Custom web applications & platforms" }
+    { to: ROUTES.WEBAPP_DEVELOPMENT, label: "Web App Development", description: "Custom web applications & platforms" },
+    { to: ROUTES.APP_DEVELOPMENT, label: "Mobile App Development", description: "Native & cross-platform mobile apps" }
 ];
 
 // All Services dropdown configuration
@@ -175,6 +178,20 @@ export const PAGE_NAVIGATION = {
         ]
     },
     [ROUTES.WEBAPP_DEVELOPMENT]: {
+        desktop: [
+            { to: ROUTES.HOME, label: "Home", type: "link" },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { to: ROUTES.ABOUT, label: "About Us", type: "link" },
+            { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
+        ],
+        mobile: [
+            { to: ROUTES.HOME, label: "Home", type: "link" },
+            { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },
+            { to: ROUTES.ABOUT, label: "About", type: "link" },
+            { to: ROUTES.BOOK_CONSULTATION, label: "Consultation", type: "link" }
+        ]
+    },
+    [ROUTES.APP_DEVELOPMENT]: {
         desktop: [
             { to: ROUTES.HOME, label: "Home", type: "link" },
             { label: "Tools", type: "dropdown", items: AI_TOOLS_DROPDOWN },

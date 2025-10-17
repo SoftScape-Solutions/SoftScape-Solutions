@@ -464,8 +464,21 @@ html {
 /* Navigation Enhancements */
 .nav-enhanced {
   backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.98);
   transition: all 0.3s ease;
+}
+
+.nav-enhanced .navigation-menu-link,
+.nav-enhanced .nav-dropdown-trigger,
+.nav-enhanced a,
+.nav-enhanced button {
+  color: #111827 !important;
+  font-weight: 500;
+}
+
+.nav-enhanced .navigation-menu-link:hover,
+.nav-enhanced .nav-dropdown-trigger:hover {
+  color: #3b82f6 !important;
 }
 
 /* Scroll Animations */

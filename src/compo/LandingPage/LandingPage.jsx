@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Brain, Sparkles, Bot, Cpu, Workflow } from "lucide-react";
+import { Brain, Sparkles, Bot, Cpu, Workflow, Globe, Smartphone, Monitor, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/common/Layout";
 import { HERO_CONFIG, SERVICES_CONFIG } from "../../config";
@@ -96,7 +96,11 @@ const LandingPage = () => {
     icon: service.icon === 'Bot' ? Bot : 
           service.icon === 'Workflow' ? Workflow :
           service.icon === 'Cpu' ? Cpu :
-          service.icon === 'Brain' ? Brain : Bot,
+          service.icon === 'Brain' ? Brain :
+          service.icon === 'Globe' ? Globe :
+          service.icon === 'Monitor' ? Monitor :
+          service.icon === 'Code' ? Code :
+          service.icon === 'Smartphone' ? Smartphone : Bot,
     preview: {
       products: service.features.slice(0, 3),
       overview: service.detailedDescription
@@ -134,18 +138,6 @@ const LandingPage = () => {
                 </Button>
               </Link>
             </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator - Centered */}
-        <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
-          <div className="scroll-indicator-container flex flex-col items-center">
-            <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-gray-500 rounded-full flex items-center justify-center relative overflow-hidden">
-              <div className="scroll-indicator-dot w-1 h-2 sm:h-3 bg-gray-600 rounded-full"></div>
-            </div>
-            <p className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 sm:mt-3 text-center whitespace-nowrap">
-              Scroll to explore
-            </p>
           </div>
         </div>
       </section>

@@ -9,7 +9,13 @@ import {
   Eye,
   ArrowRight,
   CheckCircle,
-  Star
+  Star,
+  Code2,
+  Heart,
+  Triangle,
+  Circle,
+  Server,
+  Database
 } from 'lucide-react';
 import Layout from '../../components/common/Layout';
 import { ROUTES } from '../../constants/routes';
@@ -212,22 +218,59 @@ const WebAppDevelopment = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
               {[
-                { name: 'React', color: 'text-blue-500', bg: 'bg-blue-50' },
-                { name: 'Vue.js', color: 'text-green-500', bg: 'bg-green-50' },
-                { name: 'Angular', color: 'text-red-500', bg: 'bg-red-50' },
-                { name: 'Node.js', color: 'text-green-600', bg: 'bg-green-50' },
-                { name: 'Python', color: 'text-yellow-500', bg: 'bg-yellow-50' },
-                { name: 'MongoDB', color: 'text-green-600', bg: 'bg-green-50' },
-              ].map((tech, index) => (
-                <div key={index} className={`${tech.bg} rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}>
-                  <div className={`text-3xl font-bold ${tech.color} mb-2`}>
-                    {tech.name.charAt(0)}
+                { 
+                  name: 'React', 
+                  logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/react.svg',
+                  bg: 'bg-blue-50' 
+                },
+                { 
+                  name: 'Vue.js', 
+                  logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
+                  bg: 'bg-green-50' 
+                },
+                { 
+                  name: 'Angular', 
+                  logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg',
+                  bg: 'bg-red-50' 
+                },
+                { 
+                  name: 'Node.js', 
+                  logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nodedotjs.svg',
+                  bg: 'bg-green-50' 
+                },
+                { 
+                  name: 'Python', 
+                  logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+                  bg: 'bg-yellow-50' 
+                },
+                { 
+                  name: 'MongoDB', 
+                  logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+                  bg: 'bg-green-50' 
+                },
+              ].map((tech, index) => {
+                return (
+                  <div key={index} className={`${tech.bg} rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group`}>
+                    <div className="flex justify-center mb-3">
+                      <img 
+                        src={tech.logo} 
+                        alt={`${tech.name} logo`}
+                        className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'block';
+                        }}
+                      />
+                      <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-xs font-bold hidden">
+                        {tech.name.charAt(0)}
+                      </div>
+                    </div>
+                    <div className="text-sm font-semibold text-gray-700">
+                      {tech.name}
+                    </div>
                   </div>
-                  <div className="text-sm font-semibold text-gray-700">
-                    {tech.name}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

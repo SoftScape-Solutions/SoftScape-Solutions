@@ -21,7 +21,33 @@ export const COMPANY_INFO = {
   // Business Info
   founded: "2025",
   location: "Saudi Arabia",
-  industry: "Artificial Intelligence & Software Development"
+  industry: "Artificial Intelligence & Software Development",
+  
+  // Common UI Text
+  commonText: {
+    cta: {
+      primary: "Get Started",
+      secondary: "Learn More",
+      consultation: "Book Consultation",
+      contact: "Contact Us",
+      startProject: "Start Your Project",
+      discuss: "Discuss Your Idea"
+    },
+    features: {
+      transform: "Transform your business",
+      drive: "Drive growth and innovation",
+      cutting: "Cutting-edge technology",
+      reliable: "Reliable and secure",
+      scalable: "Scalable solutions",
+      professional: "Professional service"
+    },
+    ratings: {
+      excellent: "4.0 Rating",
+      satisfaction: "98% Client Satisfaction",
+      projects: "10+ Projects Delivered",
+      experience: "2+ Years Experience"
+    }
+  }
 };
 
 // Hero Section Configuration
@@ -66,6 +92,6 @@ export const ABOUT_CONFIG = {
   team: {
     size: "50+",
     expertise: ["Machine Learning", "AI Development", "Data Science", "Software Engineering"],
-    experience: "10+ years combined experience"
+    experience: "5+ years combined experience"
   }
 };

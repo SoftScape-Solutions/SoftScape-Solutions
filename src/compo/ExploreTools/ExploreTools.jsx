@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/common/Layout';
 import { ROUTES } from '../../constants/routes';
-import { Sparkles, Bot, Zap, Cpu, Brain, Globe, Eye } from 'lucide-react';
+import { Sparkles, Bot, Zap, Cpu, Brain, Globe, Eye, Smartphone } from 'lucide-react';
 import './ExploreTools.css';
 
 const ExploreTools = () => {
@@ -15,6 +15,7 @@ const ExploreTools = () => {
     { id: 'automation', label: 'Automation', icon: Zap },
     { id: 'applications', label: 'Applications', icon: Cpu },
     { id: 'webapp', label: 'Web Development', icon: Globe },
+    { id: 'mobile', label: 'App Development', icon: Smartphone },
     { id: 'custom', label: 'Custom Solutions', icon: Brain }
   ];
 
@@ -78,6 +79,18 @@ const ExploreTools = () => {
       price: 'From $2,500/project',
       link: ROUTES.WEBAPP_DEVELOPMENT,
       popular: true
+    },
+    {
+      id: 'app-development',
+      title: 'Mobile App Development',
+      description: 'Native and cross-platform mobile applications for Android and iOS',
+      category: 'mobile',
+      icon: '📱',
+      gradient: 'from-indigo-500 to-purple-500',
+      features: ['Native iOS/Android', 'Cross-Platform', 'App Store Ready', 'Push Notifications'],
+      price: 'From $4,000/project',
+      link: ROUTES.APP_DEVELOPMENT,
+      popular: false
     },
     {
       id: 'ai-vision',
