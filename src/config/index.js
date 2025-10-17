@@ -1,7 +1,7 @@
 // Main configuration index - exports all config modules
 export { COMPANY_INFO, HERO_CONFIG, ABOUT_CONFIG } from './company.js';
 export { CONTACT_INFO, CONTACT_FORM_CONFIG } from './contact.js';
-export { SERVICES_CONFIG, PRICING_CONFIG } from './services.js';
+export { SERVICES_CONFIG, PRICING_CONFIG, ICON_URLS } from './services.js';
 export { APP_CONFIG, PERFORMANCE_CONFIG, SEO_CONFIG } from './app.js';
 
 // Quick access to commonly used configs

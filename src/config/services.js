@@ -1,4 +1,22 @@
 // Services Configuration
+
+
+// Icon URL mapping using Feather Icons for consistency
+export const ICON_URLS = {
+  Bot: "https://img.icons8.com/3d-fluency/94/bot.png",
+  Workflow: "https://img.icons8.com/3d-fluency/94/workflow.png",
+  Cpu: "https://img.icons8.com/3d-fluency/94/processor.png",
+  Brain: "https://img.icons8.com/3d-fluency/94/brain.png",
+  Globe: "https://img.icons8.com/3d-fluency/94/globe.png",
+  Monitor: "https://img.icons8.com/3d-fluency/94/monitor.png",
+  Code: "https://img.icons8.com/3d-fluency/94/source-code.png",
+  Smartphone: "https://img.icons8.com/3d-fluency/94/smartphone.png",
+  Database: "https://img.icons8.com/3d-fluency/94/database.png",
+  Server: "https://img.icons8.com/3d-fluency/94/server.png",
+  Cloud: "https://img.icons8.com/3d-fluency/94/cloud.png",
+  Eye: "https://img.icons8.com/3d-fluency/94/visible.png",
+};
+
 export const SERVICES_CONFIG = {
   // Main AI Services
   aiServices: [
@@ -409,6 +427,7 @@ export const SERVICES_CONFIG = {
     }
   }
 };
+
 
 // Pricing Configuration
 export const PRICING_CONFIG = {

@@ -7,10 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Brain, Sparkles, Bot, Cpu, Workflow, Globe, Smartphone, Monitor, Code } from "lucide-react";
+import { Brain, Sparkles } from "lucide-react"; // Keep only these for hero and CTA
 import { Link } from "react-router-dom";
 import Layout from "../../components/common/Layout";
-import { HERO_CONFIG, SERVICES_CONFIG } from "../../config";
+import { HERO_CONFIG, SERVICES_CONFIG, ICON_URLS } from "../../config";
 import "./LandingPage.css";
 import "../animations.css";
 
@@ -37,7 +37,6 @@ const LandingPage = () => {
       const scrollPosition = window.scrollY;
       const heroHeight = window.innerHeight;
 
-      // Hide scroll indicator when user starts scrolling
       if (scrollPosition > 10 && showScrollIndicator) {
         setShowScrollIndicator(false);
       }
@@ -90,17 +89,10 @@ const LandingPage = () => {
     };
   }, [isScrollingFromHero, lastScrollY, showScrollIndicator]);
 
-  // Get services from config and add icon components
+  // Get services from config and add icon URLs
   const services = SERVICES_CONFIG.aiServices.map(service => ({
     ...service,
-    icon: service.icon === 'Bot' ? Bot : 
-          service.icon === 'Workflow' ? Workflow :
-          service.icon === 'Cpu' ? Cpu :
-          service.icon === 'Brain' ? Brain :
-          service.icon === 'Globe' ? Globe :
-          service.icon === 'Monitor' ? Monitor :
-          service.icon === 'Code' ? Code :
-          service.icon === 'Smartphone' ? Smartphone : Bot,
+    iconUrl: ICON_URLS[service.icon] || ICON_URLS.Bot,
     preview: {
       products: service.features.slice(0, 3),
       overview: service.detailedDescription
@@ -181,10 +173,23 @@ const LandingPage = () => {
                     {/* Main Card Content */}
                     <div className="main-card-content">
                       <CardHeader className="text-center">
-                        <div
-                          className={`service-icon-${service.color} icon-bounce`}
-                        >
-                          <service.icon className="h-8 w-8 text-white" />
+                        <div className={`service-icon-${service.color} icon-bounce`}>
+                          <img 
+                            src={service.iconUrl} 
+                            alt={`${service.title} icon`}
+                            className="h-8 w-8"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'block';
+                            }}
+                          />
+                          {/* Fallback text icon */}
+                          <span 
+                            className="text-white font-bold text-2xl"
+                            style={{ display: 'none' }}
+                          >
+                            {service.icon.charAt(0)}
+                          </span>
                         </div>
                         <CardTitle className="text-lg sm:text-xl md:text-2xl">
                           {service.title}
@@ -200,10 +205,23 @@ const LandingPage = () => {
                       <div className="preview-content">
                         <div className="preview-header">
                           <div className="preview-header-content">
-                            <div
-                              className={`service-icon-${service.color} icon-small`}
-                            >
-                              <service.icon className="h-6 w-6 text-white" />
+                            <div className={`service-icon-${service.color} icon-small`}>
+                              <img 
+                                src={service.iconUrl} 
+                                alt={`${service.title} icon`}
+                                className="h-6 w-6"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'block';
+                                }}
+                              />
+                              {/* Fallback */}
+                              <span 
+                                className="text-white font-bold text-sm"
+                                style={{ display: 'none' }}
+                              >
+                                {service.icon.charAt(0)}
+                              </span>
                             </div>
                             <h4 className="preview-title">{service.title}</h4>
                           </div>
