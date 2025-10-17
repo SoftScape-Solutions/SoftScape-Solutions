@@ -71,14 +71,6 @@ const BookConsultation = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
       // Debug logging for environment variables
-      console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
-      console.log('Service ID:', serviceId);
-      console.log('Admin Template ID:', adminTemplateId);
-      console.log('Customer Template ID:', customerTemplateId);
-      console.log('Public Key:', publicKey);
-      console.log('All env vars:', import.meta.env);
-      console.log('=====================================');
-
       if (!serviceId || !adminTemplateId || !customerTemplateId || !publicKey) {
         const missingVars = [];
         if (!serviceId) missingVars.push('Service ID');
