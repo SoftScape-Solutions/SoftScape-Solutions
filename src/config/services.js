@@ -129,7 +129,7 @@ export const SERVICES_CONFIG = {
       title: "Web App Development",
       description: "Modern, responsive web applications built with cutting-edge technologies for optimal performance",
       detailedDescription: "Create powerful web applications that deliver exceptional user experiences with modern frameworks, responsive design, and scalable architecture.",
-      icon: "Monitor",
+      icon: "Monitor", 
       color: "emerald",
       gradient: "from-emerald-500 to-teal-500",
       link: "/webapp-development",

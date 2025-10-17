@@ -731,53 +731,97 @@ html {
     font-size: 1.25rem;
   }
 }
-
 .service-icon-blue {
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(to right, #3b82f6, #06b6d4);
-  border-radius: 1rem;
+  background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+  border-radius: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem auto;
   animation: pulse-glow 2s infinite;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+  padding: 0.75rem;
 }
 
 .service-icon-purple {
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(to right, #8b5cf6, #ec4899);
-  border-radius: 1rem;
+  background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+  border-radius: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem auto;
   animation: pulse-glow 2s infinite;
+  box-shadow: 0 10px 25px rgba(147, 51, 234, 0.35);
+  padding: 0.75rem;
 }
 
 .service-icon-orange {
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(to right, #f97316, #ef4444);
-  border-radius: 1rem;
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  border-radius: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem auto;
   animation: pulse-glow 2s infinite;
+  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.35);
+  padding: 0.75rem;
 }
 
 .service-icon-indigo {
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
-  border-radius: 1rem;
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  border-radius: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem auto;
   animation: pulse-glow 2s infinite;
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
+  padding: 0.75rem;
+}
+
+.service-icon-emerald {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+  animation: pulse-glow 2s infinite;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+  padding: 0.75rem;
+}
+/* Add slight scaling on hover for better interaction */
+.service-icon-blue:hover,
+.service-icon-purple:hover,
+.service-icon-orange:hover,
+.service-icon-indigo:hover,
+.service-icon-emerald:hover,
+.service-icon-green:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+/* Ensure icons are properly sized and centered */
+.service-icon-blue img,
+.service-icon-purple img,
+.service-icon-orange img,
+.service-icon-indigo img,
+.service-icon-emerald img,
+.service-icon-green img {
+  width: 50rem;
+  height: 50rem;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 /* Navigation Component Classes */
