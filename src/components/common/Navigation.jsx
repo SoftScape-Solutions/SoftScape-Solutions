@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { NAVIGATION_LINKS, PAGE_NAVIGATION } from "../../constants/routes";
+import { NAVIGATION_LINKS, PAGE_NAVIGATION, ROUTES } from "../../constants/routes";
 import { cn } from "../../utils/helpers";
 import "./Navigation.css";
 
@@ -206,7 +206,7 @@ const Navigation = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center animate-slide-in-left">
+          <Link to={ROUTES.HOME} className="flex items-center animate-slide-in-left">
             <img
               src="/softscape-logo.png"
               alt="SoftScape Solutions Logo"

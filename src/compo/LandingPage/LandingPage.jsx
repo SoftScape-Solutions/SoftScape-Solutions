@@ -7,10 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Brain, Sparkles, Bot, Cpu, Workflow } from "lucide-react";
+import { Brain, Sparkles } from "lucide-react"; // Keep only these for hero and CTA
 import { Link } from "react-router-dom";
 import Layout from "../../components/common/Layout";
-import { HERO_CONFIG, SERVICES_CONFIG } from "../../config";
+import { HERO_CONFIG, SERVICES_CONFIG, ICON_URLS } from "../../config";
 import "./LandingPage.css";
 import "../animations.css";
 
@@ -37,7 +37,6 @@ const LandingPage = () => {
       const scrollPosition = window.scrollY;
       const heroHeight = window.innerHeight;
 
-      // Hide scroll indicator when user starts scrolling
       if (scrollPosition > 10 && showScrollIndicator) {
         setShowScrollIndicator(false);
       }
@@ -90,13 +89,10 @@ const LandingPage = () => {
     };
   }, [isScrollingFromHero, lastScrollY, showScrollIndicator]);
 
-  // Get services from config and add icon components
+  // Get services from config and add icon URLs
   const services = SERVICES_CONFIG.aiServices.map(service => ({
     ...service,
-    icon: service.icon === 'Bot' ? Bot : 
-          service.icon === 'Workflow' ? Workflow :
-          service.icon === 'Cpu' ? Cpu :
-          service.icon === 'Brain' ? Brain : Bot,
+    iconUrl: ICON_URLS[service.icon] || ICON_URLS.Bot,
     preview: {
       products: service.features.slice(0, 3),
       overview: service.detailedDescription
@@ -134,18 +130,6 @@ const LandingPage = () => {
                 </Button>
               </Link>
             </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator - Centered */}
-        <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
-          <div className="scroll-indicator-container flex flex-col items-center">
-            <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-gray-500 rounded-full flex items-center justify-center relative overflow-hidden">
-              <div className="scroll-indicator-dot w-1 h-2 sm:h-3 bg-gray-600 rounded-full"></div>
-            </div>
-            <p className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 sm:mt-3 text-center whitespace-nowrap">
-              Scroll to explore
-            </p>
           </div>
         </div>
       </section>
@@ -189,10 +173,23 @@ const LandingPage = () => {
                     {/* Main Card Content */}
                     <div className="main-card-content">
                       <CardHeader className="text-center">
-                        <div
-                          className={`service-icon-${service.color} icon-bounce`}
-                        >
-                          <service.icon className="h-8 w-8 text-white" />
+                        <div className={`service-icon-${service.color} icon-bounce`}>
+                          <img 
+                            src={service.iconUrl} 
+                            alt={`${service.title} icon`}
+                            className="h-8 w-8"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'block';
+                            }}
+                          />
+                          {/* Fallback text icon */}
+                          <span 
+                            className="text-white font-bold text-2xl"
+                            style={{ display: 'none' }}
+                          >
+                            {service.icon.charAt(0)}
+                          </span>
                         </div>
                         <CardTitle className="text-lg sm:text-xl md:text-2xl">
                           {service.title}
@@ -208,10 +205,23 @@ const LandingPage = () => {
                       <div className="preview-content">
                         <div className="preview-header">
                           <div className="preview-header-content">
-                            <div
-                              className={`service-icon-${service.color} icon-small`}
-                            >
-                              <service.icon className="h-6 w-6 text-white" />
+                            <div className={`service-icon-${service.color} icon-small`}>
+                              <img 
+                                src={service.iconUrl} 
+                                alt={`${service.title} icon`}
+                                className="h-6 w-6"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'block';
+                                }}
+                              />
+                              {/* Fallback */}
+                              <span 
+                                className="text-white font-bold text-sm"
+                                style={{ display: 'none' }}
+                              >
+                                {service.icon.charAt(0)}
+                              </span>
                             </div>
                             <h4 className="preview-title">{service.title}</h4>
                           </div>
