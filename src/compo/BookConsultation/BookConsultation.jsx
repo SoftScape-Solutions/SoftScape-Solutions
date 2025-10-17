@@ -71,14 +71,6 @@ const BookConsultation = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
       // Debug logging for environment variables
-      console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
-      console.log('Service ID:', serviceId);
-      console.log('Admin Template ID:', adminTemplateId);
-      console.log('Customer Template ID:', customerTemplateId);
-      console.log('Public Key:', publicKey);
-      console.log('All env vars:', import.meta.env);
-      console.log('=====================================');
-
       if (!serviceId || !adminTemplateId || !customerTemplateId || !publicKey) {
         const missingVars = [];
         if (!serviceId) missingVars.push('Service ID');
@@ -130,11 +122,8 @@ const BookConsultation = () => {
       };
 
       console.log('=== EMAIL ROUTING DEBUG ===');
-      console.log('🔍 Customer filled form with email:', formData.email);
-      console.log('🔍 Customer name:', formData.name);
       console.log('');
       console.log('📧 ADMIN NOTIFICATION will be sent to:', adminTemplateParams.to_email);
-      console.log('📧 CUSTOMER CONFIRMATION will be sent to:', customerTemplateParams.to_email);
       console.log('');
       console.log('⚠️  IMPORTANT: Customer should ONLY receive the confirmation email!');
       console.log('⚠️  Admin should ONLY receive the notification email!');
