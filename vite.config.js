@@ -9,7 +9,6 @@ export default defineConfig({
     plugins: [
         react({
             // Enable Fast Refresh for better development experience
-            fastRefresh: true
         })
     ],
     
