@@ -271,23 +271,42 @@ export const createWorkerScript = () => {
                     case 'transform':
                         if (typeof functionRegistry[fn] !== 'function') {
                             self.postMessage({ success: false, error: 'Unknown transformer function' });
+        // Define a registry of allowed functions
+        const functionRegistry = {
+            // Example: add your allowed functions here
+            double: x => x * 2,
+            square: x => x * x,
+            increment: x => x + 1,
+            sum: arr => arr.reduce((a, b) => a + b, 0),
+            // Add more functions as needed
+        };
+
+        self.onmessage = function(e) {
+            try {
+                const { type, data, fn } = e.data;
+
+                switch(type) {
+                    case 'transform': {
+                        const transformer = functionRegistry[fn];
+                        if (typeof transformer !== 'function') {
+                            self.postMessage({ success: false, error: 'Unknown transformer function: ' + fn });
                             break;
                         }
-                        const transformer = functionRegistry[fn];
                         const result = data.map(transformer);
                         self.postMessage({ success: true, result });
                         break;
-                    
-                    case 'compute':
-                        if (typeof functionRegistry[fn] !== 'function') {
-                            self.postMessage({ success: false, error: 'Unknown compute function' });
+                    }
+
+                    case 'compute': {
+                        const computer = functionRegistry[fn];
+                        if (typeof computer !== 'function') {
+                            self.postMessage({ success: false, error: 'Unknown compute function: ' + fn });
                             break;
                         }
-                        const computer = functionRegistry[fn];
                         const computed = computer(data);
                         self.postMessage({ success: true, result: computed });
                         break;
-                    
+                    }
                     default:
                         self.postMessage({ success: false, error: 'Unknown task type' });
                 }
