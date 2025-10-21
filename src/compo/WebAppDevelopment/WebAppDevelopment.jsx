@@ -115,19 +115,22 @@ const WebAppDevelopment = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white py-20">
+        <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
           <div className="container mx-auto px-6 text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-8 animate-bounce-in">
+              <Globe className="h-10 w-10 text-white" />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
               Web Application Development
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-blue-100">
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-600">
               Transform your business ideas into powerful, scalable web applications that drive growth and deliver exceptional user experiences
             </p>
             <button 
               onClick={() => navigate(ROUTES.BOOK_CONSULTATION)}
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
             >
               Start Your Project Today
             </button>
@@ -135,7 +138,7 @@ const WebAppDevelopment = () => {
         </section>
 
         {/* Service Packages */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -276,7 +279,7 @@ const WebAppDevelopment = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="py-20 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 text-white">
+        <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">

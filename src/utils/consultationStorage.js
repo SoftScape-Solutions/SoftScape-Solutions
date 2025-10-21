@@ -1,12 +1,109 @@
+'use strict';
+
 // Local Storage Service for Consultation Bookings
 import SecureIdGenerator from './secureIdGenerator.js';
 import PasswordSecurity from './passwordSecurity.js';
+import { createStorageHelper, scheduleIdleTask, batchify } from './helpers.js';
 
 class ConsultationStorageService {
   constructor() {
     this.storageKey = 'consultation_bookings';
     this.adminKey = 'admin_users'; // Changed to support multiple admins
+    
+    // Create optimized storage helpers
+    this.consultationStorage = createStorageHelper(this.storageKey, []);
+    this.adminStorage = createStorageHelper(this.adminKey, []);
+    
+    // Cache for frequently accessed data
+    this.cache = new Map();
+    this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+    
+    // Batch operations queue
+    this.batchQueue = [];
+    this.batchProcessor = batchify(this._processBatch.bind(this));
+    
     this.initializeStorage();
+  }
+
+  /**
+   * Clear cache for a specific key or all cache
+   * @private
+   */
+  _clearCache(key = null) {
+    if (key) {
+      this.cache.delete(key);
+    } else {
+      this.cache.clear();
+    }
+  }
+
+  /**
+   * Get data from cache with expiration
+   * @private
+   */
+  _getFromCache(key) {
+    const cached = this.cache.get(key);
+    if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+      return cached.data;
+    }
+    this.cache.delete(key);
+    return null;
+  }
+
+  /**
+   * Set data in cache
+   * @private
+   */
+  _setCache(key, data) {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now()
+    });
+    
+    // Limit cache size to prevent memory leaks
+    if (this.cache.size > 50) {
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+  }
+
+  /**
+   * Process batched operations
+   * @private
+   */
+  _processBatch(operations) {
+    try {
+      const consultations = this.getAllConsultations();
+      let modified = false;
+      
+      operations.forEach(([operation]) => {
+        const { type, data } = operation;
+        
+        switch (type) {
+          case 'update':
+            const index = consultations.findIndex(c => c.id === data.id);
+            if (index !== -1) {
+              consultations[index] = { ...consultations[index], ...data.updates };
+              modified = true;
+            }
+            break;
+          case 'delete':
+            const deleteIndex = consultations.findIndex(c => c.id === data.id);
+            if (deleteIndex !== -1) {
+              consultations.splice(deleteIndex, 1);
+              modified = true;
+            }
+            break;
+        }
+      });
+      
+      if (modified) {
+        this.consultationStorage.set(consultations);
+        this._clearCache();
+      }
+    } catch (error) {
+      console.error('Error processing batch operations:', error);
+    }
   }
 
   // Initialize storage with default data if empty
@@ -121,21 +218,44 @@ class ConsultationStorageService {
     }
   }
 
-  // Get all consultation bookings
+  // Get all consultation bookings (with caching)
   getAllConsultations() {
     try {
-      const data = localStorage.getItem(this.storageKey);
-      return data ? JSON.parse(data) : [];
+      // Check cache first
+      const cached = this._getFromCache('all_consultations');
+      if (cached) {
+        return cached;
+      }
+      
+      const data = this.consultationStorage.get();
+      
+      // Cache the result
+      this._setCache('all_consultations', data);
+      
+      return data;
     } catch (error) {
       console.error('Error retrieving consultations:', error);
       return [];
     }
   }
 
-  // Get consultation by ID
+  // Get consultation by ID (with caching)
   getConsultationById(id) {
+    const cacheKey = `consultation_${id}`;
+    const cached = this._getFromCache(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+    
     const consultations = this.getAllConsultations();
-    return consultations.find(consultation => consultation.id === id);
+    const consultation = consultations.find(c => c.id === id);
+    
+    if (consultation) {
+      this._setCache(cacheKey, consultation);
+    }
+    
+    return consultation;
   }
 
   // Update consultation status and notes

@@ -1,8 +1,9 @@
+'use strict';
+
 // Services Configuration
 
-
 // Icon URL mapping using Feather Icons for consistency
-export const ICON_URLS = {
+export const ICON_URLS = Object.freeze({
   Bot: "https://img.icons8.com/3d-fluency/94/bot.png",
   Workflow: "https://img.icons8.com/3d-fluency/94/workflow.png",
   Cpu: "https://img.icons8.com/3d-fluency/94/processor.png",
@@ -15,7 +16,7 @@ export const ICON_URLS = {
   Server: "https://img.icons8.com/3d-fluency/94/server.png",
   Cloud: "https://img.icons8.com/3d-fluency/94/cloud.png",
   Eye: "https://img.icons8.com/3d-fluency/94/visible.png",
-};
+});
 
 export const SERVICES_CONFIG = {
   // Main AI Services

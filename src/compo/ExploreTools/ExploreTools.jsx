@@ -2,7 +2,22 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/common/Layout';
 import { ROUTES } from '../../constants/routes';
-import { Sparkles, Bot, Zap, Cpu, Brain, Globe, Eye, Smartphone } from 'lucide-react';
+import { 
+  Sparkles, 
+  Bot, 
+  Zap, 
+  Cpu, 
+  Brain, 
+  Globe, 
+  Eye, 
+  Smartphone,
+  MessageSquare,
+  Workflow,
+  Layers,
+  Code,
+  Monitor,
+  GraduationCap
+} from 'lucide-react';
 import './ExploreTools.css';
 
 const ExploreTools = () => {
@@ -25,8 +40,8 @@ const ExploreTools = () => {
       title: 'AI Chatbots & Agents',
       description: 'Intelligent conversational AI that handles customer service, sales, and support 24/7',
       category: 'chatbots',
-      icon: '🤖',
-      gradient: 'from-blue-500 to-cyan-500',
+      icon: Bot,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['24/7 Availability', 'Multi-language Support', 'Context Awareness', 'CRM Integration'],
       price: 'From $299/month',
       link: ROUTES.AI_CHATBOTS,
@@ -37,8 +52,8 @@ const ExploreTools = () => {
       title: 'Smart Automation Tools',
       description: 'Automate repetitive tasks and workflows to boost productivity by up to 90%',
       category: 'automation',
-      icon: '⚡',
-      gradient: 'from-purple-500 to-pink-500',
+      icon: Workflow,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['Document Processing', 'Email Automation', 'Data Entry', '1000+ Integrations'],
       price: 'From $199/month',
       link: ROUTES.SMART_AUTOMATION,
@@ -49,8 +64,8 @@ const ExploreTools = () => {
       title: 'AI-Enhanced Applications',
       description: 'Custom mobile and web applications powered by artificial intelligence',
       category: 'applications',
-      icon: '📱',
-      gradient: 'from-orange-500 to-red-500',
+      icon: Layers,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['Predictive Analytics', 'Smart Recommendations', 'Real-time Insights', 'Cloud-based'],
       price: 'From $999/project',
       link: ROUTES.AI_APPLICATIONS,
@@ -61,8 +76,8 @@ const ExploreTools = () => {
       title: 'Custom AI Solutions',
       description: 'Tailored AI systems designed specifically for your unique business requirements',
       category: 'custom',
-      icon: '🧠',
-      gradient: 'from-indigo-500 to-purple-500',
+      icon: Brain,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['Bespoke ML Models', 'Industry-Specific', 'Full Ownership', 'Expert Consultation'],
       price: 'From $5,000/project',
       link: ROUTES.CUSTOM_AI,
@@ -73,8 +88,8 @@ const ExploreTools = () => {
       title: 'Web App Development',
       description: 'Modern, scalable web applications built with cutting-edge technologies',
       category: 'webapp',
-      icon: '🌐',
-      gradient: 'from-emerald-500 to-teal-500',
+      icon: Globe,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['React/Next.js', 'Responsive Design', 'API Integration', 'Cloud Deployment'],
       price: 'From $2,500/project',
       link: ROUTES.WEBAPP_DEVELOPMENT,
@@ -85,8 +100,8 @@ const ExploreTools = () => {
       title: 'Mobile App Development',
       description: 'Native and cross-platform mobile applications for Android and iOS',
       category: 'mobile',
-      icon: '📱',
-      gradient: 'from-indigo-500 to-purple-500',
+      icon: Smartphone,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['Native iOS/Android', 'Cross-Platform', 'App Store Ready', 'Push Notifications'],
       price: 'From $4,000/project',
       link: ROUTES.APP_DEVELOPMENT,
@@ -97,8 +112,8 @@ const ExploreTools = () => {
       title: 'AI Vision & Image Processing',
       description: 'Computer vision solutions for image recognition, analysis, and processing',
       category: 'applications',
-      icon: '👁️',
-      gradient: 'from-green-500 to-emerald-500',
+      icon: Eye,
+      gradient: 'from-blue-600 to-purple-600',
       features: ['Object Detection', 'Face Recognition', 'Image Classification', 'OCR'],
       price: 'Custom Pricing',
       link: ROUTES.AI_VISION,
@@ -117,24 +132,24 @@ const ExploreTools = () => {
       title: 'E-Commerce Platform',
       description: 'Full-featured online store with payment integration and inventory management',
       techStack: 'React, Node.js, MongoDB',
-      image: '💻',
-      gradient: 'from-blue-500 to-purple-600'
+      icon: Monitor,
+      gradient: 'from-blue-600 to-purple-600'
     },
     {
       id: 'project-management-tool',
       title: 'Project Management Tool',
       description: 'Collaborative workspace with real-time updates and team management',
       techStack: 'Vue.js, Express, PostgreSQL',
-      image: '📊',
-      gradient: 'from-green-500 to-blue-600'
+      icon: Layers,
+      gradient: 'from-blue-600 to-purple-600'
     },
     {
       id: 'learning-management-system',
       title: 'Learning Management System',
       description: 'Educational platform with course management and progress tracking',
       techStack: 'Angular, Django, MySQL',
-      image: '🎓',
-      gradient: 'from-purple-500 to-pink-600'
+      icon: GraduationCap,
+      gradient: 'from-blue-600 to-purple-600'
     }
   ];
 
@@ -194,25 +209,28 @@ const ExploreTools = () => {
                   <p className="text-gray-600 text-center mb-8">Explore some of our successful web application projects</p>
                 </div>
                 <div className="projects-grid">
-                  {webAppProjects.map((project, index) => (
-                    <div
-                      key={project.id}
-                      className="project-card"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      <div className={`project-image bg-gradient-to-br ${project.gradient}`}>
-                        <span className="text-6xl">{project.image}</span>
-                      </div>
-                      <div className="project-content">
-                        <h3 className="project-title">{project.title}</h3>
-                        <p className="project-description">{project.description}</p>
-                        <div className="project-tech">
-                          <span className="tech-label">Tech Stack:</span>
-                          <span className="tech-stack">{project.techStack}</span>
+                  {webAppProjects.map((project, index) => {
+                    const ProjectIcon = project.icon;
+                    return (
+                      <div
+                        key={project.id}
+                        className="project-card"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <div className={`project-image bg-gradient-to-br ${project.gradient}`}>
+                          <ProjectIcon className="w-16 h-16 text-white" />
+                        </div>
+                        <div className="project-content">
+                          <h3 className="project-title">{project.title}</h3>
+                          <p className="project-description">{project.description}</p>
+                          <div className="project-tech">
+                            <span className="tech-label">Tech Stack:</span>
+                            <span className="tech-stack">{project.techStack}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 <div className="projects-cta">
                   <button
@@ -226,46 +244,49 @@ const ExploreTools = () => {
             ) : (
               // Show tools for other categories
               <div className="tools-grid">
-                {filteredTools.map((tool, index) => (
-                  <div
-                    key={tool.id}
-                    className={`tool-card ${tool.popular ? 'popular' : ''}`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    {tool.popular && (
-                      <div className="popular-badge">
-                        <Sparkles className="w-4 h-4" />
-                        <span>Popular</span>
-                      </div>
-                    )}
-                    
-                    <div className={`tool-icon bg-gradient-to-br ${tool.gradient}`}>
-                      <span className="text-4xl">{tool.icon}</span>
-                    </div>
-
-                    <h3 className="tool-title">{tool.title}</h3>
-                    <p className="tool-description">{tool.description}</p>
-
-                    <div className="tool-features">
-                      {tool.features.map((feature, idx) => (
-                        <div key={idx} className="feature-item">
-                          <span className="feature-check">✓</span>
-                          <span>{feature}</span>
+                {filteredTools.map((tool, index) => {
+                  const ToolIcon = tool.icon;
+                  return (
+                    <div
+                      key={tool.id}
+                      className={`tool-card ${tool.popular ? 'popular' : ''}`}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      {tool.popular && (
+                        <div className="popular-badge">
+                          <Sparkles className="w-4 h-4" />
+                          <span>Popular</span>
                         </div>
-                      ))}
-                    </div>
+                      )}
+                      
+                      <div className={`tool-icon bg-gradient-to-br ${tool.gradient}`}>
+                        <ToolIcon className="w-10 h-10 text-white" />
+                      </div>
 
-                    <div className="tool-footer">
-                      <div className="tool-price">{tool.price}</div>
-                      <button
-                        onClick={() => handleToolClick(tool)}
-                        className="tool-btn"
-                      >
-                        Learn More →
-                      </button>
+                      <h3 className="tool-title">{tool.title}</h3>
+                      <p className="tool-description">{tool.description}</p>
+
+                      <div className="tool-features">
+                        {tool.features.map((feature, idx) => (
+                          <div key={idx} className="feature-item">
+                            <span className="feature-check">✓</span>
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="tool-footer">
+                        <div className="tool-price">{tool.price}</div>
+                        <button
+                          onClick={() => handleToolClick(tool)}
+                          className="tool-btn"
+                        >
+                          Learn More →
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </section>
@@ -293,28 +314,6 @@ const ExploreTools = () => {
                 >
                   Contact Us
                 </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Stats Section */}
-          <section className="stats-section">
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-number">500+</div>
-                <div className="stat-label">Projects Delivered</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">98%</div>
-                <div className="stat-label">Client Satisfaction</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">24/7</div>
-                <div className="stat-label">Support Available</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">50+</div>
-                <div className="stat-label">AI Specialists</div>
               </div>
             </div>
           </section>

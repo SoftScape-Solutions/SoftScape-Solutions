@@ -262,9 +262,9 @@ const AIVision = () => {
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Experience how our AI vision can transform your business
           </p>
-          <Link to="/explore-ai-tools">
+          <Link to="/explore-tools">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-3 btn-primary-enhanced">
-              Explore Our AI Tools
+              Explore Our Tools
               <Sparkles className="ml-2 h-5 w-5" />
             </Button>
           </Link>

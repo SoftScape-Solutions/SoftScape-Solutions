@@ -53,20 +53,20 @@ const AppDevelopment = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-700 text-white py-20">
+        <section className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-20">
           <div className="container mx-auto px-6 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-white/20 backdrop-blur-sm">
+            <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600">
               <Smartphone className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-800">
               {appConfig.hero.title}
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-purple-100">
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-600">
               {appConfig.hero.subtitle}
             </p>
             <button 
               onClick={() => navigate(ROUTES.BOOK_CONSULTATION)}
-              className="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all transform hover:scale-105 shadow-lg"
             >
               {appConfig.hero.ctaText}
             </button>
@@ -211,10 +211,10 @@ const AppDevelopment = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="py-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-700 text-white">
+        <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">
           <div className="container mx-auto px-6 text-center">
             <div className="max-w-4xl mx-auto">
-              <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-white/20 backdrop-blur-sm">
+              <div className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-white/20 backdrop-blur-sm">
                 <Heart className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">

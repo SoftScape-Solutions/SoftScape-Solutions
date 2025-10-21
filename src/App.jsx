@@ -1,25 +1,45 @@
-import React from "react";
+'use strict';
+
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ROUTES } from "./constants/routes";
 import ScrollToTop from "./components/common/ScrollToTop";
 
-// Lazy load components for better performance
-import LandingPage from "./compo/LandingPage/LandingPage";
-import About from "./compo/About/About";
-import AIChatbots from "./compo/AIChatbots/AIChatbots";
-import SmartAutomation from "./compo/SmartAutomation/SmartAutomation";
-import AIApplications from "./compo/AIApplications/AIApplications";
-import CustomAI from "./compo/CustomAI/CustomAI";
-import WebAppDevelopment from "./compo/WebAppDevelopment/WebAppDevelopment";
-import AppDevelopment from "./compo/AppDevelopment/AppDevelopment";
-import BookConsultation from "./compo/BookConsultation/BookConsultation";
-import Contact from "./compo/Contact/Contact";
-import JoinTeam from "./compo/JoinTeam/JoinTeam";
-import AIVision from "./compo/AIVision/AIVision";
-import ExploreTools from "./compo/ExploreTools/ExploreTools";
-
-
 import "./App.css";
+
+// Lazy load components for better performance and code splitting
+const LandingPage = lazy(() => import("./compo/LandingPage/LandingPage"));
+const About = lazy(() => import("./compo/About/About"));
+const AIChatbots = lazy(() => import("./compo/AIChatbots/AIChatbots"));
+const SmartAutomation = lazy(() => import("./compo/SmartAutomation/SmartAutomation"));
+const AIApplications = lazy(() => import("./compo/AIApplications/AIApplications"));
+const CustomAI = lazy(() => import("./compo/CustomAI/CustomAI"));
+const WebAppDevelopment = lazy(() => import("./compo/WebAppDevelopment/WebAppDevelopment"));
+const AppDevelopment = lazy(() => import("./compo/AppDevelopment/AppDevelopment"));
+const BookConsultation = lazy(() => import("./compo/BookConsultation/BookConsultation"));
+const Contact = lazy(() => import("./compo/Contact/Contact"));
+const JoinTeam = lazy(() => import("./compo/JoinTeam/JoinTeam"));
+const AIVision = lazy(() => import("./compo/AIVision/AIVision"));
+const ExploreTools = lazy(() => import("./compo/ExploreTools/ExploreTools"));
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    backgroundColor: '#f8fafc'
+  }}>
+    <div style={{
+      fontSize: '1.5rem',
+      color: '#3b82f6',
+      fontWeight: '600'
+    }}>
+      Loading...
+    </div>
+  </div>
+);
 
 // Route configuration for better maintainability
 const routeConfig = [
@@ -44,11 +64,13 @@ function App() {
     <Router future={{ v7_startTransition: true }}>
       <ScrollToTop />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <Routes>
-          {routeConfig.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-        </Routes>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {routeConfig.map(({ path, element }) => (
+              <Route key={path} path={path} element={element} />
+            ))}
+          </Routes>
+        </Suspense>
       </div>
     </Router>
   );
