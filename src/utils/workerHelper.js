@@ -244,19 +244,34 @@ export const hashInWorker = (data) => {
  */
 export const createWorkerScript = () => {
     const script = `
+        // Predefined function registry
+        const functionRegistry = {
+            // Add safe, predefined functions here
+            // Example: 'double': x => x * 2,
+            // Example: 'sum': arr => arr.reduce((a, b) => a + b, 0),
+        };
+
         self.onmessage = function(e) {
             try {
                 const { type, data, fn } = e.data;
                 
                 switch(type) {
                     case 'transform':
-                        const transformer = eval('(' + fn + ')');
+                        if (typeof functionRegistry[fn] !== 'function') {
+                            self.postMessage({ success: false, error: 'Unknown transformer function' });
+                            break;
+                        }
+                        const transformer = functionRegistry[fn];
                         const result = data.map(transformer);
                         self.postMessage({ success: true, result });
                         break;
                     
                     case 'compute':
-                        const computer = eval('(' + fn + ')');
+                        if (typeof functionRegistry[fn] !== 'function') {
+                            self.postMessage({ success: false, error: 'Unknown compute function' });
+                            break;
+                        }
+                        const computer = functionRegistry[fn];
                         const computed = computer(data);
                         self.postMessage({ success: true, result: computed });
                         break;
