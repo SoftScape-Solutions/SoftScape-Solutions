@@ -172,7 +172,7 @@ const About = () => {
           <div className="text-center group animate-slide-in">
             <div className="about-team-avatar about-team-avatar-1">
               <img 
-            src="/assets/team/omer.jpg" 
+            src="dist/assets/team/omer.jpg" 
             alt="Omer Aqeel"
             className="w-full h-full object-cover rounded-full"
             onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='flex';}}
