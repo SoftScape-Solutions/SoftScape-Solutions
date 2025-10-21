@@ -1,6 +1,6 @@
 [build]
   # Build command
-  command = "npm run build"
+  command = "npm ci && npm run build"
   
   # Directory with the deploy-ready files
   publish = "dist"
@@ -9,11 +9,14 @@
   # functions = "netlify/functions"
 
 [build.environment]
-  # Node version
-  NODE_VERSION = "18"
+  # Node version - match your local version
+  NODE_VERSION = "18.18.0"
   
   # NPM version
-  NPM_VERSION = "9"
+  NPM_VERSION = "10"
+  
+  # Prevent auto-installing dependencies
+  NPM_FLAGS = "--legacy-peer-deps"
 
 # Redirect rules are in public/_redirects
 # Header rules are in public/_headers
