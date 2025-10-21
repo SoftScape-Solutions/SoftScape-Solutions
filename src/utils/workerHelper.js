@@ -171,14 +171,32 @@ export const sortInWorker = (data) => {
  * @param {Function} predicate - Filter predicate (as string)
  * @returns {Promise<Array>} Filtered array
  */
-export const filterInWorker = (data, predicate) => {
+export const filterInWorker = (data, predicateName) => {
+    // Registry of allowed predicate functions
+    const predicateRegistry = {
+        isEven: (x) => x % 2 === 0,
+        isOdd: (x) => x % 2 !== 0,
+        isPositive: (x) => x > 0,
+        // Add more predicates as needed
+    };
     const filterTask = (e) => {
-        const { data, predicateStr } = e.data;
-        const pred = eval(`(${predicateStr})`);
+        const { data, predicateName } = e.data;
+        // Registry must be defined inside the worker as well
+        const predicateRegistry = {
+            isEven: (x) => x % 2 === 0,
+            isOdd: (x) => x % 2 !== 0,
+            isPositive: (x) => x > 0,
+            // Add more predicates as needed
+        };
+        const pred = predicateRegistry[predicateName];
+        if (typeof pred !== 'function') {
+            self.postMessage([]);
+            return;
+        }
         const filtered = data.filter(pred);
         self.postMessage(filtered);
     };
-    return runInWorker(filterTask, { data, predicateStr: predicate.toString() });
+    return runInWorker(filterTask, { data, predicateName });
 };
 
 /**
