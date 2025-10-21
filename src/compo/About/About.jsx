@@ -219,7 +219,7 @@ const About = () => {
           <div className="text-center about-team-card animate-slide-in about-team-card-2">
             <div className="about-team-avatar about-team-avatar-3">
               <img 
-            src="/assets/team/Pasha.jpg" 
+            src="dist/assets/team/Pasha.jpg" 
             alt="Saad ur Rehman"
             className="w-full h-full object-cover rounded-full"
             onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='flex';}}
