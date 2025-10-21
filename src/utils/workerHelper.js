@@ -205,14 +205,26 @@ export const filterInWorker = (data, predicateName) => {
  * @param {Function} transformer - Transform function (as string)
  * @returns {Promise<Array>} Transformed array
  */
-export const mapInWorker = (data, transformer) => {
+// Registry of allowed transformer functions
+const transformerRegistry = {
+    double: (x) => x * 2,
+    square: (x) => x * x,
+    increment: (x) => x + 1,
+    // Add more allowed transformer functions here
+};
+
+export const mapInWorker = (data, transformerKey) => {
     const mapTask = (e) => {
-        const { data, transformerStr } = e.data;
-        const transform = eval(`(${transformerStr})`);
+        const { data, transformerKey } = e.data;
+        const transform = transformerRegistry[transformerKey];
+        if (typeof transform !== 'function') {
+            self.postMessage({ error: 'Unknown transformer key' });
+            return;
+        }
         const mapped = data.map(transform);
         self.postMessage(mapped);
     };
-    return runInWorker(mapTask, { data, transformerStr: transformer.toString() });
+    return runInWorker(mapTask, { data, transformerKey });
 };
 
 /**
