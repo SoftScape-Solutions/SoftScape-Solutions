@@ -156,74 +156,99 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Passionate professionals dedicated to delivering exceptional
-              results
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Meet Our Team
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Passionate professionals dedicated to delivering exceptional
+            results
+          </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="text-center group animate-slide-in">
+            <div className="about-team-avatar about-team-avatar-1">
+              <img 
+            src="/assets/team/omer.jpg" 
+            alt="Omer Aqeel"
+            className="w-full h-full object-cover rounded-full"
+            onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='flex';}}
+              />
+              <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold" style={{display: 'none'}}>
+            OA
+              </div>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Omer Aqeel
+            </h3>
+            <p className="text-gray-600 mb-2">
+              Lead AI Developer/Software Engineer
+            </p>
+            <p className="text-sm text-gray-500">
+              AI systems architect with 4+ years in intelligent automation,
+              specializing in natural language processing, LLM integration,
+              and AI-driven solutions.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <div className="text-center group animate-slide-in">
-              <div className="about-team-avatar about-team-avatar-1">OA</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Omer Aqeel
-              </h3>
-              <p className="text-gray-600 mb-2">
-                Lead AI Developer/Software Engineer
-              </p>
-              <p className="text-sm text-gray-500">
-                AI systems architect with 4+ years in intelligent automation,
-                specializing in natural language processing, LLM integration,
-                and AI-driven solutions.
-              </p>
+          <div className="text-center about-team-card animate-slide-in about-team-card-1">
+            <div className="about-team-avatar about-team-avatar-2">
+              <img 
+            src="dist/assets/team/SAADI.jpg" 
+            alt="Mohammad Saad Husnain"
+            className="w-full h-full object-cover rounded-full"
+            onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='flex';}}
+              />
+              <div className="w-full h-full bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-2xl font-bold" style={{display: 'none'}}>
+            SH
+              </div>
             </div>
-
-            <div className="text-center about-team-card animate-slide-in about-team-card-1">
-              <div className="about-team-avatar about-team-avatar-2">SH</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Mohammad Saad Husnain
-              </h3>
-              <p className="text-gray-600 mb-2">AI UX Designer/Researcher</p>
-              <p className="text-sm text-gray-500">
-                Designing intuitive interfaces for intelligent systems/AI
-                applications and Researching AI Implementation Strategies
-              </p>
-            </div>
-
-            <div className="text-center about-team-card animate-slide-in about-team-card-2">
-              <div className="about-team-avatar about-team-avatar-3">SR</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Saad ur Rehman
-              </h3>
-              <p className="text-gray-600 mb-2">
-                Full Stack Developer/Project Manager
-              </p>
-              <p className="text-sm text-gray-500">
-                Keeping AI infrastructure cool and optimally performing,
-                developing communication protocols, ensuring seamless
-                integration of AI solutions and Database management.
-              </p>
-            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Mohammad Saad Husnain
+            </h3>
+            <p className="text-gray-600 mb-2">AI UX Designer/Researcher</p>
+            <p className="text-sm text-gray-500">
+              Designing intuitive interfaces for intelligent systems/AI
+              applications and Researching AI Implementation Strategies
+            </p>
           </div>
 
-          <div className="text-center">
-            <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-              We are a team of passionate professionals committed to delivering
-              the best solutions for our clients. With expertise in various
-              technologies and industries, we bring diverse perspectives to
-              every project.
+          <div className="text-center about-team-card animate-slide-in about-team-card-2">
+            <div className="about-team-avatar about-team-avatar-3">
+              <img 
+            src="/assets/team/Pasha.jpg" 
+            alt="Saad ur Rehman"
+            className="w-full h-full object-cover rounded-full"
+            onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='flex';}}
+              />
+              <div className="w-full h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold" style={{display: 'none'}}>
+            SR
+              </div>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Saad ur Rehman
+            </h3>
+            <p className="text-gray-600 mb-2">
+              Full Stack Developer/Project Manager
             </p>
-            
-            {/* Removing the button for now */}
-            {/* <Button size="lg" className="animate-slide-in about-team-card-3">
-              Join Our Team
-            </Button> */}
+            <p className="text-sm text-gray-500">
+              Keeping AI infrastructure cool and optimally performing,
+              developing communication protocols, ensuring seamless
+              integration of AI solutions and Database management.
+            </p>
+          </div>
+            </div>
+
+            <div className="text-center">
+          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+            We are a team of passionate professionals committed to delivering
+            the best solutions for our clients. With expertise in various
+            technologies and industries, we bring diverse perspectives to
+            every project.
+          </p>
           </div>
         </div>
       </section>
