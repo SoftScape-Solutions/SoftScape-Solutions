@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import Layout from "../../components/common/Layout";
 import { HERO_CONFIG, SERVICES_CONFIG, ICON_URLS } from "../../config";
 import "./LandingPage.css";
-import "../animations.css";
 
 const LandingPage = () => {
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
