@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Central Color Theme Configuration
  * Defines the consistent color scheme used across the entire application
