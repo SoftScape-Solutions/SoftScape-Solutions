@@ -242,7 +242,7 @@ const AIVision = () => {
                     </Button>
                   </Link>
                   <Link to="/join-team">
-                    <Button size="lg" variant="outline" className="w-full text-white border-white hover:bg-white hover:text-blue-600">
+                    <Button size="lg" variant="secondary" className="w-full btn-primary-enhanced text-black ">
                       Join Our Team
                     </Button>
                   </Link>
