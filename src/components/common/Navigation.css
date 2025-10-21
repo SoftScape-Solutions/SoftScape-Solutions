@@ -296,7 +296,7 @@
   font-weight: 600;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
-  color: #ced1d6;
+  color: var(--tw-color-gray-300);
 }
 
 .nav-dropdown-item-desc {
