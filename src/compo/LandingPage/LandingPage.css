@@ -818,8 +818,8 @@ html {
 .service-icon-indigo img,
 .service-icon-emerald img,
 .service-icon-green img {
-  width: 50rem;
-  height: 50rem;
+  width: 3rem;
+  height: 3rem;
   object-fit: contain;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
