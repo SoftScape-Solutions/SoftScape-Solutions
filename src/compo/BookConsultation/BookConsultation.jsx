@@ -75,10 +75,12 @@ const BookConsultation = () => {
         throw new Error('EmailJS configuration is incomplete');
       }
 
-      console.log('=== EMAILJS FORM SUBMISSION START ===');
-      console.log('Customer Email:', formData.email);
-      console.log('Customer Name:', formData.name);
-      console.log('Service ID:', serviceId);
+      if (import.meta.env.DEV) {
+        console.log('=== EMAILJS FORM SUBMISSION START ===');
+        console.log('Customer Email:', formData.email);
+        console.log('Customer Name:', formData.name);
+        console.log('Service ID:', serviceId);
+      }
 
       // Prepare template parameters for admin notification
       // THIS MUST GO TO ADMIN ONLY - softscapesolution@outlook.com
