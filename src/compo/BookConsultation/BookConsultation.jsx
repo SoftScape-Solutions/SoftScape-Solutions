@@ -72,12 +72,7 @@ const BookConsultation = () => {
 
       // Debug logging for environment variables
       if (!serviceId || !adminTemplateId || !customerTemplateId || !publicKey) {
-        const missingVars = [];
-        if (!serviceId) missingVars.push('Service ID');
-        if (!adminTemplateId) missingVars.push('Admin Template');
-        if (!customerTemplateId) missingVars.push('Customer Template');
-        if (!publicKey) missingVars.push('Public Key');
-        throw new Error(`EmailJS configuration missing. Missing values: ${missingVars.join(', ')}`);
+        throw new Error('EmailJS configuration is incomplete');
       }
 
       console.log('=== EMAILJS FORM SUBMISSION START ===');
