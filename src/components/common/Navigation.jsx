@@ -57,7 +57,6 @@ const Navigation = ({
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
-    }
     setOpenDropdown(dropdownKey);
   }, []);
 
