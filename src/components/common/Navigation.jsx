@@ -56,7 +56,7 @@ const Navigation = ({
   const handleMouseEnter = useCallback((dropdownKey) => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
+    }
     }
     setOpenDropdown(dropdownKey);
   }, []);
