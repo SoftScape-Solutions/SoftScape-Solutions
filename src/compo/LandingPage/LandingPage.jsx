@@ -7,23 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../../components/ui/hover-card";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../components/ui/avatar";
-import { Brain, Sparkles, Calendar, Users, Zap, BarChart } from "lucide-react";
-import { Link } from "react-router-dom";
+import FlipCard from "../../components/ui/flip-card";
+import { Brain, Sparkles, Users, Zap, BarChart, ArrowRight, Check, Monitor, Smartphone } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/common/Layout";
 import { HERO_CONFIG, SERVICES_CONFIG, ICON_URLS } from "../../config";
 import "./LandingPage.css";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
@@ -152,102 +144,49 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-              {services.map((service, index) => (
-                <HoverCard key={index}>
-                  <HoverCardTrigger asChild>
-                    <Link to={service.link} className="block">
-                      <Card
-                        className={`service-card-container card-enhanced hover-lift animate-slide-in ${
-                          index === 1
-                            ? "animate-delay-100"
-                            : index === 2
-                            ? "animate-delay-200"
-                            : index === 3
-                            ? "animate-delay-300"
-                            : ""
-                        } will-change-transform cursor-pointer relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}
-                      >
-                        {/* Main Card Content */}
-                        <CardHeader className="text-center p-6">
-                          <div className={`service-icon-${service.color} icon-bounce mb-4 mx-auto w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-600`}>
-                            <img 
-                              src={service.iconUrl} 
-                              alt={`${service.title} icon`}
-                              className="h-8 w-8 text-white"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'block';
-                              }}
-                            />
-                            {/* Fallback text icon */}
-                            <span 
-                              className="text-white font-bold text-2xl"
-                              style={{ display: 'none' }}
-                            >
-                              {service.icon.charAt(0)}
-                            </span>
-                          </div>
-                          <CardTitle className="text-lg sm:text-xl md:text-2xl text-gray-800 mb-3">
-                            {service.title}
-                          </CardTitle>
-                          <CardDescription className="text-sm sm:text-base md:text-lg text-gray-600">
-                            {service.description}
-                          </CardDescription>
-                        </CardHeader>
-                      </Card>
-                    </Link>
-                  </HoverCardTrigger>
-                  
-                  <HoverCardContent className="w-80 p-4" sideOffset={5}>
-                    <div className="flex justify-between gap-4">
-                      <Avatar className="h-12 w-12">
-                        <AvatarImage 
-                          src={service.iconUrl} 
-                          alt={service.title}
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 p-2"
-                        />
-                        <AvatarFallback className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold">
-                          {service.title.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-2 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h4 className="text-sm font-semibold text-gray-900">{service.title}</h4>
-                          <div className="flex items-center gap-1">
-                            {index === 0 && <Brain className="h-3 w-3 text-blue-600" />}
-                            {index === 1 && <Zap className="h-3 w-3 text-purple-600" />}
-                            {index === 2 && <BarChart className="h-3 w-3 text-green-600" />}
-                            {index === 3 && <Users className="h-3 w-3 text-orange-600" />}
-                          </div>
-                        </div>
-                        <p className="text-sm text-gray-700 leading-relaxed">
-                          {service.preview?.overview || service.description}
-                        </p>
-                        {service.preview?.products && (
-                          <div className="mt-3">
-                            <h5 className="text-xs font-medium text-gray-900 mb-1">Key Features:</h5>
-                            <ul className="text-xs text-gray-600 space-y-1">
-                              {service.preview.products.slice(0, 3).map((product, idx) => (
-                                <li key={idx} className="flex items-center gap-2">
-                                  <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-                                  {product}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        <div className="flex items-center pt-2">
-                          <Calendar className="mr-2 h-3 w-3 text-gray-400" />
-                          <span className="text-xs text-gray-500">
-                            Available now • Click to learn more
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              ))}
+            <div className="flex flex-wrap items-start justify-center gap-6">
+              {services.map((service, index) => {
+                const serviceColors = [
+                  { bg: "bg-blue-600", text: "text-blue-600" }, // AI Chatbots
+                  { bg: "bg-purple-600", text: "text-purple-600" }, // Smart Automation 
+                  { bg: "bg-green-600", text: "text-green-600" }, // AI Applications
+                  { bg: "bg-orange-600", text: "text-orange-600" }, // Custom AI
+                  { bg: "bg-emerald-600", text: "text-emerald-600" }, // Web App Development
+                  { bg: "bg-cyan-600", text: "text-cyan-600" } // App Development
+                ];
+                
+                const serviceIcons = [
+                  <Brain />, // AI Chatbots
+                  <Zap />, // Smart Automation
+                  <BarChart />, // AI Applications 
+                  <Users />, // Custom AI
+                  <Monitor />, // Web App Development
+                  <Smartphone /> // App Development
+                ];
+                
+                return (
+                  <FlipCard
+                    key={index}
+                    className={`animate-slide-in ${
+                      index === 1
+                        ? "animate-delay-100"
+                        : index === 2
+                        ? "animate-delay-200"
+                        : index === 3
+                        ? "animate-delay-300"
+                        : ""
+                    }`}
+                    onClick={() => navigate(service.link)}
+                    bgColor={serviceColors[index]?.bg}
+                    textColor={serviceColors[index]?.text}
+                    icon={serviceIcons[index]}
+                    title={service.title}
+                    description={service.description}
+                    price="Learn More"
+                    category="AI Solutions"
+                  />
+                );
+              })}
             </div>
           </div>
         </section>

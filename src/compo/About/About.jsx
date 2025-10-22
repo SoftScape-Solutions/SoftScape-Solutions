@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
+import FlipCard from "../../components/ui/flip-card";
 import {
   Code,
   Users,
@@ -97,60 +98,50 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="group hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
-                  <Brain className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">AI Innovation</CardTitle>
-                <CardDescription className="text-base">
-                  Pioneering the future with breakthrough artificial
-                  intelligence and smart automation
-                </CardDescription>
-              </CardHeader>
-            </Card>
+          <div className="flex flex-wrap items-start justify-center gap-6">
+            <FlipCard
+              className="animate-slide-in"
+              bgColor="bg-blue-600"
+              textColor="text-blue-600"
+              icon={<Brain />}
+              title="AI Innovation"
+              description="Pioneering breakthrough artificial intelligence and smart automation"
+              price="Core Value"
+              category="Technology"
+            />
 
-            <Card className="about-values-card animate-slide-in about-values-card-1">
-              <CardHeader className="text-center">
-                <div className="about-values-icon-green">
-                  <Bot className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">Smart Excellence</CardTitle>
-                <CardDescription className="text-base">
-                  Delivering intelligent solutions with unmatched quality and
-                  precision
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in animate-delay-100"
+              bgColor="bg-green-600"
+              textColor="text-green-600"
+              icon={<Bot />}
+              title="Smart Excellence"
+              description="Delivering intelligent solutions with unmatched quality and precision"
+              price="Excellence"
+              category="Quality"
+            />
 
-            <Card className="about-values-card animate-slide-in about-values-card-2">
-              <CardHeader className="text-center">
-                <div className="about-values-icon-purple">
-                  <Shield className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">AI Ethics</CardTitle>
-                <CardDescription className="text-base">
-                  Building trustworthy AI systems with transparency and
-                  responsible innovation
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in animate-delay-200"
+              bgColor="bg-purple-600"
+              textColor="text-purple-600"
+              icon={<Shield />}
+              title="AI Ethics"
+              description="Building trustworthy AI systems with transparency and innovation"
+              price="Trust"
+              category="Ethics"
+            />
 
-            <Card className="about-values-card animate-slide-in about-values-card-3">
-              <CardHeader className="text-center">
-                <div className="about-values-icon-orange">
-                  <Workflow className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">
-                  Intelligent Collaboration
-                </CardTitle>
-                <CardDescription className="text-base">
-                  Partnering with AI agents and human expertise for
-                  extraordinary results
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in animate-delay-300"
+              bgColor="bg-orange-600"
+              textColor="text-orange-600"
+              icon={<Workflow />}
+              title="Smart Collaboration"
+              description="Partnering AI agents with human expertise for extraordinary results"
+              price="Partnership"
+              category="Teamwork"
+            />
           </div>
         </div>
       </section>

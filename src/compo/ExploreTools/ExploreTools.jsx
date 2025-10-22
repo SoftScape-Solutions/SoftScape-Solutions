@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/common/Layout';
 import { ROUTES } from '../../constants/routes';
+import FlipCard from '../../components/ui/flip-card';
 import { 
   Sparkles, 
   Bot, 
@@ -243,48 +244,36 @@ const ExploreTools = () => {
               </div>
             ) : (
               // Show tools for other categories
-              <div className="tools-grid">
+              <div className="flex flex-wrap items-start justify-center gap-6">
                 {filteredTools.map((tool, index) => {
                   const ToolIcon = tool.icon;
+                  const toolColors = [
+                    { bg: "bg-blue-600", text: "text-blue-600" },
+                    { bg: "bg-purple-600", text: "text-purple-600" },
+                    { bg: "bg-green-600", text: "text-green-600" },
+                    { bg: "bg-orange-600", text: "text-orange-600" },
+                    { bg: "bg-teal-600", text: "text-teal-600" },
+                    { bg: "bg-red-600", text: "text-red-600" },
+                    { bg: "bg-indigo-600", text: "text-indigo-600" },
+                    { bg: "bg-pink-600", text: "text-pink-600" }
+                  ];
+                  
+                  const colorIndex = index % toolColors.length;
+                  
                   return (
-                    <div
+                    <FlipCard
                       key={tool.id}
-                      className={`tool-card ${tool.popular ? 'popular' : ''}`}
+                      className={`${tool.popular ? 'ring-4 ring-yellow-400 ring-opacity-50' : ''}`}
                       style={{ animationDelay: `${index * 0.1}s` }}
-                    >
-                      {tool.popular && (
-                        <div className="popular-badge">
-                          <Sparkles className="w-4 h-4" />
-                          <span>Popular</span>
-                        </div>
-                      )}
-                      
-                      <div className={`tool-icon bg-gradient-to-br ${tool.gradient}`}>
-                        <ToolIcon className="w-10 h-10 text-white" />
-                      </div>
-
-                      <h3 className="tool-title">{tool.title}</h3>
-                      <p className="tool-description">{tool.description}</p>
-
-                      <div className="tool-features">
-                        {tool.features.map((feature, idx) => (
-                          <div key={idx} className="feature-item">
-                            <span className="feature-check">✓</span>
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="tool-footer">
-                        <div className="tool-price">{tool.price}</div>
-                        <button
-                          onClick={() => handleToolClick(tool)}
-                          className="tool-btn"
-                        >
-                          Learn More →
-                        </button>
-                      </div>
-                    </div>
+                      onClick={() => handleToolClick(tool)}
+                      bgColor={toolColors[colorIndex].bg}
+                      textColor={toolColors[colorIndex].text}
+                      icon={<ToolIcon />}
+                      title={tool.title}
+                      description={tool.description}
+                      price={tool.price}
+                      category={tool.popular ? "⭐ Popular" : "AI Tool"}
+                    />
                   );
                 })}
               </div>
