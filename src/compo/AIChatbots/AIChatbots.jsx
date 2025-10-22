@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
+import FlipCard from "../../components/ui/flip-card";
 import {
   Bot,
   Brain,
@@ -21,6 +22,8 @@ import {
   Sparkles,
   CheckCircle2,
   Star,
+  Check,
+  ArrowRight,
 } from "lucide-react";
 import Layout from "../../components/common/Layout";
 import { SERVICES_CONFIG, COMPANY_INFO } from "../../config";
@@ -103,83 +106,281 @@ const AIChatbots = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="card-enhanced hover-lift animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                  <Clock className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">24/7 Availability</CardTitle>
-                <CardDescription className="text-base">
-                  Never miss a customer inquiry. Our AI agents work round the
-                  clock to engage with your customers instantly
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in"
+              frontContent={
+                <Card className="w-full h-full bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader className="text-center p-6 h-full flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                      <Clock className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-gray-800 mb-3">24/7 Availability</CardTitle>
+                    <CardDescription className="text-base text-gray-600">
+                      Never miss a customer inquiry. Our AI agents work round the clock to engage with your customers instantly
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              }
+              backContent={
+                <Card className="w-full h-full bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-0 shadow-xl">
+                  <CardHeader className="p-6 h-full flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Clock className="h-6 w-6" />
+                      <CardTitle className="text-lg">Always Available</CardTitle>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-blue-100 mb-4 leading-relaxed text-sm">
+                        Provide instant customer support and engagement around the clock with intelligent AI agents that never sleep.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex items-center gap-2 text-blue-100 text-sm">
+                          <Check className="h-4 w-4 text-green-300 flex-shrink-0" />
+                          Instant Response Times
+                        </li>
+                        <li className="flex items-center gap-2 text-blue-100 text-sm">
+                          <Check className="h-4 w-4 text-green-300 flex-shrink-0" />
+                          No Downtime or Breaks
+                        </li>
+                        <li className="flex items-center gap-2 text-blue-100 text-sm">
+                          <Check className="h-4 w-4 text-green-300 flex-shrink-0" />
+                          Global Time Zone Support
+                        </li>
+                      </ul>
+                    </div>
+                  </CardHeader>
+                </Card>
+              }
+            />
 
-            <Card className="card-enhanced hover-lift animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                  <Brain className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">Smart Learning</CardTitle>
-                <CardDescription className="text-base">
-                  Advanced NLP and machine learning ensure your chatbot gets
-                  smarter with every interaction
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in"
+              frontContent={
+                <Card className="w-full h-full bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader className="text-center p-6 h-full flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                      <Brain className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-gray-800 mb-3">Smart Learning</CardTitle>
+                    <CardDescription className="text-base text-gray-600">
+                      Advanced NLP and machine learning ensure your chatbot gets smarter with every interaction
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              }
+              backContent={
+                <Card className="w-full h-full bg-gradient-to-br from-purple-600 to-pink-600 text-white border-0 shadow-xl">
+                  <CardHeader className="p-6 h-full flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Brain className="h-6 w-6" />
+                      <CardTitle className="text-lg">AI Intelligence</CardTitle>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-purple-100 mb-4 leading-relaxed text-sm">
+                        Powered by advanced natural language processing and machine learning algorithms that continuously improve performance.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex items-center gap-2 text-purple-100 text-sm">
+                          <Check className="h-4 w-4 text-pink-300 flex-shrink-0" />
+                          Natural Language Processing
+                        </li>
+                        <li className="flex items-center gap-2 text-purple-100 text-sm">
+                          <Check className="h-4 w-4 text-pink-300 flex-shrink-0" />
+                          Continuous Learning
+                        </li>
+                        <li className="flex items-center gap-2 text-purple-100 text-sm">
+                          <Check className="h-4 w-4 text-pink-300 flex-shrink-0" />
+                          Context Understanding
+                        </li>
+                      </ul>
+                    </div>
+                  </CardHeader>
+                </Card>
+              }
+            />
 
-            <Card className="card-enhanced hover-lift animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                  <TrendingUp className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">Boost Conversions</CardTitle>
-                <CardDescription className="text-base">
-                  Increase sales by 40% with personalized recommendations and
-                  instant support
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in"
+              frontContent={
+                <Card className="w-full h-full bg-gradient-to-br from-green-50 via-emerald-50 to-green-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader className="text-center p-6 h-full flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                      <TrendingUp className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-gray-800 mb-3">Boost Conversions</CardTitle>
+                    <CardDescription className="text-base text-gray-600">
+                      Increase sales by 40% with personalized recommendations and instant support
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              }
+              backContent={
+                <Card className="w-full h-full bg-gradient-to-br from-green-600 to-emerald-600 text-white border-0 shadow-xl">
+                  <CardHeader className="p-6 h-full flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                      <TrendingUp className="h-6 w-6" />
+                      <CardTitle className="text-lg">Sales Growth</CardTitle>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-green-100 mb-4 leading-relaxed text-sm">
+                        Transform visitors into customers with intelligent recommendations and proactive engagement strategies.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex items-center gap-2 text-green-100 text-sm">
+                          <Check className="h-4 w-4 text-green-300 flex-shrink-0" />
+                          40% Conversion Increase
+                        </li>
+                        <li className="flex items-center gap-2 text-green-100 text-sm">
+                          <Check className="h-4 w-4 text-green-300 flex-shrink-0" />
+                          Personalized Recommendations
+                        </li>
+                        <li className="flex items-center gap-2 text-green-100 text-sm">
+                          <Check className="h-4 w-4 text-green-300 flex-shrink-0" />
+                          Proactive Engagement
+                        </li>
+                      </ul>
+                    </div>
+                  </CardHeader>
+                </Card>
+              }
+            />
 
-            <Card className="card-enhanced hover-lift animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                  <Shield className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">Secure & Compliant</CardTitle>
-                <CardDescription className="text-base">
-                  Enterprise-grade security with GDPR compliance and data
-                  encryption
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in"
+              frontContent={
+                <Card className="w-full h-full bg-gradient-to-br from-orange-50 via-red-50 to-orange-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader className="text-center p-6 h-full flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                      <Shield className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-gray-800 mb-3">Secure & Compliant</CardTitle>
+                    <CardDescription className="text-base text-gray-600">
+                      Enterprise-grade security with GDPR compliance and data encryption
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              }
+              backContent={
+                <Card className="w-full h-full bg-gradient-to-br from-orange-600 to-red-600 text-white border-0 shadow-xl">
+                  <CardHeader className="p-6 h-full flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Shield className="h-6 w-6" />
+                      <CardTitle className="text-lg">Enterprise Security</CardTitle>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-orange-100 mb-4 leading-relaxed text-sm">
+                        Built with enterprise-grade security standards and compliance frameworks to protect sensitive data.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex items-center gap-2 text-orange-100 text-sm">
+                          <Check className="h-4 w-4 text-yellow-300 flex-shrink-0" />
+                          GDPR Compliance
+                        </li>
+                        <li className="flex items-center gap-2 text-orange-100 text-sm">
+                          <Check className="h-4 w-4 text-yellow-300 flex-shrink-0" />
+                          End-to-End Encryption
+                        </li>
+                        <li className="flex items-center gap-2 text-orange-100 text-sm">
+                          <Check className="h-4 w-4 text-yellow-300 flex-shrink-0" />
+                          SOC 2 Certified
+                        </li>
+                      </ul>
+                    </div>
+                  </CardHeader>
+                </Card>
+              }
+            />
 
-            <Card className="card-enhanced hover-lift animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                  <Users className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">Multi-Channel</CardTitle>
-                <CardDescription className="text-base">
-                  Deploy across website, mobile app, WhatsApp, Facebook
-                  Messenger, and more
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in"
+              frontContent={
+                <Card className="w-full h-full bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader className="text-center p-6 h-full flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                      <Users className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-gray-800 mb-3">Multi-Channel</CardTitle>
+                    <CardDescription className="text-base text-gray-600">
+                      Deploy across website, mobile app, WhatsApp, Facebook Messenger, and more
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              }
+              backContent={
+                <Card className="w-full h-full bg-gradient-to-br from-indigo-600 to-blue-600 text-white border-0 shadow-xl">
+                  <CardHeader className="p-6 h-full flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Users className="h-6 w-6" />
+                      <CardTitle className="text-lg">Omnichannel Support</CardTitle>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-indigo-100 mb-4 leading-relaxed text-sm">
+                        Reach customers wherever they are with seamless deployment across all major communication platforms.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex items-center gap-2 text-indigo-100 text-sm">
+                          <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                          Website & Mobile Apps
+                        </li>
+                        <li className="flex items-center gap-2 text-indigo-100 text-sm">
+                          <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                          WhatsApp & Messenger
+                        </li>
+                        <li className="flex items-center gap-2 text-indigo-100 text-sm">
+                          <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                          Slack & Teams Integration
+                        </li>
+                      </ul>
+                    </div>
+                  </CardHeader>
+                </Card>
+              }
+            />
 
-            <Card className="card-enhanced hover-lift animate-slide-in">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-                  <Zap className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl">Easy Integration</CardTitle>
-                <CardDescription className="text-base">
-                  Seamlessly integrate with your existing CRM, helpdesk, and
-                  business tools
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <FlipCard
+              className="animate-slide-in"
+              frontContent={
+                <Card className="w-full h-full bg-gradient-to-br from-pink-50 via-purple-50 to-pink-50 border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader className="text-center p-6 h-full flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                      <Zap className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-gray-800 mb-3">Easy Integration</CardTitle>
+                    <CardDescription className="text-base text-gray-600">
+                      Seamlessly integrate with your existing CRM, helpdesk, and business tools
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              }
+              backContent={
+                <Card className="w-full h-full bg-gradient-to-br from-pink-600 to-purple-600 text-white border-0 shadow-xl">
+                  <CardHeader className="p-6 h-full flex flex-col">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Zap className="h-6 w-6" />
+                      <CardTitle className="text-lg">Quick Setup</CardTitle>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-pink-100 mb-4 leading-relaxed text-sm">
+                        Get up and running quickly with pre-built integrations and simple setup workflows.
+                      </p>
+                      <ul className="space-y-2">
+                        <li className="flex items-center gap-2 text-pink-100 text-sm">
+                          <Check className="h-4 w-4 text-pink-300 flex-shrink-0" />
+                          CRM & Helpdesk Integration
+                        </li>
+                        <li className="flex items-center gap-2 text-pink-100 text-sm">
+                          <Check className="h-4 w-4 text-pink-300 flex-shrink-0" />
+                          API & Webhook Support
+                        </li>
+                        <li className="flex items-center gap-2 text-pink-100 text-sm">
+                          <Check className="h-4 w-4 text-pink-300 flex-shrink-0" />
+                          One-Click Deployment
+                        </li>
+                      </ul>
+                    </div>
+                  </CardHeader>
+                </Card>
+              }
+            />
           </div>
         </div>
       </section>

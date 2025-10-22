@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+'use strict';
+
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
+import { debounce, throttle, createLazyObserver } from '../utils/helpers';
 
 // Custom hook for mobile menu state management
 export const useMobileMenu = () => {
@@ -15,13 +18,13 @@ export const useMobileMenu = () => {
 
     // Close mobile menu when screen size changes to desktop
     useEffect(() => {
-        const handleResize = () => {
+        const handleResize = debounce(() => {
             if (window.innerWidth >= 768) {
                 setIsMobileMenuOpen(false);
             }
-        };
+        }, 250);
 
-        window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize, { passive: true });
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
@@ -38,20 +41,24 @@ export const useScrollBehavior = () => {
     const [isScrolling, setIsScrolling] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
+        let timeoutId;
+        
+        const handleScroll = throttle(() => {
             setScrollY(window.scrollY);
             setIsScrolling(true);
 
-            // Debounce scrolling state
-            const timeoutId = setTimeout(() => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
                 setIsScrolling(false);
             }, 150);
-
-            return () => clearTimeout(timeoutId);
-        };
+        }, 100);
 
         window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timeoutId);
+        };
     }, []);
 
     return { scrollY, isScrolling };
@@ -65,19 +72,23 @@ export const useScrollAnimation = () => {
             rootMargin: '0px 0px -50px 0px'
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
+        const observer = createLazyObserver((target) => {
+            target.classList.add('visible');
         }, observerOptions);
 
         const elements = document.querySelectorAll('.scroll-fade-in');
-        elements.forEach(el => observer.observe(el));
+        let i = 0;
+        const len = elements.length;
+        
+        for (; i < len; i++) {
+            observer.observe(elements[i]);
+        }
 
         return () => {
-            elements.forEach(el => observer.unobserve(el));
+            for (i = 0; i < len; i++) {
+                observer.unobserve(elements[i]);
+            }
+            observer.disconnect();
         };
     }, []);
 };
