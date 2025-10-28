@@ -1,0 +1,6 @@
+# Redirect rules for SoftScape Solutions
+# Handle client-side routing (SPA)
+/*    /index.html   200
+
+# Redirect old paths (if any)
+# /old-path  /new-path  301

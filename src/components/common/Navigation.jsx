@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+'use strict';
+
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { NAVIGATION_LINKS, PAGE_NAVIGATION } from "../../constants/routes";
+import { NAVIGATION_LINKS, PAGE_NAVIGATION, ROUTES } from "../../constants/routes";
 import { cn } from "../../utils/helpers";
 import "./Navigation.css";
 
@@ -17,53 +19,52 @@ const Navigation = ({
   const dropdownRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
 
-  // Get navigation links based on current page
-  const getNavigationLinks = () => {
+  // Get navigation links based on current page (memoized)
+  const navigationConfig = useMemo(() => {
     return PAGE_NAVIGATION[currentPath] || NAVIGATION_LINKS;
-  };
-
-  const navigationConfig = getNavigationLinks();
+  }, [currentPath]);
+  
   const desktopLinks = navigationConfig?.desktop || [];
   const mobileLinks = navigationConfig?.mobile || [];
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Don't close if clicking on mobile dropdown items or triggers
-      if (event.target.closest('.mobile-dropdown-item') || 
-          event.target.closest('.mobile-dropdown-trigger')) {
-        return;
-      }
-      
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-      }
-    };
+  // Close dropdown when clicking outside (optimized with useCallback)
+  const handleClickOutside = useCallback((event) => {
+    // Don't close if clicking on mobile dropdown items or triggers
+    if (event.target.closest('.mobile-dropdown-item') || 
+        event.target.closest('.mobile-dropdown-trigger')) {
+      return;
+    }
+    
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setOpenDropdown(null);
+    }
+  }, []);
 
-    document.addEventListener('mousedown', handleClickOutside);
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside, { passive: true });
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
   // Close dropdown when route changes
   useEffect(() => {
     setOpenDropdown(null);
   }, [currentPath]);
 
-  // Helper functions for hover handling with delay
-  const handleMouseEnter = (dropdownKey) => {
+  // Helper functions for hover handling with delay (memoized)
+  const handleMouseEnter = useCallback((dropdownKey) => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     setOpenDropdown(dropdownKey);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     hoverTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
     }, 150); // 150ms delay before closing
-  };
+  }, []);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -206,7 +207,7 @@ const Navigation = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center animate-slide-in-left">
+          <Link to={ROUTES.HOME} className="flex items-center animate-slide-in-left">
             <img
               src="/softscape-logo.png"
               alt="SoftScape Solutions Logo"

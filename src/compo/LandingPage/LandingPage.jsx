@@ -7,28 +7,18 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Brain, Sparkles, Bot, Cpu, Workflow } from "lucide-react";
-import { Link } from "react-router-dom";
+import FlipCard from "../../components/ui/flip-card";
+import { Brain, Sparkles, Users, Zap, BarChart, ArrowRight, Check, Monitor, Smartphone } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/common/Layout";
-import { HERO_CONFIG, SERVICES_CONFIG } from "../../config";
+import { HERO_CONFIG, SERVICES_CONFIG, ICON_URLS } from "../../config";
 import "./LandingPage.css";
-import "../animations.css";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [isScrollingFromHero, setIsScrollingFromHero] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [hoveredService, setHoveredService] = useState(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
-
-  const handleServiceHover = (service, event) => {
-    setHoveredService(service);
-    setTooltipPosition({ x: event.clientX, y: event.clientY });
-  };
-
-  const handleServiceLeave = () => {
-    setHoveredService(null);
-  };
 
   useEffect(() => {
     let scrollTimeout;
@@ -37,7 +27,6 @@ const LandingPage = () => {
       const scrollPosition = window.scrollY;
       const heroHeight = window.innerHeight;
 
-      // Hide scroll indicator when user starts scrolling
       if (scrollPosition > 10 && showScrollIndicator) {
         setShowScrollIndicator(false);
       }
@@ -90,13 +79,10 @@ const LandingPage = () => {
     };
   }, [isScrollingFromHero, lastScrollY, showScrollIndicator]);
 
-  // Get services from config and add icon components
+  // Get services from config and add icon URLs
   const services = SERVICES_CONFIG.aiServices.map(service => ({
     ...service,
-    icon: service.icon === 'Bot' ? Bot : 
-          service.icon === 'Workflow' ? Workflow :
-          service.icon === 'Cpu' ? Cpu :
-          service.icon === 'Brain' ? Brain : Bot,
+    iconUrl: ICON_URLS[service.icon] || ICON_URLS.Bot,
     preview: {
       products: service.features.slice(0, 3),
       overview: service.detailedDescription
@@ -136,18 +122,6 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Scroll Indicator - Centered */}
-        <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
-          <div className="scroll-indicator-container flex flex-col items-center">
-            <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-gray-500 rounded-full flex items-center justify-center relative overflow-hidden">
-              <div className="scroll-indicator-dot w-1 h-2 sm:h-3 bg-gray-600 rounded-full"></div>
-            </div>
-            <p className="text-xs sm:text-sm md:text-base text-gray-500 mt-2 sm:mt-3 text-center whitespace-nowrap">
-              Scroll to explore
-            </p>
-          </div>
-        </div>
       </section>
 
       {/* Content Sections Wrapper */}
@@ -170,11 +144,30 @@ const LandingPage = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-              {services.map((service, index) => (
-                <Link key={index} to={service.link} className="block">
-                  <Card
-                    className={`service-card-container card-enhanced hover-lift animate-slide-in ${
+            <div className="flex flex-wrap items-start justify-center gap-6">
+              {services.map((service, index) => {
+                const serviceColors = [
+                  { bg: "bg-blue-600", text: "text-blue-600" }, // AI Chatbots
+                  { bg: "bg-purple-600", text: "text-purple-600" }, // Smart Automation 
+                  { bg: "bg-green-600", text: "text-green-600" }, // AI Applications
+                  { bg: "bg-orange-600", text: "text-orange-600" }, // Custom AI
+                  { bg: "bg-emerald-600", text: "text-emerald-600" }, // Web App Development
+                  { bg: "bg-cyan-600", text: "text-cyan-600" } // App Development
+                ];
+                
+                const serviceIcons = [
+                  <Brain />, // AI Chatbots
+                  <Zap />, // Smart Automation
+                  <BarChart />, // AI Applications 
+                  <Users />, // Custom AI
+                  <Monitor />, // Web App Development
+                  <Smartphone /> // App Development
+                ];
+                
+                return (
+                  <FlipCard
+                    key={index}
+                    className={`animate-slide-in ${
                       index === 1
                         ? "animate-delay-100"
                         : index === 2
@@ -182,61 +175,18 @@ const LandingPage = () => {
                         : index === 3
                         ? "animate-delay-300"
                         : ""
-                    } will-change-transform cursor-pointer relative overflow-hidden`}
-                    onMouseEnter={(e) => handleServiceHover(service, e)}
-                    onMouseLeave={handleServiceLeave}
-                  >
-                    {/* Main Card Content */}
-                    <div className="main-card-content">
-                      <CardHeader className="text-center">
-                        <div
-                          className={`service-icon-${service.color} icon-bounce`}
-                        >
-                          <service.icon className="h-8 w-8 text-white" />
-                        </div>
-                        <CardTitle className="text-lg sm:text-xl md:text-2xl">
-                          {service.title}
-                        </CardTitle>
-                        <CardDescription className="text-sm sm:text-base md:text-lg">
-                          {service.description}
-                        </CardDescription>
-                      </CardHeader>
-                    </div>
-
-                    {/* Sliding Preview Panel */}
-                    <div className="preview-panel">
-                      <div className="preview-content">
-                        <div className="preview-header">
-                          <div className="preview-header-content">
-                            <div
-                              className={`service-icon-${service.color} icon-small`}
-                            >
-                              <service.icon className="h-6 w-6 text-white" />
-                            </div>
-                            <h4 className="preview-title">{service.title}</h4>
-                          </div>
-                        </div>
-                        <div className="preview-body">
-                          <p className="preview-overview">
-                            {service.preview?.overview}
-                          </p>
-                          <div className="preview-products">
-                            <h5 className="products-title">Our Products:</h5>
-                            <ul className="products-list">
-                              {service.preview?.products.map((product, idx) => (
-                                <li key={idx} className="product-item">
-                                  <span className="product-bullet"></span>
-                                  {product}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
+                    }`}
+                    onClick={() => navigate(service.link)}
+                    bgColor={serviceColors[index]?.bg}
+                    textColor={serviceColors[index]?.text}
+                    icon={serviceIcons[index]}
+                    title={service.title}
+                    description={service.description}
+                    price="Learn More"
+                    category="AI Solutions"
+                  />
+                );
+              })}
             </div>
           </div>
         </section>

@@ -1,239 +1,313 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "../../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../components/ui/card";
-import {
-  Brain,
-  Bot,
-  Workflow,
-  Sparkles,
-  Cpu,
-  ArrowRight,
-  CheckCircle2,
-  Zap,
-  MessageCircle,
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../../components/common/Layout';
+import { ROUTES } from '../../constants/routes';
+import FlipCard from '../../components/ui/flip-card';
+import { 
+  Sparkles, 
+  Bot, 
+  Zap, 
+  Cpu, 
+  Brain, 
+  Globe, 
+  Eye, 
   Smartphone,
-} from "lucide-react";
-import Layout from "../../components/common/Layout";
-import "../LandingPage/LandingPage.css";
-import "./ExploreTools.css";
+  MessageSquare,
+  Workflow,
+  Layers,
+  Code,
+  Monitor,
+  GraduationCap
+} from 'lucide-react';
+import './ExploreTools.css';
 
 const ExploreTools = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const categories = [
+    { id: 'all', label: 'All Tools', icon: Sparkles },
+    { id: 'chatbots', label: 'AI Chatbots', icon: Bot },
+    { id: 'automation', label: 'Automation', icon: Zap },
+    { id: 'applications', label: 'Applications', icon: Cpu },
+    { id: 'webapp', label: 'Web Development', icon: Globe },
+    { id: 'mobile', label: 'App Development', icon: Smartphone },
+    { id: 'custom', label: 'Custom Solutions', icon: Brain }
+  ];
 
   const tools = [
     {
-      id: 1,
-      title: "Intelligent Customer Support Bot",
-      category: "chatbots",
-      description:
-        "24/7 AI-powered customer support that handles inquiries, resolves issues, and learns from every interaction.",
+      id: 'ai-chatbots',
+      title: 'AI Chatbots & Agents',
+      description: 'Intelligent conversational AI that handles customer service, sales, and support 24/7',
+      category: 'chatbots',
       icon: Bot,
-      features: [
-        "Natural Language Processing",
-        "Multi-language Support",
-        "Self-Learning",
-      ],
-      link: "/ai-chatbots",
-      gradient: "from-blue-500 to-cyan-500",
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['24/7 Availability', 'Multi-language Support', 'Context Awareness', 'CRM Integration'],
+      price: 'From $299/month',
+      link: ROUTES.AI_CHATBOTS,
+      popular: true
     },
     {
-      id: 2,
-      title: "Sales Assistant AI",
-      category: "chatbots",
-      description:
-        "Conversational AI that qualifies leads, schedules meetings, and assists in the sales process.",
-      icon: MessageCircle,
-      features: ["Lead Qualification", "Meeting Scheduling", "CRM Integration"],
-      link: "/ai-chatbots",
-      gradient: "from-purple-500 to-pink-500",
-    },
-    {
-      id: 3,
-      title: "Document Processing Automation",
-      category: "automation",
-      description:
-        "Automatically extract, classify, and process documents with AI-powered OCR and data extraction.",
+      id: 'smart-automation',
+      title: 'Smart Automation Tools',
+      description: 'Automate repetitive tasks and workflows to boost productivity by up to 90%',
+      category: 'automation',
       icon: Workflow,
-      features: ["OCR Technology", "Data Extraction", "Auto-Classification"],
-      link: "/smart-automation",
-      gradient: "from-green-500 to-emerald-500",
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['Document Processing', 'Email Automation', 'Data Entry', '1000+ Integrations'],
+      price: 'From $199/month',
+      link: ROUTES.SMART_AUTOMATION,
+      popular: false
     },
     {
-      id: 4,
-      title: "Workflow Automation Engine",
-      category: "automation",
-      description:
-        "Connect your apps and automate repetitive tasks with intelligent workflow automation.",
-      icon: Zap,
-      features: ["1000+ Integrations", "Smart Triggers", "No-Code Builder"],
-      link: "/smart-automation",
-      gradient: "from-orange-500 to-red-500",
+      id: 'ai-applications',
+      title: 'AI-Enhanced Applications',
+      description: 'Custom mobile and web applications powered by artificial intelligence',
+      category: 'applications',
+      icon: Layers,
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['Predictive Analytics', 'Smart Recommendations', 'Real-time Insights', 'Cloud-based'],
+      price: 'From $999/project',
+      link: ROUTES.AI_APPLICATIONS,
+      popular: false
     },
     {
-      id: 6,
-      title: "Predictive Analytics Platform",
-      category: "applications",
-      description:
-        "Web-based analytics platform powered by machine learning for business intelligence.",
-      icon: Sparkles,
-      features: [
-        "Real-time Insights",
-        "Predictive Models",
-        "Custom Dashboards",
-      ],
-      link: "/ai-applications",
-      gradient: "from-pink-500 to-purple-500",
-    },
-    {
-      id: 8,
-      title: "Enterprise AI Integration",
-      category: "custom",
-      description:
-        "Seamlessly integrate AI capabilities into your existing enterprise systems and workflows.",
+      id: 'custom-ai',
+      title: 'Custom AI Solutions',
+      description: 'Tailored AI systems designed specifically for your unique business requirements',
+      category: 'custom',
       icon: Brain,
-      features: ["Legacy Integration", "Scalable", "Enterprise Security"],
-      link: "/custom-ai",
-      gradient: "from-purple-500 to-indigo-500",
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['Bespoke ML Models', 'Industry-Specific', 'Full Ownership', 'Expert Consultation'],
+      price: 'From $5,000/project',
+      link: ROUTES.CUSTOM_AI,
+      popular: false
     },
+    {
+      id: 'webapp-development',
+      title: 'Web App Development',
+      description: 'Modern, scalable web applications built with cutting-edge technologies',
+      category: 'webapp',
+      icon: Globe,
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['React/Next.js', 'Responsive Design', 'API Integration', 'Cloud Deployment'],
+      price: 'From $2,500/project',
+      link: ROUTES.WEBAPP_DEVELOPMENT,
+      popular: true
+    },
+    {
+      id: 'app-development',
+      title: 'Mobile App Development',
+      description: 'Native and cross-platform mobile applications for Android and iOS',
+      category: 'mobile',
+      icon: Smartphone,
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['Native iOS/Android', 'Cross-Platform', 'App Store Ready', 'Push Notifications'],
+      price: 'From $4,000/project',
+      link: ROUTES.APP_DEVELOPMENT,
+      popular: false
+    },
+    {
+      id: 'ai-vision',
+      title: 'AI Vision & Image Processing',
+      description: 'Computer vision solutions for image recognition, analysis, and processing',
+      category: 'applications',
+      icon: Eye,
+      gradient: 'from-blue-600 to-purple-600',
+      features: ['Object Detection', 'Face Recognition', 'Image Classification', 'OCR'],
+      price: 'Custom Pricing',
+      link: ROUTES.AI_VISION,
+      popular: false
+    }
   ];
 
-  const categories = [
-    { id: "all", name: "All Tools" },
-    { id: "chatbots", name: "AI Chatbots" },
-    { id: "automation", name: "Automation" },
-    { id: "applications", name: "Applications" },
-    { id: "custom", name: "Custom Solutions" },
+  const filteredTools = activeCategory === 'all' 
+    ? tools 
+    : tools.filter(tool => tool.category === activeCategory);
+
+  // Web Development Projects
+  const webAppProjects = [
+    {
+      id: 'ecommerce-platform',
+      title: 'E-Commerce Platform',
+      description: 'Full-featured online store with payment integration and inventory management',
+      techStack: 'React, Node.js, MongoDB',
+      icon: Monitor,
+      gradient: 'from-blue-600 to-purple-600'
+    },
+    {
+      id: 'project-management-tool',
+      title: 'Project Management Tool',
+      description: 'Collaborative workspace with real-time updates and team management',
+      techStack: 'Vue.js, Express, PostgreSQL',
+      icon: Layers,
+      gradient: 'from-blue-600 to-purple-600'
+    },
+    {
+      id: 'learning-management-system',
+      title: 'Learning Management System',
+      description: 'Educational platform with course management and progress tracking',
+      techStack: 'Angular, Django, MySQL',
+      icon: GraduationCap,
+      gradient: 'from-blue-600 to-purple-600'
+    }
   ];
 
-  const filteredTools =
-    selectedCategory === "all"
-      ? tools
-      : tools.filter((tool) => tool.category === selectedCategory);
+  const handleToolClick = (tool) => {
+    navigate(tool.link);
+  };
+
+  const handleConsultation = () => {
+    navigate(ROUTES.BOOK_CONSULTATION);
+  };
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center animate-fade-in">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-8 animate-bounce-in">
-              <Sparkles className="h-10 w-10 text-white" />
+      <div className="explore-tools">
+        {/* Hero Section */}
+        <section className="explore-hero">
+          <div className="container mx-auto px-4 text-center">
+            <div className="explore-hero-icon">
+              <Sparkles className="w-16 h-16 text-white" />
             </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Explore Our
-              <span className="gradient-text-ai block">AI Tools</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              Explore Our <span className="text-gradient">AI Tools</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Discover our comprehensive suite of AI-powered tools designed to
-              transform your business operations and drive innovation.
+            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto">
+              Discover our comprehensive suite of AI-powered tools designed to transform your business operations and drive innovation.
             </p>
           </div>
+        </section>
 
+        <div className="container mx-auto px-4">
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3 mt-12">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-full font-medium transition-all ${
-                  selectedCategory === category.id
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                    : "bg-white text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
+          <section className="category-filter">
+            <div className="category-buttons">
+              {categories.map((category) => {
+                const IconComponent = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setActiveCategory(category.id)}
+                    className={`category-btn ${activeCategory === category.id ? 'active' : ''}`}
+                  >
+                    <IconComponent className="w-5 h-5" />
+                    <span>{category.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
 
-      {/* Tools Grid */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-            {filteredTools.map((tool, index) => (
-              <Card
-                key={tool.id}
-                className="card-enhanced hover-lift animate-slide-in"
-              >
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-16 h-16 bg-gradient-to-r ${tool.gradient} rounded-xl flex items-center justify-center flex-shrink-0 animate-pulse-glow`}
-                    >
-                      <tool.icon className="h-8 w-8 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-2xl mb-2">
-                        {tool.title}
-                      </CardTitle>
-                      <CardDescription className="text-base mb-4">
-                        {tool.description}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 mb-6">
-                    {tool.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-                        <span className="text-sm text-gray-600">{feature}</span>
+          {/* Tools Grid */}
+          <section className="tools-grid-section">
+            {activeCategory === 'webapp' ? (
+              // Show projects for Web Development category
+              <div className="projects-section">
+                <div className="projects-header">
+                  <h2 className="text-3xl font-bold text-center mb-4">Recent Projects</h2>
+                  <p className="text-gray-600 text-center mb-8">Explore some of our successful web application projects</p>
+                </div>
+                <div className="projects-grid">
+                  {webAppProjects.map((project, index) => {
+                    const ProjectIcon = project.icon;
+                    return (
+                      <div
+                        key={project.id}
+                        className="project-card"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <div className={`project-image bg-gradient-to-br ${project.gradient}`}>
+                          <ProjectIcon className="w-16 h-16 text-white" />
+                        </div>
+                        <div className="project-content">
+                          <h3 className="project-title">{project.title}</h3>
+                          <p className="project-description">{project.description}</p>
+                          <div className="project-tech">
+                            <span className="tech-label">Tech Stack:</span>
+                            <span className="tech-stack">{project.techStack}</span>
+                          </div>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                  <Link to={tool.link}>
-                    <Button className="w-full btn-primary-enhanced">
-                      Learn More
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+                    );
+                  })}
+                </div>
+                <div className="projects-cta">
+                  <button
+                    onClick={() => navigate(ROUTES.WEBAPP_DEVELOPMENT)}
+                    className="webapp-btn"
+                  >
+                    Learn More About Web Development →
+                  </button>
+                </div>
+              </div>
+            ) : (
+              // Show tools for other categories
+              <div className="flex flex-wrap items-start justify-center gap-6">
+                {filteredTools.map((tool, index) => {
+                  const ToolIcon = tool.icon;
+                  const toolColors = [
+                    { bg: "bg-blue-600", text: "text-blue-600" },
+                    { bg: "bg-purple-600", text: "text-purple-600" },
+                    { bg: "bg-green-600", text: "text-green-600" },
+                    { bg: "bg-orange-600", text: "text-orange-600" },
+                    { bg: "bg-teal-600", text: "text-teal-600" },
+                    { bg: "bg-red-600", text: "text-red-600" },
+                    { bg: "bg-indigo-600", text: "text-indigo-600" },
+                    { bg: "bg-pink-600", text: "text-pink-600" }
+                  ];
+                  
+                  const colorIndex = index % toolColors.length;
+                  
+                  return (
+                    <FlipCard
+                      key={tool.id}
+                      className={`${tool.popular ? 'ring-4 ring-yellow-400 ring-opacity-50' : ''}`}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                      onClick={() => handleToolClick(tool)}
+                      bgColor={toolColors[colorIndex].bg}
+                      textColor={toolColors[colorIndex].text}
+                      icon={<ToolIcon />}
+                      title={tool.title}
+                      description={tool.description}
+                      price={tool.price}
+                      category={tool.popular ? "⭐ Popular" : "AI Tool"}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 animate-gradient">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Let's discuss which AI tools are right for your business
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/book-consultation">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="text-lg px-8 py-3 btn-primary-enhanced"
-              >
-                Book Consultation
-              </Button>
-            </Link>
-            <Link to="/contact">
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-blue-600"
-              >
-                Contact Us
-              </Button>
-            </Link>
-          </div>
+          {/* CTA Section */}
+          <section className="explore-cta">
+            <div className="cta-content">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Can't Find What You're Looking For?
+              </h2>
+              <p className="text-xl mb-8">
+                We specialize in creating custom AI solutions tailored to your specific needs. 
+                Let's discuss how we can help transform your business.
+              </p>
+              <div className="cta-buttons">
+                <button
+                  onClick={handleConsultation}
+                  className="cta-btn-primary"
+                >
+                  Book Free Consultation
+                </button>
+                <button
+                  onClick={() => navigate(ROUTES.CONTACT)}
+                  className="cta-btn-secondary"
+                >
+                  Contact Us
+                </button>
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </Layout>
   );
 };
