@@ -1,11 +1,59 @@
-'use strict';
-
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ROUTES } from "./constants/routes";
 import ScrollToTop from "./components/common/ScrollToTop";
 
 import "./App.css";
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('App Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          padding: '20px',
+          textAlign: 'center'
+        }}>
+          <h1 style={{ color: '#ef4444', marginBottom: '16px' }}>Something went wrong</h1>
+          <p style={{ marginBottom: '16px' }}>Please refresh the page or contact support.</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Refresh Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 // Lazy load components for better performance and code splitting
 const LandingPage = lazy(() => import("./compo/LandingPage/LandingPage"));
@@ -61,18 +109,20 @@ const routeConfig = [
 
 function App() {
   return (
-    <Router future={{ v7_startTransition: true }}>
-      <ScrollToTop />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            {routeConfig.map(({ path, element }) => (
-              <Route key={path} path={path} element={element} />
-            ))}
-          </Routes>
-        </Suspense>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router future={{ v7_startTransition: true }}>
+        <ScrollToTop />
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {routeConfig.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Routes>
+          </Suspense>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 
