@@ -68,10 +68,6 @@ export const APP_CONFIG = {
   
   // External Services
   external: {
-    web3forms: {
-      apiKey: import.meta.env.VITE_WEB3FORMS_API_KEY,
-      endpoint: 'https://api.web3forms.com/submit'
-    },
     github: {
       apiUrl: 'https://api.github.com',
       testToken: import.meta.env.VITE_GITHUB_TEST_TOKEN

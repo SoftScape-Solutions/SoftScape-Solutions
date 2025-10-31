@@ -203,7 +203,7 @@ const BookConsultation = () => {
       
       setSubmitStatus({
         type: 'error',
-        message: `❌ submission failed: ${error.message || error.text || error || 'Unknown error'}. Please try again or contact us directly at softscapesolution@outlook.com`
+        message: `❌ submission failed. Please try again or contact us directly at softscapesolution@outlook.com`
       });
     } finally {
       setIsSubmitting(false);
@@ -283,7 +283,7 @@ const BookConsultation = () => {
           {/* Consultation Form */}
           <div className="bg-white rounded-lg shadow-xl p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* EmailJS integration note - no hidden fields needed like Web3Forms */}
+              {/* EmailJS integration for form submission */}
               
               {/* Personal Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
