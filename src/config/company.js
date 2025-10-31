@@ -52,7 +52,7 @@ export const COMPANY_INFO = {
 
 // Hero Section Configuration
 export const HERO_CONFIG = {
-  title: "Transform Your Business with AI-Powered Solutions",
+  title: "Transform Your Business with AI Powered Solutions",
   subtitle: "Building the Future, One Algorithm at a Time",
   description: "Transform your business with cutting-edge AI solutions designed for the modern world. From intelligent chatbots to automated workflows, we deliver the future today.",
   

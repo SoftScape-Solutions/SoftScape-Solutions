@@ -101,9 +101,9 @@ const LandingPage = () => {
               </div>
             </div>
             <h1 className="hero-title">
-              {HERO_CONFIG.title.split(" ").slice(0, -1).join(" ")}
+              {"Transform Your Business with"}
               <span className="gradient-text-ai block font-extrabold">
-                {HERO_CONFIG.title.split(" ").slice(-1)}
+                AI-Powered Solutions
               </span>
             </h1>
             <p className="hero-description">
